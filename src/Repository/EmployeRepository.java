@@ -48,8 +48,9 @@ public class EmployeRepository {
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
-		while(rs.next()) {
+		//TODO: seb terminer récuperation ordinateurs et alerte de l'employé
+		/*while(rs.next()) {
 			employe = new Employe(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-		}
+		}*/
 	}
 }

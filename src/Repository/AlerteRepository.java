@@ -21,7 +21,8 @@ public class AlerteRepository {
 		
 		
 		public int Maxid(String matriculePattern) throws SQLException {
-			int counter = 0;
+			//TODO: Flo a terminer
+			/*int counter = 0;
 			ResultSet rs = null;
 			
 			//On prépare la requete pour récupérer toutes les lignes venant du matricule de l'employé courant
@@ -35,7 +36,7 @@ public class AlerteRepository {
 			while(rs.next())
 				counter++;
 			
-			return counter;
+			return counter;*/
 		}
 	}
 }
