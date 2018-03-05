@@ -10,6 +10,7 @@ import Entity.Employe;
 public class EmployeRepository {
 	
 	private static final String SQL_COUNT_MATRICULE = "SELECT * FROM Employe WHERE matricule LIKE ?";
+	private static final String SQL_FIND_MATRICULE = "SELECT * FROM Employe WHERE matricule=?";
 	
 	private PreparedStatement pstmt;
 	private Connection conn;
@@ -34,5 +35,21 @@ public class EmployeRepository {
 			counter++;
 		
 		return counter;
+	}
+	
+	public Employe findByMatricule(String matricule) throws SQLException {
+		ResultSet rs = null;
+		Employe employe = null;
+		
+		//On prépare la requete pour récupérer toutes les lignes venant du matricule de l'employé courant
+		this.pstmt = this.conn.prepareStatement(EmployeRepository.SQL_COUNT_MATRICULE);
+		this.pstmt.setString(1, matricule);
+		
+		//Execution de la requete
+		rs = this.pstmt.executeQuery();
+		
+		while(rs.next()) {
+			employe = new Employe(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+		}
 	}
 }
