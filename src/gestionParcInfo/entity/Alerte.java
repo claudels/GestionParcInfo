@@ -1,30 +1,35 @@
-package Entity;
+package gestionParcInfo.entity;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import Interface.IEntity;
-import Repository.EmployeRepository;
 
 public class Alerte implements IEntity{
-	
-	private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?, ?)";
+	//TODO:FLO MODIFIER LES REQUETES
+	/*private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, employe=? WHERE id=?";
-	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE id=?";	
+	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE id=?";	*/
 	
 	private int id =-1;
 	private String message;
 	private Employe employe;
 	
 	
-	
+	/**
+	 * Constructeur pour la création d'une nouvelle Alerte
+	 * @param message Message de l'alerte
+	 * @param employe Employé associé à l'alerte
+	 */
 	public Alerte(String message, Employe employe) {
 		this.message = message;
 		this.employe = employe;
 	}
 	
+	/**
+	 * Constructeur pour la création d'une Alerte déjà existence en base
+	 * @param id Identifiant de l'Alerte dans la base
+	 * @param message Message de l'alerte
+	 * @param employe Employé associé à l'Alerte
+	 */
 	public Alerte(int id,String message, Employe employe) {
 		this.id= id;
 		this.message = message;
@@ -46,7 +51,7 @@ public class Alerte implements IEntity{
 	@Override
 	public void persist(Connection conn) throws SQLException {
 		//Si l'id est null, alors il s'agit d'une nouvelle Alerte
-		if (id == -1) {
+		/*if (id == -1) { //TODO: FLO terminer la persistence de l'alerte
 			
 			AlerteRepository AlerteRepo = new AlerteRepository(conn);
 			int AlerteCounter = AlerteRepo.;
@@ -76,10 +81,7 @@ public class Alerte implements IEntity{
 			this.pstmt.executeUpdate();
 		}
 		
-		this.pstmt.close();
-	}
-
-		
+		this.pstmt.close();*/
 	}
 
 	@Override

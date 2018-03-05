@@ -1,13 +1,13 @@
-package Entity;
+package gestionParcInfo.entity;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Interface.IEntity;
-
 public class Ordinateur implements IEntity{
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+	
 	private String sn;
 	private String designation;
 	private int ram;
@@ -16,10 +16,41 @@ public class Ordinateur implements IEntity{
 	private Employe proprietaire;
 	private Date dateAttribution;
 	private Date dateRestitution;
-	private ArrayList<OrdinateurServeurLink> liensServeur;
 	
-	public Ordinateur() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * Création d'un nouvel ordinateur sans propriétaire
+	 * @param sn
+	 * @param designation
+	 * @param ram
+	 * @param cpu
+	 */
+	public Ordinateur(String sn, String designation, int ram, float cpu) {
+		this.sn = sn;
+		this.designation = designation;
+		this.ram = ram;
+		this.cpu = cpu;
+	}
+	
+	/**
+	 * Création d'un ordinateur par recopie 
+	 * @param sn
+	 * @param designation
+	 * @param ram
+	 * @param cpu
+	 * @param imprimante
+	 * @param proprietaire
+	 * @param dateAttribution
+	 * @param dateRestitution
+	 */
+	public Ordinateur(String sn, String designation, int ram, float cpu, Imprimante imprimante, Employe proprietaire, Date dateAttribution, Date dateRestitution) {
+		this.sn = sn;
+		this.designation = designation;
+		this.ram = ram;
+		this.cpu = cpu;
+		this.imprimante = imprimante;
+		this.proprietaire = proprietaire;
+		this.dateAttribution = dateAttribution;
+		this.dateRestitution = dateRestitution;
 	}
 	
 	public float getCpu() {
@@ -40,10 +71,6 @@ public class Ordinateur implements IEntity{
 	
 	public Imprimante getImprimante() {
 		return imprimante;
-	}
-	
-	public OrdinateurServeurLink[] getLiensServeur() {
-		return (OrdinateurServeurLink[])liensServeur.toArray();
 	}
 	
 	public Employe getProprietaire() {
@@ -86,10 +113,6 @@ public class Ordinateur implements IEntity{
 		this.ram = ram;
 	}
 	
-	public void addLienServeur(OrdinateurServeurLink lienServeur) {
-		this.liensServeur.add(lienServeur);
-	}
-
 	@Override
 	public void persist(Connection conn) throws SQLException {
 		// TODO Auto-generated method stub

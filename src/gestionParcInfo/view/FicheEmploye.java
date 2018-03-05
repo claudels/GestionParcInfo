@@ -1,4 +1,4 @@
-package View;
+package gestionParcInfo.view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -13,7 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Employe_Fiche extends JFrame {
+public class FicheEmploye extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -28,7 +28,7 @@ public class Employe_Fiche extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Employe_Fiche frame = new Employe_Fiche();
+					FicheEmploye frame = new FicheEmploye();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +40,7 @@ public class Employe_Fiche extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Employe_Fiche() {
+	public FicheEmploye() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

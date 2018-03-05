@@ -1,4 +1,4 @@
-package View;
+package gestionParcInfo.view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 
-public class Synthese extends JFrame {
+public class GestionParc extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table1;
@@ -28,7 +28,7 @@ public class Synthese extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Synthese frame = new Synthese();
+					GestionParc frame = new GestionParc();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +40,7 @@ public class Synthese extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Synthese() {
+	public GestionParc() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 649, 499);
 		contentPane = new JPanel();

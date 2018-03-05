@@ -1,17 +1,17 @@
-package Entity;
+package gestionParcInfo.entity;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import Interface.IEntity;
 
 public class OrdinateurServeurLink implements IEntity {
 	private Ordinateur ordinateur;
 	private Serveur serveur;
 	private int quota;
 	
-	public OrdinateurServeurLink() {
-		// TODO Auto-generated constructor stub
+	public OrdinateurServeurLink(Ordinateur ordinateur, Serveur serveur, int quota) {
+		this.ordinateur = ordinateur;
+		this.serveur = serveur;
+		this.quota = quota;
 	}
 	
 	public Ordinateur getOrdinateur() {
@@ -26,17 +26,10 @@ public class OrdinateurServeurLink implements IEntity {
 		return quota;
 	}
 	
-	public void setOrdinateur(Ordinateur ordinateur) {
-		this.ordinateur = ordinateur;
-	}
-	
 	public void setQuota(int quota) {
 		this.quota = quota;
 	}
 	
-	public void setServeur(Serveur serveur) {
-		this.serveur = serveur;
-	}
 
 	@Override
 	public void persist(Connection conn) throws SQLException {

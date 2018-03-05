@@ -1,14 +1,10 @@
-package Entity;
+package gestionParcInfo.entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
-import Interface.IEntity;
-import Repository.EmployeRepository;
+import gestionParcInfo.repository.EmployeRepository;
 
 public class Employe implements IEntity{
 	private static final String SQL_INSERT = "INSERT INTO Employe VALUES (?, ?, ?, ?)";
@@ -20,35 +16,31 @@ public class Employe implements IEntity{
 	private String nom;
 	private String prenom;
 	private String email;
-	private ArrayList<Ordinateur> ordinateurs;
-	private ArrayList<Alerte> alertes;
 	
-	//Constructeur par défaut
-	public Employe() {
-		this.ordinateurs = new ArrayList<>();
-		this.alertes = new ArrayList<>();
-	}
-	
+	/**
+	 * Création d'un nouvel Employe non présent en base
+	 * @param nom Nom de l'employe
+	 * @param prenom Prenom de l'employe
+	 * @param email Email de l'employe
+	 */
 	public Employe(String nom, String prenom, String email) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
-		this.ordinateurs = new ArrayList<>();
-		this.alertes = new ArrayList<>();
 	}
 	
-	//Constructeur par recopie
-	public Employe(String matricule, String nom, String prenom, String email, ArrayList<Ordinateur> ordinateurs, ArrayList<Alerte> alertes) {
+	/**
+	 * Constructeur d'un Employe déjà présent en base
+	 * @param matricule Matricule de l'employe dans la base
+	 * @param nom Nom de l'employe
+	 * @param prenom Prenom de l'employe
+	 * @param email Email de l'employe
+	 */
+	public Employe(String matricule, String nom, String prenom, String email) {
 		this.matricule = matricule;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
-		this.ordinateurs = ordinateurs;
-		this.alertes = alertes;
-	}
-	
-	public Alerte[] getAlertes() {
-		return (Alerte[])alertes.toArray();
 	}
 	
 	public String getEmail() {
@@ -63,16 +55,8 @@ public class Employe implements IEntity{
 		return nom;
 	}
 	
-	public Ordinateur[] getOrdinateurs() {
-		return (Ordinateur[])ordinateurs.toArray();
-	}
-	
 	public String getPrenom() {
 		return prenom;
-	}
-	
-	public void addAlerte(Alerte alerte) {
-		this.alertes.add(alerte);
 	}
 	
 	public void setEmail(String email) {
@@ -85,10 +69,6 @@ public class Employe implements IEntity{
 	
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
-	}
-	
-	public void addOrdinateur(Ordinateur ordinateur) {
-		this.ordinateurs.add(ordinateur);
 	}
 
 	@Override

@@ -1,22 +1,18 @@
-package Repository;
+package gestionParcInfo.repository;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Entity.Employe;
+import gestionParcInfo.entity.Employe;
 
-public class EmployeRepository {
+public class EmployeRepository extends Repository {
 	
 	private static final String SQL_COUNT_MATRICULE = "SELECT * FROM Employe WHERE matricule LIKE ?";
 	private static final String SQL_FIND_MATRICULE = "SELECT * FROM Employe WHERE matricule=?";
 	
-	private PreparedStatement pstmt;
-	private Connection conn;
-	
 	public EmployeRepository(Connection conn) {
-		this.conn = conn;
+		super(conn);
 	}
 	
 	public int countEmployeByMatriculePattern(String matriculePattern) throws SQLException {
@@ -42,15 +38,16 @@ public class EmployeRepository {
 		Employe employe = null;
 		
 		//On prépare la requete pour récupérer toutes les lignes venant du matricule de l'employé courant
-		this.pstmt = this.conn.prepareStatement(EmployeRepository.SQL_COUNT_MATRICULE);
+		this.pstmt = this.conn.prepareStatement(EmployeRepository.SQL_FIND_MATRICULE);
 		this.pstmt.setString(1, matricule);
 		
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
-		//TODO: seb terminer récuperation ordinateurs et alerte de l'employé
-		/*while(rs.next()) {
-			employe = new Employe(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-		}*/
+		while(rs.next()) {
+			employe = new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+		}
+		
+		return employe;
 	}
 }

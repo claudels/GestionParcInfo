@@ -1,4 +1,4 @@
-package View;
+package gestionParcInfo.view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -10,21 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Label;
 import javax.swing.JSpinner;
-import javax.swing.JComboBox;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JTable;
+import javax.swing.SpinnerListModel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Imprimante_Fiche extends JFrame {
+public class FicheServeur extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-	private JSpinner textField_1;
+	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textField_3;
 	private JTable table;
 
 	/**
@@ -34,7 +30,7 @@ public class Imprimante_Fiche extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Imprimante_Fiche frame = new Imprimante_Fiche();
+					FicheServeur frame = new FicheServeur();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +42,7 @@ public class Imprimante_Fiche extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Imprimante_Fiche() {
+	public FicheServeur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 300);
 		contentPane = new JPanel();
@@ -55,87 +51,85 @@ public class Imprimante_Fiche extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton button = new JButton("Modify");
-		button.setBounds(505, 11, 89, 23);
+		button.setBounds(502, 11, 89, 23);
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("Save");
 		button_1.setEnabled(false);
-		button_1.setBounds(505, 227, 89, 23);
+		button_1.setBounds(502, 231, 89, 23);
 		contentPane.add(button_1);
 		
 		JButton button_2 = new JButton("Cancel");
-		button_2.setBounds(406, 227, 89, 23);
+		button_2.setBounds(403, 231, 89, 23);
 		contentPane.add(button_2);
 		
-		JLabel lblSni = new JLabel("SN_I");
-		lblSni.setBounds(10, 62, 63, 14);
-		contentPane.add(lblSni);
+		JLabel lblSns = new JLabel("SN_S");
+		lblSns.setBounds(14, 82, 63, 14);
+		contentPane.add(lblSns);
 		
 		textField = new JTextField();
 		textField.setEditable(false);
 		textField.setColumns(10);
-		textField.setBounds(97, 59, 86, 20);
+		textField.setBounds(101, 79, 86, 20);
 		contentPane.add(textField);
 		
 		Label label_1 = new Label("Description");
-		label_1.setBounds(10, 82, 76, 22);
+		label_1.setBounds(14, 102, 76, 22);
 		contentPane.add(label_1);
 		
-		Label label_2 = new Label("Resolution");
-		label_2.setBounds(10, 110, 76, 22);
+		Label label_2 = new Label("Memory");
+		label_2.setBounds(14, 130, 76, 22);
 		contentPane.add(label_2);
 		
-		textField_1 = new JSpinner();
-		textField_1.setModel(new SpinnerNumberModel(150, 150, 300, 150));
-		textField_1.setBounds(97, 109, 86, 20);
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerListModel(new String[] {"3000", "5000", "10000"}));
+		spinner.setBounds(101, 129, 86, 20);
+		contentPane.add(spinner);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(101, 104, 86, 20);
 		contentPane.add(textField_1);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(97, 84, 86, 20);
-		contentPane.add(textField_2);
-		
 		Label label_3 = new Label("NbPcConnected");
-		label_3.setBounds(10, 135, 81, 22);
+		label_3.setBounds(14, 155, 81, 22);
 		contentPane.add(label_3);
 		
-		textField_3 = new JTextField();
-		textField_3.setEditable(false);
-		textField_3.setColumns(10);
-		textField_3.setBounds(97, 137, 86, 20);
-		contentPane.add(textField_3);
+		textField_2 = new JTextField();
+		textField_2.setEditable(false);
+		textField_2.setColumns(10);
+		textField_2.setBounds(101, 157, 86, 20);
+		contentPane.add(textField_2);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(193, 45, 401, 171);
+		scrollPane.setBounds(193, 61, 398, 141);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
 			},
 			new String[] {
-				"SN_O", "Designation", "Employe", "Disconnect"
+				"SN_O", "Description", "Quota", "Employe", "Disconnect"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Long.class, Object.class, Object.class, Object.class
+				Long.class, String.class, Integer.class, String.class, Object.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];

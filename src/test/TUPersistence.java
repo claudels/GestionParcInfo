@@ -1,12 +1,12 @@
-package Test;
+package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import Entity.Employe;
+import gestionParcInfo.entity.Employe;
 
-public class TU_Persistence {
+public class TUPersistence {
 	
 	public void TU_Persist_Employe() {
 		Connection conn = null;

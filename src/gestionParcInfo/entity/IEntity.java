@@ -1,4 +1,4 @@
-package Interface;
+package gestionParcInfo.entity;
 
 import java.sql.Connection;
 import java.sql.SQLException;

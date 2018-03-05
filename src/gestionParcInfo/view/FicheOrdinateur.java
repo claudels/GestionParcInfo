@@ -1,4 +1,4 @@
-package View;
+package gestionParcInfo.view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class Ordianateur_Fiche extends JFrame {
+public class FicheOrdinateur extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -33,7 +33,7 @@ public class Ordianateur_Fiche extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Ordianateur_Fiche frame = new Ordianateur_Fiche();
+					FicheOrdinateur frame = new FicheOrdinateur();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +45,7 @@ public class Ordianateur_Fiche extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Ordianateur_Fiche() {
+	public FicheOrdinateur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 465, 317);
 		contentPane = new JPanel();

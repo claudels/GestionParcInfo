@@ -1,10 +1,10 @@
-package Controler;
+package gestionParcInfo.controller;
 
-import Test.TU_Persistence;
+import test.TUPersistence;
 
 public class GestionParcInfo {
 	public static void main(String[] args) {
-		TU_Persistence tu_persist = new TU_Persistence();
+		TUPersistence tu_persist = new TUPersistence();
 		tu_persist.TU_Persist_Employe();
 	}
 }
