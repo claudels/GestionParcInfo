@@ -1,6 +1,6 @@
 package gestionParcInfo.controller;
 
-import test.TUPersistence;
+import gestionParcInfo.test.TUPersistence;
 
 public class GestionParcInfo {
 	public static void main(String[] args) {

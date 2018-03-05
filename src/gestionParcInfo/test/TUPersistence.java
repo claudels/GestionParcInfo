@@ -1,4 +1,4 @@
-package test;
+package gestionParcInfo.test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
