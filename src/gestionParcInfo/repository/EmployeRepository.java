@@ -3,18 +3,26 @@ package gestionParcInfo.repository;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import gestionParcInfo.entity.Employe;
 
-public class EmployeRepository extends Repository {
+public class EmployeRepository extends Repository<Employe> {
 	
 	private static final String SQL_COUNT_MATRICULE = "SELECT * FROM Employe WHERE matricule LIKE ?";
 	private static final String SQL_FIND_MATRICULE = "SELECT * FROM Employe WHERE matricule=?";
+	private static final String SQL_GET_ALL = "SELECT * FROM Employe";
 	
 	public EmployeRepository(Connection conn) {
 		super(conn);
 	}
 	
+	/**
+	 * Compte le nombre d'employés où leurs matricule contient un pattern passé en paramètre 
+	 * @param matriculePattern Le pattern à chercher dans les matricule
+	 * @return Le nombre d'employé correspondant au pattern
+	 * @throws SQLException
+	 */
 	public int countEmployeByMatriculePattern(String matriculePattern) throws SQLException {
 		int counter = 0;
 		ResultSet rs = null;
@@ -33,6 +41,12 @@ public class EmployeRepository extends Repository {
 		return counter;
 	}
 	
+	/**
+	 * Récupérer un Employe dans la base
+	 * @param matricule Matricule de l'Employe à récupérer
+	 * @return L'objet Employe correspondant
+	 * @throws SQLException
+	 */
 	public Employe findByMatricule(String matricule) throws SQLException {
 		ResultSet rs = null;
 		Employe employe = null;
@@ -50,4 +64,24 @@ public class EmployeRepository extends Repository {
 		
 		return employe;
 	}
+
+	@Override
+	public ArrayList<Employe> getAll() throws SQLException {
+		ResultSet rs = null;
+		ArrayList<Employe> employes = new ArrayList<>();
+		
+		//On prépare la requete pour récupérer toutes les lignes venant du matricule de l'employé courant
+		this.pstmt = this.conn.prepareStatement(EmployeRepository.SQL_GET_ALL);
+		
+		//Execution de la requete
+		rs = this.pstmt.executeQuery();
+		
+		while(rs.next()) {
+			employes.add(new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+		}
+		
+		return employes;
+	}
+
+	
 }
