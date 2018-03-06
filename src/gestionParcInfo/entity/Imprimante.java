@@ -1,9 +1,19 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import gestionParcInfo.repository.AlerteRepository;
+import gestionParcInfo.repository.ImprimanteRepository;
+
 public class Imprimante implements IEntity{
+	
+	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?,?)";
+	private static final String SQL_UPDATE = "UPDATE Imprimante SET designation=?,resolution=? WHERE sn_i=?";
+	private static final String SQL_DELETE = "DELETE FROM Imprimante WHERE sn_i=?";	
+	
+	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int resolution;
@@ -41,16 +51,36 @@ public class Imprimante implements IEntity{
 	}
 
 	@Override
-	public void persist(Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void remove(Connection conn) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 	
+			
+			public void remove(Connection conn) throws SQLException {
+				this.pstmt = conn.prepareStatement(Imprimante.SQL_DELETE);
+				this.pstmt.setString(1, this.sn);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
+
+			@Override
+			public void create(Connection conn) throws SQLException {
+				// TODO Auto-generated method stub
+				//Prépare la requête et l'éxécute
+				this.pstmt = conn.prepareStatement(Imprimante.SQL_INSERT);
+				this.pstmt.setString(1, this.sn);
+				this.pstmt.setString(2, this.designation);
+				this.pstmt.setInt(3, this.resolution);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
+
+			@Override
+			public void update(Connection conn) throws SQLException {
+				this.pstmt = conn.prepareStatement(Imprimante.SQL_UPDATE);
+				this.pstmt.setString(1, this.designation);
+				this.pstmt.setInt(2, this.resolution);
+				this.pstmt.setString(3, this.sn);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+				
+			}
 	
 }

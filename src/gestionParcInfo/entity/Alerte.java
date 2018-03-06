@@ -1,14 +1,18 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import gestionParcInfo.repository.AlerteRepository;
 
 public class Alerte implements IEntity{
 	//TODO:FLO MODIFIER LES REQUETES
-	/*private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, employe=? WHERE id=?";
-	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE id=?";	*/
+	private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, employe=? WHERE code=?";
+	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE code=?";	
 	
+	private PreparedStatement pstmt;
 	private int id =-1;
 	private String message;
 	private Employe employe;
@@ -48,46 +52,38 @@ public class Alerte implements IEntity{
 		return id;
 	}
 
-	@Override
-	public void persist(Connection conn) throws SQLException {
-		//Si l'id est null, alors il s'agit d'une nouvelle Alerte
-		/*if (id == -1) { //TODO: FLO terminer la persistence de l'alerte
-			
-			AlerteRepository AlerteRepo = new AlerteRepository(conn);
-			int AlerteCounter = AlerteRepo.;
-			
-			//On ajoute un nombre au matricule si le matricule existe déjà en base
-			if(matriculeCounter == 0)
-				this.matricule = concatenedMatricule;
-			else
-				this.matricule = concatenedMatricule + matriculeCounter;
-			
-			//Prépare la requête et l'éxécute
-			this.pstmt = conn.prepareStatement(Employe.SQL_INSERT);
-			this.pstmt.setString(1, this.matricule);
-			this.pstmt.setString(2, this.nom);
-			this.pstmt.setString(3, this.prenom);
-			this.pstmt.setString(4, this.email);
-			this.pstmt.executeUpdate();
-		}
-		//Sinon, le matricule est existant, il faut le mettre à jour
-		else {
-			//Prépare la requete et l'éxécute
-			this.pstmt = conn.prepareStatement(Employe.SQL_UPDATE);
-			this.pstmt.setString(1, this.nom);
-			this.pstmt.setString(2, this.prenom);
-			this.pstmt.setString(3, this.email);
-			this.pstmt.setString(4, this.matricule);
-			this.pstmt.executeUpdate();
-		}
+	
+	public void create(Connection conn) throws SQLException {
+		AlerteRepository AlerteRepo = new AlerteRepository(conn);
+		this.id = AlerteRepo.getMaxId() + 1;
 		
-		this.pstmt.close();*/
+		//Prépare la requête et l'éxécute
+		this.pstmt = conn.prepareStatement(Alerte.SQL_INSERT);
+		this.pstmt.setInt(1, this.id);
+		this.pstmt.setString(2, this.message);
+		this.pstmt.setString(3, this.employe.getMatricule());
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+		
 	}
+	
+	public void update(Connection conn) throws SQLException {
+		//Prépare la requete et l'éxécute
+		this.pstmt = conn.prepareStatement(Alerte.SQL_UPDATE);
+		this.pstmt.setString(2, this.message);
+		this.pstmt.setString(3, this.employe.getMatricule());
+		this.pstmt.setInt(4, this.id);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
+	
 
 	@Override
-	public void remove(Connection conn) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void remove(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(Alerte.SQL_DELETE);
+		this.pstmt.setInt(1, this.id);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
 	}
 
 

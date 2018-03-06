@@ -1,13 +1,22 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import gestionParcInfo.repository.ImprimanteRepository;
+
 public class Ordinateur implements IEntity{
+	
+	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?, ?, ?,?,?,?,?,?)";
+	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i, dateAttribution=?, dateRestitution=?, matricule=?  WHERE sn_o=?";
+	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
+	
 	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 	
+	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int ram;
@@ -113,15 +122,44 @@ public class Ordinateur implements IEntity{
 		this.ram = ram;
 	}
 	
-	@Override
-	public void persist(Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void remove(Connection conn) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+			@Override
+			public void remove(Connection conn) throws SQLException {
+				this.pstmt = conn.prepareStatement(Ordinateur.SQL_DELETE);
+				this.pstmt.setString(1, this.sn);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
+
+			@Override
+			public void create(Connection conn) throws SQLException {
+				//Prépare la requête et l'éxécute
+				this.pstmt = conn.prepareStatement(Ordinateur.SQL_INSERT);
+				this.pstmt.setString(1, this.sn);
+				this.pstmt.setString(2, this.designation);
+				this.pstmt.setInt(3, this.ram);
+				this.pstmt.setFloat(4, this.cpu);
+				this.pstmt.setString(5, this.imprimante.getSn());
+				this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateAttribution));
+				this.pstmt.setString(7, Ordinateur.dateFormatter.format(dateRestitution));
+				this.pstmt.setString(8, this.proprietaire.getMatricule());
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
+
+			@Override
+			public void update(Connection conn) throws SQLException {
+				this.pstmt = conn.prepareStatement(Ordinateur.SQL_UPDATE);
+				this.pstmt.setString(1, this.designation);
+				this.pstmt.setInt(2, this.ram);
+				this.pstmt.setFloat(3, this.cpu);
+				this.pstmt.setString(4, this.imprimante.getSn());
+				this.pstmt.setString(5, Ordinateur.dateFormatter.format(dateAttribution));
+				this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateRestitution));
+				this.pstmt.setString(7, this.proprietaire.getMatricule());
+				this.pstmt.setString(8, this.sn);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+				
+			}
 }

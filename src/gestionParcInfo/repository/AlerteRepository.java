@@ -11,31 +11,29 @@ public class AlerteRepository extends Repository<Alerte> {
 	
 	private static final String SQL_FIND_ID = "SELECT * FROM Alerte WHERE id=?";
 	private static final String SQL_GET_ALL = "SELECT * FROM Alerte";
+	private static final String SQL_GET_MAXID = "SELECT MAX(code) FROM Alerte";
 	
 	public AlerteRepository(Connection conn) {
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getLastId() throws SQLException {
-		//TODO: Flo a terminer
-		/*int counter = 0;
+	public int getMaxId() throws SQLException {
+		int id = -1;
 		ResultSet rs = null;
 		
-		//On prépare la requete pour récupérer toutes les lignes venant du matricule de l'employé courant
-		this.pstmt = this.conn.prepareStatement(AlerteRepository.SQL_COUNT_MATRICULE);
-		this.pstmt.setString(1, '%' + matriculePattern + '%');
+		//On prépare la requete pour récupérer toutes les lignes de la table
+		this.pstmt = this.conn.prepareStatement(AlerteRepository.SQL_GET_MAXID);
 		
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
-		//On compte le nombre de lignes de résultats
-		while(rs.next())
-			counter++;
+		//On recupere l'id qui sera attribué à la nouvelle adresse
+		if(rs.next());
+			id = rs.getInt(1);
 		
-		return counter;*/
+		return id;	
 		
-		return 0;
 	}
 	
 	/**

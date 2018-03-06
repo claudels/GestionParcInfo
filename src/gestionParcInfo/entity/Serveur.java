@@ -1,9 +1,18 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import gestionParcInfo.repository.ImprimanteRepository;
+
 public class Serveur implements IEntity {
+	
+	private static final String SQL_INSERT = "INSERT INTO Serveur VALUES (?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE Serveur SET designation=?, memoire=? WHERE sn_s=?";
+	private static final String SQL_DELETE = "DELETE FROM Serveur WHERE sn_s=?";	
+	
+	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int memoire;
@@ -34,15 +43,38 @@ public class Serveur implements IEntity {
 		this.memoire = memoire;
 	}
 	
-	@Override
-	public void persist(Connection conn) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void remove(Connection conn) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+
+			@Override
+			public void remove(Connection conn) throws SQLException {
+				
+				
+					this.pstmt = conn.prepareStatement(Serveur.SQL_DELETE);
+					this.pstmt.setString(1, this.sn);
+					this.pstmt.executeUpdate();
+					this.pstmt.close();
+			
+}
+
+			@Override
+			public void create(Connection conn) throws SQLException {
+				//Prépare la requête et l'éxécute
+				this.pstmt = conn.prepareStatement(Serveur.SQL_INSERT);
+				this.pstmt.setString(1, this.sn);
+				this.pstmt.setString(2, this.designation);
+				this.pstmt.setInt(3, this.memoire);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
+
+			@Override
+			public void update(Connection conn) throws SQLException {
+				//Prépare la requete et l'éxécute
+				this.pstmt = conn.prepareStatement(Serveur.SQL_UPDATE);
+				this.pstmt.setString(1, this.designation);
+				this.pstmt.setInt(2, this.memoire);
+				this.pstmt.setString(3, this.sn);
+				this.pstmt.executeUpdate();
+				this.pstmt.close();
+			}
 }

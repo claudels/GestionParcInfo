@@ -71,56 +71,51 @@ public class Employe implements IEntity{
 		this.prenom = prenom;
 	}
 
+	
+
+
 	@Override
-	public void persist(Connection conn) throws SQLException {
-		//Si le matricule est null, alors il s'agit d'un nouvel employé
-		if (matricule == null) {
-			//On définit le matricule comme la concaténation du nom et du prénom
-			String concatenedMatricule = this.nom.substring(0, 4).toUpperCase() + this.prenom.substring(0, 2).toUpperCase();
-			
-			EmployeRepository employeRepo = new EmployeRepository(conn);
-			int matriculeCounter = employeRepo.countEmployeByMatriculePattern(concatenedMatricule);
-			
-			//On ajoute un nombre au matricule si le matricule existe déjà en base
-			if(matriculeCounter == 0)
-				this.matricule = concatenedMatricule;
-			else
-				this.matricule = concatenedMatricule + matriculeCounter;
-			
-			//Prépare la requête et l'éxécute
-			this.pstmt = conn.prepareStatement(Employe.SQL_INSERT);
-			this.pstmt.setString(1, this.matricule);
-			this.pstmt.setString(2, this.nom);
-			this.pstmt.setString(3, this.prenom);
-			this.pstmt.setString(4, this.email);
-			this.pstmt.executeUpdate();
-		}
-		//Sinon, le matricule est existant, il faut le mettre à jour
-		else {
-			//Prépare la requete et l'éxécute
-			this.pstmt = conn.prepareStatement(Employe.SQL_UPDATE);
-			this.pstmt.setString(1, this.nom);
-			this.pstmt.setString(2, this.prenom);
-			this.pstmt.setString(3, this.email);
-			this.pstmt.setString(4, this.matricule);
-			this.pstmt.executeUpdate();
-		}
+	public void remove(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(Employe.SQL_DELETE);
+		this.pstmt.setString(1, this.matricule);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
+
+	
+	@Override
+	public void create(Connection conn) throws SQLException {
+		//On définit le matricule comme la concaténation du nom et du prénom
+		String concatenedMatricule = this.nom.substring(0, 4).toUpperCase() + this.prenom.substring(0, 2).toUpperCase();
 		
+		EmployeRepository employeRepo = new EmployeRepository(conn);
+		int matriculeCounter = employeRepo.countEmployeByMatriculePattern(concatenedMatricule);
+		
+		//On ajoute un nombre au matricule si le matricule existe déjà en base
+		if(matriculeCounter == 0)
+			this.matricule = concatenedMatricule;
+		else
+			this.matricule = concatenedMatricule + matriculeCounter;
+		
+		//Prépare la requête et l'éxécute
+		this.pstmt = conn.prepareStatement(Employe.SQL_INSERT);
+		this.pstmt.setString(1, this.matricule);
+		this.pstmt.setString(2, this.nom);
+		this.pstmt.setString(3, this.prenom);
+		this.pstmt.setString(4, this.email);
+		this.pstmt.executeUpdate();
 		this.pstmt.close();
 	}
 
 	@Override
-	public void remove(Connection conn) throws Exception {
-		if(matricule != null) {
-			this.pstmt = conn.prepareStatement(Employe.SQL_DELETE);
-			this.pstmt.setString(1, this.matricule);
-			this.pstmt.executeUpdate();
-			this.pstmt.close();
-		}else {
-			throw new Exception("L'employé n'a jamais été persisté");
-		}
-	}
-
-	
-
+	public void update(Connection conn) throws SQLException {
+		//Prépare la requete et l'éxécute
+		this.pstmt = conn.prepareStatement(Employe.SQL_UPDATE);
+		this.pstmt.setString(1, this.nom);
+		this.pstmt.setString(2, this.prenom);
+		this.pstmt.setString(3, this.email);
+		this.pstmt.setString(4, this.matricule);
+		this.pstmt.executeUpdate();	
+		this.pstmt.close();
+}
 }
