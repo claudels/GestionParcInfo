@@ -11,7 +11,7 @@ import gestionParcInfo.repository.ImprimanteRepository;
 public class Ordinateur implements IEntity{
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?, ?, ?,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i, dateAttribution=?, dateRestitution=?, matricule=?  WHERE sn_o=?";
+	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestitution=?, matricule=?  WHERE sn_o=?";
 	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
 	
 	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");

@@ -1,4 +1,4 @@
-package gestionParcInfo.view;
+package gestionParcInfo.view.fiche;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JToggleButton;
 
 public class FicheServeur extends JFrame {
 
@@ -44,25 +45,22 @@ public class FicheServeur extends JFrame {
 	 * Create the frame.
 	 */
 	public FicheServeur() {
+		setTitle("Serveur");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 830, 423);
+		setBounds(100, 100, 830, 446);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton button = new JButton("Modify");
-		button.setBounds(611, 343, 89, 23);
-		contentPane.add(button);
+		JButton btnSauvegarder = new JButton("Sauvegarder");
+		btnSauvegarder.setEnabled(false);
+		btnSauvegarder.setBounds(688, 366, 105, 23);
+		contentPane.add(btnSauvegarder);
 		
-		JButton button_1 = new JButton("Save");
-		button_1.setEnabled(false);
-		button_1.setBounds(704, 343, 89, 23);
-		contentPane.add(button_1);
-		
-		JButton button_2 = new JButton("Cancel");
-		button_2.setBounds(519, 343, 89, 23);
-		contentPane.add(button_2);
+		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.setBounds(458, 366, 89, 23);
+		contentPane.add(btnAnnuler);
 		
 		JLabel lblSns = new JLabel("Num\u00E9ro de s\u00E9rie :");
 		lblSns.setBounds(53, 198, 123, 23);
@@ -79,50 +77,54 @@ public class FicheServeur extends JFrame {
 		contentPane.add(label_2);
 		
 		JSpinner spinner = new JSpinner();
+		spinner.setEnabled(false);
 		spinner.setModel(new SpinnerListModel(new String[] {"3000", "5000", "10000"}));
 		spinner.setBounds(53, 333, 123, 20);
 		contentPane.add(spinner);
 		
 		Label label_3 = new Label("Ordinateurs connect\u00E9s : ");
-		label_3.setBounds(240, 31, 147, 22);
+		label_3.setBounds(241, 30, 147, 22);
 		contentPane.add(label_3);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(240, 59, 553, 274);
+		scrollPane.setBounds(240, 59, 553, 294);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.setRowSelectionAllowed(false);
+		table.setFillsViewportHeight(true);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
 			},
 			new String[] {
-				"SN_O", "Description", "Quota", "Employe", "Disconnect"
+				"SN_O", "Description", "Quota", "Employe"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Long.class, String.class, Integer.class, String.class, Object.class
+				Long.class, String.class, Integer.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(100);
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
 		table.getColumnModel().getColumn(1).setPreferredWidth(200);
 		scrollPane.setViewportView(table);
 		
@@ -164,5 +166,14 @@ public class FicheServeur extends JFrame {
 		label_5.setFont(new Font("Tahoma", Font.BOLD, 26));
 		label_5.setBounds(12, 154, 192, 32);
 		contentPane.add(label_5);
+		
+		JToggleButton tglbtnModeVisualisation = new JToggleButton("Mode visualisation");
+		tglbtnModeVisualisation.setBounds(549, 366, 137, 23);
+		contentPane.add(tglbtnModeVisualisation);
+		
+		JButton btnDconnecter = new JButton("D\u00E9connecter");
+		btnDconnecter.setEnabled(false);
+		btnDconnecter.setBounds(688, 30, 105, 23);
+		contentPane.add(btnDconnecter);
 	}
 }
