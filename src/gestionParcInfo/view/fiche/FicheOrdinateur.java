@@ -24,14 +24,14 @@ public class FicheOrdinateur extends JFrame {
 	private JPanel contentPane;
 	
 	//Tableaux
-	JScrollPane SCRLLPANE_imprimante, SCRLLPANE_serveurs;
+	private JScrollPane SCRLLPANE_imprimante, SCRLLPANE_serveurs;
 	private JTable TABLE_imprimante, TABLE_serveurs;
 	
 	//ComboBox
-	JComboBox<String> CMBBOX_assignedTo;
+	private JComboBox<String> CMBBOX_assignedTo;
 
 	//Spinners
-	JSpinner SPIN_RAM, SPIN_CPU;
+	private JSpinner SPIN_RAM, SPIN_CPU;
 	
 	//TextFields
 	private JTextField TF_SNO, TF_designation, TF_dateAttribution, TF_dateRestitution;
@@ -40,11 +40,11 @@ public class FicheOrdinateur extends JFrame {
 	private JLabel staticLBL_uniteTemps, staticLBL_title, staticLBL_SNO, staticLBL_dateAttribution, staticLBL_dateRestitution, staticLBL_imprimanteTitle, staticLBL_serveursTitle, staticLBL_aChanger, staticLBL_aRetourner, staticLBL_tempsUtilisation, staticLBL_assignedTo, staticLBL_designation, staticLBL_CPU, staticLBL_RAM;
 
 	//Labels dynamiques
-	JLabel LBL_aChanger, LBL_joursUtilisation, LBL_aRetourner;
+	private JLabel LBL_aChanger, LBL_joursUtilisation, LBL_aRetourner;
 	
 	//Boutons
-	JButton BTN_annuler, BTN_sauver, BTN_connecterImprimante, BTN_deconnecterImprimante, BTN_connecterServeurs, BTN_deconnecterServeurs;
-	JToggleButton TGLBTN_mode;
+	private JButton BTN_annuler, BTN_sauver, BTN_connecterImprimante, BTN_deconnecterImprimante, BTN_connecterServeurs, BTN_deconnecterServeurs;
+	private JToggleButton TGLBTN_mode;
 	
 	/**
 	 * Create the frame.

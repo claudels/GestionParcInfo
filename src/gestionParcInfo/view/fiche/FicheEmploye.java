@@ -20,31 +20,26 @@ import javax.swing.JScrollPane;
 public class FicheEmploye extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTable table;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FicheEmploye frame = new FicheEmploye();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	//labels statiques
+	private JLabel staticLBL_matricule, staticLBL_nom,staticLBL_prenom, staticLBL_email, staticLBL_title, staticLBL_ordinateurs;
 
+	//TextFields
+	private JTextField TF_prenom, TF_nom, TF_matricule, TF_email;
+	
+	//Boutons
+	private JButton BTN_assignerOrdinateur, BTN_annuler, BTN_sauver;
+	private JToggleButton TGLBTN_mode;
+	
+	//Table ordinateurs
+	private JScrollPane SCRLLPANE_ordinateurs;
+	private JTable TABLE_ordinateurs;
 	/**
 	 * Create the frame.
 	 */
 	public FicheEmploye() {
+		
+		//Configuration fenêtre
 		setTitle("Employ\u00E9");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 558, 357);
@@ -53,73 +48,86 @@ public class FicheEmploye extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblMatricule = new JLabel("Matricule : ");
-		lblMatricule.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMatricule.setBounds(10, 62, 75, 14);
-		contentPane.add(lblMatricule);
+		//Configuration label statiques
+		staticLBL_matricule = new JLabel("Matricule : ");
+		staticLBL_matricule.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_matricule.setBounds(10, 62, 75, 14);
+		contentPane.add(staticLBL_matricule);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(97, 59, 157, 20);
-		contentPane.add(textField);
+		staticLBL_nom = new JLabel("Nom : ");
+		staticLBL_nom.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_nom.setBounds(10, 82, 76, 22);
+		contentPane.add(staticLBL_nom);
 		
-		Label label_1 = new Label("Nom : ");
-		label_1.setAlignment(Label.RIGHT);
-		label_1.setBounds(10, 82, 76, 22);
-		contentPane.add(label_1);
+		staticLBL_prenom = new JLabel("Pr\u00E9nom : ");
+		staticLBL_prenom.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_prenom.setBounds(272, 57, 76, 22);
+		contentPane.add(staticLBL_prenom);
 		
-		Label label_2 = new Label("Pr\u00E9nom : ");
-		label_2.setAlignment(Label.RIGHT);
-		label_2.setBounds(272, 57, 76, 22);
-		contentPane.add(label_2);
+		staticLBL_email = new JLabel("E-Mail : ");
+		staticLBL_email.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_email.setBounds(266, 82, 81, 22);
+		contentPane.add(staticLBL_email);
 		
-		JTextField spinner = new JTextField();
-		spinner.setEditable(false);
-		spinner.setBounds(359, 56, 157, 20);
-		contentPane.add(spinner);
+		staticLBL_title = new JLabel("Employ\u00E9");
+		staticLBL_title.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLBL_title.setBounds(206, 0, 185, 32);
+		contentPane.add(staticLBL_title);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(97, 84, 157, 20);
-		contentPane.add(textField_1);
+		staticLBL_ordinateurs = new JLabel("Ordinateurs assign\u00E9s : ");
+		staticLBL_ordinateurs.setBounds(10, 128, 173, 22);
+		contentPane.add(staticLBL_ordinateurs);
 		
-		Label label_3 = new Label("E-Mail : ");
-		label_3.setAlignment(Label.RIGHT);
-		label_3.setBounds(266, 82, 81, 22);
-		contentPane.add(label_3);
+		//Configuration TextFields
+		TF_matricule = new JTextField();
+		TF_matricule.setEditable(false);
+		TF_matricule.setColumns(10);
+		TF_matricule.setBounds(97, 59, 157, 20);
+		contentPane.add(TF_matricule);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(359, 84, 157, 20);
-		contentPane.add(textField_2);
+		TF_prenom = new JTextField();
+		TF_prenom.setEditable(false);
+		TF_prenom.setBounds(359, 56, 157, 20);
+		contentPane.add(TF_prenom);
 		
-		JToggleButton toggleButton = new JToggleButton("Mode visualisation");
-		toggleButton.setBounds(284, 274, 137, 23);
-		contentPane.add(toggleButton);
+		TF_nom = new JTextField();
+		TF_nom.setEditable(false);
+		TF_nom.setColumns(10);
+		TF_nom.setBounds(97, 84, 157, 20);
+		contentPane.add(TF_nom);
 		
-		JButton button = new JButton("Annuler");
-		button.setBounds(193, 274, 89, 23);
-		contentPane.add(button);
+		TF_email = new JTextField();
+		TF_email.setEditable(false);
+		TF_email.setColumns(10);
+		TF_email.setBounds(359, 84, 157, 20);
+		contentPane.add(TF_email);
 		
-		JButton button_1 = new JButton("Sauvegarder");
-		button_1.setEnabled(false);
-		button_1.setBounds(423, 274, 105, 23);
-		contentPane.add(button_1);
+		//Configuration boutons
+		TGLBTN_mode = new JToggleButton("Mode visualisation");
+		TGLBTN_mode.setBounds(284, 274, 137, 23);
+		contentPane.add(TGLBTN_mode);
 		
-		JLabel lblEmploy = new JLabel("Employ\u00E9");
-		lblEmploy.setFont(new Font("Tahoma", Font.BOLD, 26));
-		lblEmploy.setBounds(206, 0, 185, 32);
-		contentPane.add(lblEmploy);
+		BTN_annuler = new JButton("Annuler");
+		BTN_annuler.setBounds(193, 274, 89, 23);
+		contentPane.add(BTN_annuler);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 156, 519, 63);
-		contentPane.add(scrollPane);
+		BTN_sauver = new JButton("Sauvegarder");
+		BTN_sauver.setEnabled(false);
+		BTN_sauver.setBounds(423, 274, 105, 23);
+		contentPane.add(BTN_sauver);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		BTN_assignerOrdinateur = new JButton("Assigner un ordinateur");
+		BTN_assignerOrdinateur.setEnabled(false);
+		BTN_assignerOrdinateur.setBounds(10, 224, 198, 25);
+		contentPane.add(BTN_assignerOrdinateur);
+		
+		//Configuration tableau ordinateurs
+		SCRLLPANE_ordinateurs = new JScrollPane();
+		SCRLLPANE_ordinateurs.setBounds(12, 156, 519, 63);
+		contentPane.add(SCRLLPANE_ordinateurs);
+		
+		TABLE_ordinateurs = new JTable();
+		TABLE_ordinateurs.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null, null},
 				{null, null, null, null, null},
@@ -128,20 +136,11 @@ public class FicheEmploye extends JFrame {
 				"SN_O", "D\u00E9signation", "A changer", "A retourner", "Temps d'utilisation"
 			}
 		));
-		table.getColumnModel().getColumn(1).setPreferredWidth(132);
-		table.getColumnModel().getColumn(2).setPreferredWidth(70);
-		table.getColumnModel().getColumn(3).setPreferredWidth(80);
-		table.getColumnModel().getColumn(4).setPreferredWidth(120);
-		scrollPane.setViewportView(table);
-		
-		Label label = new Label("Ordinateurs assign\u00E9s : ");
-		label.setBounds(10, 128, 173, 22);
-		contentPane.add(label);
-		
-		JButton btnAssignerUnOrdinateur = new JButton("Assigner un ordinateur");
-		btnAssignerUnOrdinateur.setEnabled(false);
-		btnAssignerUnOrdinateur.setBounds(10, 224, 198, 25);
-		contentPane.add(btnAssignerUnOrdinateur);
+		TABLE_ordinateurs.getColumnModel().getColumn(1).setPreferredWidth(132);
+		TABLE_ordinateurs.getColumnModel().getColumn(2).setPreferredWidth(70);
+		TABLE_ordinateurs.getColumnModel().getColumn(3).setPreferredWidth(80);
+		TABLE_ordinateurs.getColumnModel().getColumn(4).setPreferredWidth(120);
+		SCRLLPANE_ordinateurs.setViewportView(TABLE_ordinateurs);
 	}
 
 }
