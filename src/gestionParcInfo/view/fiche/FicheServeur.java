@@ -19,28 +19,34 @@ import javax.swing.SwingConstants;
 import javax.swing.JToggleButton;
 
 public class FicheServeur extends JFrame {
-
+	
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTable table;
-	private JTextField textField_1;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FicheServeur frame = new FicheServeur();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
+	//Champs texte
+	private JTextField TF_numéroDeSerie, TF_designation;
+	
+	//Tableaux
+	private JTable TBL_serveur;
+	
+	//labels statiques
+	private JLabel staticLBL_numeroDeSerie, staticLBL_ordinateursConnectés, staticLBL_title, staticLBL_designation, staticLBL_charge, staticLBL_pourcent, staticLBL_nbOrdinateursConnectés;
+	
+	//labels dynamique
+	private JLabel LBL_bnOrdinateursConnectés, LBL_memoire,LBL_charge;
+	
+	//Bouttons
+	private JButton BTN_sauvegarder,BTN_annuler,BTN_deconnecter; 
+	
+	//Toggle bouton
+	private JToggleButton TGLBTN_modeVisualisation;
+	
+	//Spinner
+	private JSpinner SPIN_memoire;
+	
+	//ScrollPane
+	private JScrollPane SCRLPANE_ordinateursConnectés;
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -53,47 +59,103 @@ public class FicheServeur extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnSauvegarder = new JButton("Sauvegarder");
-		btnSauvegarder.setEnabled(false);
-		btnSauvegarder.setBounds(688, 366, 105, 23);
-		contentPane.add(btnSauvegarder);
+		//Configuration des labels statiques
+		staticLBL_numeroDeSerie = new JLabel("Num\u00E9ro de s\u00E9rie :");
+		staticLBL_numeroDeSerie.setBounds(53, 198, 123, 23);
+		contentPane.add(staticLBL_numeroDeSerie);
 		
-		JButton btnAnnuler = new JButton("Annuler");
-		btnAnnuler.setBounds(458, 366, 89, 23);
-		contentPane.add(btnAnnuler);
+		staticLBL_ordinateursConnectés = new JLabel("Ordinateurs connect\u00E9s : ");
+		staticLBL_ordinateursConnectés.setBounds(241, 30, 147, 22);
+		contentPane.add(staticLBL_ordinateursConnectés);
 		
-		JLabel lblSns = new JLabel("Num\u00E9ro de s\u00E9rie :");
-		lblSns.setBounds(53, 198, 123, 23);
-		contentPane.add(lblSns);
+		staticLBL_title = new JLabel("Serveur");
+		staticLBL_title.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLBL_title.setBounds(12, 0, 100, 32);
+		contentPane.add(staticLBL_title);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(53, 221, 123, 20);
-		contentPane.add(textField);
+		staticLBL_designation = new JLabel("D\u00E9signation :");
+		staticLBL_designation.setBounds(53, 254, 123, 23);
+		contentPane.add(staticLBL_designation);
 		
-		Label label_2 = new Label("M\u00E9moire : ");
-		label_2.setBounds(53, 311, 76, 22);
-		contentPane.add(label_2);
+		staticLBL_charge = new JLabel("Charge \r\n(Somme quotas / M\u00E9moire) :");
+		staticLBL_charge.setBounds(12, 59, 223, 23);
+		contentPane.add(staticLBL_charge);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setEnabled(false);
-		spinner.setModel(new SpinnerListModel(new String[] {"3000", "5000", "10000"}));
-		spinner.setBounds(53, 333, 123, 20);
-		contentPane.add(spinner);
+		staticLBL_pourcent = new JLabel("%");
+		staticLBL_pourcent.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLBL_pourcent.setBounds(118, 88, 47, 32);
+		contentPane.add(staticLBL_pourcent);
 		
-		Label label_3 = new Label("Ordinateurs connect\u00E9s : ");
-		label_3.setBounds(241, 30, 147, 22);
-		contentPane.add(label_3);
+		staticLBL_nbOrdinateursConnectés = new JLabel("Nombre d'ordinateurs connect\u00E9s : ");
+		staticLBL_nbOrdinateursConnectés.setBounds(12, 126, 206, 22);
+		contentPane.add(staticLBL_nbOrdinateursConnectés);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(240, 59, 553, 294);
-		contentPane.add(scrollPane);
+		//Configuration des label dynamique
+		LBL_bnOrdinateursConnectés = new JLabel("#####");
+		LBL_bnOrdinateursConnectés.setHorizontalAlignment(SwingConstants.CENTER);
+		LBL_bnOrdinateursConnectés.setFont(new Font("Tahoma", Font.BOLD, 26));
+		LBL_bnOrdinateursConnectés.setBounds(12, 154, 192, 32);
+		contentPane.add(LBL_bnOrdinateursConnectés);
 		
-		table = new JTable();
-		table.setRowSelectionAllowed(false);
-		table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(
+		LBL_memoire = new JLabel("M\u00E9moire : ");
+		LBL_memoire.setBounds(53, 311, 76, 22);
+		contentPane.add(LBL_memoire);
+		
+		LBL_charge = new JLabel("##");
+		LBL_charge.setFont(new Font("Tahoma", Font.BOLD, 26));
+		LBL_charge.setBounds(69, 88, 47, 32);
+		contentPane.add(LBL_charge);
+		
+		//Configuration des bouttons
+		BTN_sauvegarder = new JButton("Sauvegarder");
+		BTN_sauvegarder.setEnabled(false);
+		BTN_sauvegarder.setBounds(688, 366, 105, 23);
+		contentPane.add(BTN_sauvegarder);
+		
+		BTN_annuler = new JButton("Annuler");
+		BTN_annuler.setBounds(458, 366, 89, 23);
+		contentPane.add(BTN_annuler);
+		
+		BTN_deconnecter = new JButton("D\u00E9connecter");
+		BTN_deconnecter.setEnabled(false);
+		BTN_deconnecter.setBounds(688, 30, 105, 23);
+		contentPane.add(BTN_deconnecter);
+		
+		//Configuration des toggle boutton
+		TGLBTN_modeVisualisation = new JToggleButton("Mode visualisation");
+		TGLBTN_modeVisualisation.setBounds(549, 366, 137, 23);
+		contentPane.add(TGLBTN_modeVisualisation);
+		
+		//Configuration des champs de texte
+		TF_numéroDeSerie = new JTextField();
+		TF_numéroDeSerie.setEditable(false);
+		TF_numéroDeSerie.setColumns(10);
+		TF_numéroDeSerie.setBounds(53, 221, 123, 20);
+		contentPane.add(TF_numéroDeSerie);
+		
+		TF_designation = new JTextField();
+		TF_designation.setEditable(false);
+		TF_designation.setColumns(10);
+		TF_designation.setBounds(53, 278, 123, 20);
+		contentPane.add(TF_designation);
+		
+		//Configuration des spinner
+		SPIN_memoire = new JSpinner();
+		SPIN_memoire.setEnabled(false);
+		SPIN_memoire.setModel(new SpinnerListModel(new String[] {"3000", "5000", "10000"}));
+		SPIN_memoire.setBounds(53, 333, 123, 20);
+		contentPane.add(SPIN_memoire);
+		
+		//Configuration des ScrollPane
+		SCRLPANE_ordinateursConnectés = new JScrollPane();
+		SCRLPANE_ordinateursConnectés.setBounds(240, 59, 553, 294);
+		contentPane.add(SCRLPANE_ordinateursConnectés);
+		
+		//Configuration des tableaux
+		TBL_serveur = new JTable();
+		TBL_serveur.setRowSelectionAllowed(false);
+		TBL_serveur.setFillsViewportHeight(true);
+		TBL_serveur.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null},
 				{null, null, null, null},
@@ -124,56 +186,8 @@ public class FicheServeur extends JFrame {
 				return columnTypes[columnIndex];
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(1).setPreferredWidth(200);
-		scrollPane.setViewportView(table);
-		
-		JLabel lblServeur = new JLabel("Serveur");
-		lblServeur.setFont(new Font("Tahoma", Font.BOLD, 26));
-		lblServeur.setBounds(12, 0, 100, 32);
-		contentPane.add(lblServeur);
-		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(53, 278, 123, 20);
-		contentPane.add(textField_1);
-		
-		JLabel lblDsignation = new JLabel("D\u00E9signation :");
-		lblDsignation.setBounds(53, 254, 123, 23);
-		contentPane.add(lblDsignation);
-		
-		JLabel lblChargesommeQuotas = new JLabel("Charge \r\n(Somme quotas / M\u00E9moire) :");
-		lblChargesommeQuotas.setBounds(12, 59, 223, 23);
-		contentPane.add(lblChargesommeQuotas);
-		
-		JLabel label = new JLabel("##");
-		label.setFont(new Font("Tahoma", Font.BOLD, 26));
-		label.setBounds(69, 88, 47, 32);
-		contentPane.add(label);
-		
-		JLabel label_1 = new JLabel("%");
-		label_1.setFont(new Font("Tahoma", Font.BOLD, 26));
-		label_1.setBounds(118, 88, 47, 32);
-		contentPane.add(label_1);
-		
-		Label label_4 = new Label("Nombre d'ordinateurs connect\u00E9s : ");
-		label_4.setBounds(12, 126, 206, 22);
-		contentPane.add(label_4);
-		
-		JLabel label_5 = new JLabel("#####");
-		label_5.setHorizontalAlignment(SwingConstants.CENTER);
-		label_5.setFont(new Font("Tahoma", Font.BOLD, 26));
-		label_5.setBounds(12, 154, 192, 32);
-		contentPane.add(label_5);
-		
-		JToggleButton tglbtnModeVisualisation = new JToggleButton("Mode visualisation");
-		tglbtnModeVisualisation.setBounds(549, 366, 137, 23);
-		contentPane.add(tglbtnModeVisualisation);
-		
-		JButton btnDconnecter = new JButton("D\u00E9connecter");
-		btnDconnecter.setEnabled(false);
-		btnDconnecter.setBounds(688, 30, 105, 23);
-		contentPane.add(btnDconnecter);
+		TBL_serveur.getColumnModel().getColumn(0).setPreferredWidth(150);
+		TBL_serveur.getColumnModel().getColumn(1).setPreferredWidth(200);
+		SCRLPANE_ordinateursConnectés.setViewportView(TBL_serveur);
 	}
 }
