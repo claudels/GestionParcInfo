@@ -24,31 +24,32 @@ import java.awt.Font;
 public class FicheImprimante extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JSpinner textField_1;
-	private JTextField textField_2;
-	private JTable table;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FicheImprimante frame = new FicheImprimante();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	//Labels statiques
+	private JLabel staticLBL_SNI, staticLBL_uniteOrdinateur, staticLBL_ordisConnectesTitle, staticLBL_title, staticLBL_nbOrdiConnectes, staticLBL_designation, staticLBL_resolution;
 
+	//Labels dynamique
+	private JLabel LBL_nbOrdisConnectes;
+	
+	//TextFields
+	private JTextField TF_designation, TF_SNI;
+	
+	//Spinner
+	private JSpinner SPINNER_resolution;
+	
+	//Tableau ordinateur
+	private JScrollPane SCRLLPANE_ordisConnectes;
+	private JTable TABLE_ordisConnectes;
+	
+	//Boutons
+	JButton BTN_sauver, BTN_annuler, BTN_deconnecter;
+	JToggleButton TGLBTN_mode;
+	
 	/**
 	 * Create the frame.
 	 */
 	public FicheImprimante() {
+		//Configuration fenetre
 		setTitle("Imprimante");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 494, 649);
@@ -57,48 +58,74 @@ public class FicheImprimante extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblSni = new JLabel("SN_I : ");
-		lblSni.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSni.setBounds(22, 62, 63, 14);
-		contentPane.add(lblSni);
+		//Configuration labels statiques
+		staticLBL_SNI = new JLabel("SN_I : ");
+		staticLBL_SNI.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_SNI.setBounds(22, 62, 63, 14);
+		contentPane.add(staticLBL_SNI);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(97, 59, 143, 20);
-		contentPane.add(textField);
+		staticLBL_uniteOrdinateur = new JLabel("Ordinateurs");
+		staticLBL_uniteOrdinateur.setHorizontalAlignment(SwingConstants.LEFT);
+		staticLBL_uniteOrdinateur.setFont(new Font("Tahoma", Font.BOLD, 18));
+		staticLBL_uniteOrdinateur.setBounds(340, 84, 124, 20);
+		contentPane.add(staticLBL_uniteOrdinateur);
 		
-		Label label_1 = new Label("D\u00E9signation : ");
-		label_1.setAlignment(Label.RIGHT);
-		label_1.setBounds(-9, 82, 100, 22);
-		contentPane.add(label_1);
+		staticLBL_ordisConnectesTitle = new JLabel("Ordinateurs connect\u00E9s : ");
+		staticLBL_ordisConnectesTitle.setBounds(10, 142, 173, 22);
+		contentPane.add(staticLBL_ordisConnectesTitle);
 		
-		Label label_2 = new Label("R\u00E9solution : ");
-		label_2.setBounds(22, 108, 76, 22);
-		contentPane.add(label_2);
+		staticLBL_title = new JLabel("Imprimante");
+		staticLBL_title.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLBL_title.setBounds(163, 13, 185, 32);
+		contentPane.add(staticLBL_title);
 		
-		textField_1 = new JSpinner();
-		textField_1.setEnabled(false);
-		textField_1.setModel(new SpinnerNumberModel(150, 150, 300, 150));
-		textField_1.setBounds(97, 110, 86, 20);
-		contentPane.add(textField_1);
+		staticLBL_nbOrdiConnectes = new JLabel("Nombre de PCs connect\u00E9s : ");
+		staticLBL_nbOrdiConnectes.setBounds(260, 56, 173, 22);
+		contentPane.add(staticLBL_nbOrdiConnectes);
 		
-		textField_2 = new JTextField();
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
-		textField_2.setBounds(97, 84, 143, 20);
-		contentPane.add(textField_2);
+		staticLBL_designation = new JLabel("D\u00E9signation : ");
+		staticLBL_designation.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLBL_designation.setBounds(-15, 83, 100, 22);
+		contentPane.add(staticLBL_designation);
 		
-		Label label_3 = new Label("Nombre de PCs connect\u00E9s : ");
-		label_3.setBounds(260, 56, 173, 22);
-		contentPane.add(label_3);
+		staticLBL_resolution = new JLabel("R\u00E9solution : ");
+		staticLBL_resolution.setBounds(15, 108, 76, 22);
+		contentPane.add(staticLBL_resolution);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 170, 457, 349);
-		contentPane.add(scrollPane);
+		//Configuration des labels dynamiques
+		JLabel LBL_nbOrdisConnectes = new JLabel("#####");
+		LBL_nbOrdisConnectes.setHorizontalAlignment(SwingConstants.RIGHT);
+		LBL_nbOrdisConnectes.setFont(new Font("Tahoma", Font.BOLD, 18));
+		LBL_nbOrdisConnectes.setBounds(210, 84, 124, 20);
+		contentPane.add(LBL_nbOrdisConnectes);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		//Configuration des TextFields
+		TF_SNI = new JTextField();
+		TF_SNI.setEditable(false);
+		TF_SNI.setColumns(10);
+		TF_SNI.setBounds(97, 59, 143, 20);
+		contentPane.add(TF_SNI);
+		
+		TF_designation = new JTextField();
+		TF_designation.setEditable(false);
+		TF_designation.setColumns(10);
+		TF_designation.setBounds(97, 84, 143, 20);
+		contentPane.add(TF_designation);
+		
+		//Configuration spinner
+		SPINNER_resolution = new JSpinner();
+		SPINNER_resolution.setEnabled(false);
+		SPINNER_resolution.setModel(new SpinnerNumberModel(150, 150, 300, 150));
+		SPINNER_resolution.setBounds(97, 110, 86, 20);
+		contentPane.add(SPINNER_resolution);
+		
+		//Configuration tableau ordinateurs
+		SCRLLPANE_ordisConnectes = new JScrollPane();
+		SCRLLPANE_ordisConnectes.setBounds(10, 170, 457, 349);
+		contentPane.add(SCRLLPANE_ordisConnectes);
+		
+		TABLE_ordisConnectes = new JTable();
+		TABLE_ordisConnectes.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
 				{null, null, null},
@@ -133,45 +160,26 @@ public class FicheImprimante extends JFrame {
 				return columnTypes[columnIndex];
 			}
 		});
-		scrollPane.setViewportView(table);
+		SCRLLPANE_ordisConnectes.setViewportView(TABLE_ordisConnectes);
 		
-		JButton button_3 = new JButton("Sauvegarder");
-		button_3.setEnabled(false);
-		button_3.setBounds(369, 566, 105, 23);
-		contentPane.add(button_3);
+		//Configuration des boutons
+		BTN_sauver = new JButton("Sauvegarder");
+		BTN_sauver.setEnabled(false);
+		BTN_sauver.setBounds(369, 566, 105, 23);
+		contentPane.add(BTN_sauver);
 		
-		JToggleButton toggleButton = new JToggleButton("Mode visualisation");
-		toggleButton.setBounds(230, 566, 137, 23);
-		contentPane.add(toggleButton);
+		TGLBTN_mode = new JToggleButton("Mode visualisation");
+		TGLBTN_mode.setBounds(230, 566, 137, 23);
+		contentPane.add(TGLBTN_mode);
 		
-		JButton button_4 = new JButton("Annuler");
-		button_4.setBounds(139, 566, 89, 23);
-		contentPane.add(button_4);
+		BTN_annuler = new JButton("Annuler");
+		BTN_annuler.setBounds(139, 566, 89, 23);
+		contentPane.add(BTN_annuler);
 		
-		JButton button_2 = new JButton("D\u00E9connecter");
-		button_2.setEnabled(false);
-		button_2.setBounds(10, 524, 111, 25);
-		contentPane.add(button_2);
-		
-		JLabel label = new JLabel("#####");
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		label.setFont(new Font("Tahoma", Font.BOLD, 18));
-		label.setBounds(210, 84, 124, 20);
-		contentPane.add(label);
-		
-		JLabel lblOrdinateurs = new JLabel("Ordinateurs");
-		lblOrdinateurs.setHorizontalAlignment(SwingConstants.LEFT);
-		lblOrdinateurs.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblOrdinateurs.setBounds(340, 84, 124, 20);
-		contentPane.add(lblOrdinateurs);
-		
-		Label label_4 = new Label("Ordinateurs connect\u00E9s : ");
-		label_4.setBounds(10, 142, 173, 22);
-		contentPane.add(label_4);
-		
-		JLabel lblImprimante = new JLabel("Imprimante");
-		lblImprimante.setFont(new Font("Tahoma", Font.BOLD, 26));
-		lblImprimante.setBounds(163, 13, 185, 32);
-		contentPane.add(lblImprimante);
+		BTN_deconnecter = new JButton("D\u00E9connecter");
+		BTN_deconnecter.setEnabled(false);
+		BTN_deconnecter.setBounds(10, 524, 111, 25);
+		contentPane.add(BTN_deconnecter);
+
 	}
 }
