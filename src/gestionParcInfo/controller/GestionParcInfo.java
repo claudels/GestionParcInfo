@@ -35,7 +35,7 @@ public class GestionParcInfo {
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","parcinfo","network");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
 			
 			tu_persistemploye.TU_Create_Employe(conn);
 			tu_persistemploye.TU_Update_Employe(conn);
