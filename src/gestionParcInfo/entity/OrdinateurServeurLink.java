@@ -39,36 +39,32 @@ public class OrdinateurServeurLink implements IEntity {
 		this.quota = quota;
 	}
 	
+	@Override
+	public void remove(Connection conn) throws SQLException {
+			this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_DELETE);
+			this.pstmt.setString(1, this.ordinateur.getSn());
+			this.pstmt.setString(2, this.serveur.getSn());
+			this.pstmt.executeUpdate();
+			this.pstmt.close();
+	}
 
-
-
-			@Override
-			public void remove(Connection conn) throws SQLException {
-					this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_DELETE);
-					this.pstmt.setString(1, this.ordinateur.getSn());
-					this.pstmt.setString(2, this.serveur.getSn());
-					this.pstmt.executeUpdate();
-					this.pstmt.close();
-}
-
-			@Override
-			public void create(Connection conn) throws SQLException {
-				this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_INSERT);
-				this.pstmt.setInt(1, this.quota);
-				this.pstmt.setString(2, this.ordinateur.getSn());
-				this.pstmt.setString(3, this.serveur.getSn());
-				this.pstmt.executeUpdate();
-				this.pstmt.close();
-			}
+	@Override
+	public void create(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_INSERT);
+		this.pstmt.setInt(1, this.quota);
+		this.pstmt.setString(2, this.ordinateur.getSn());
+		this.pstmt.setString(3, this.serveur.getSn());
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
 			
-
-			@Override
-			public void update(Connection conn) throws SQLException {
-				this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_UPDATE);
-				this.pstmt.setInt(1, this.quota);
-				this.pstmt.setString(2, this.ordinateur.getSn());
-				this.pstmt.setString(3, this.serveur.getSn());
-				this.pstmt.executeUpdate();
-				this.pstmt.close();
-			}
+	@Override
+	public void update(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_UPDATE);
+		this.pstmt.setInt(1, this.quota);
+		this.pstmt.setString(2, this.ordinateur.getSn());
+		this.pstmt.setString(3, this.serveur.getSn());
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
 }

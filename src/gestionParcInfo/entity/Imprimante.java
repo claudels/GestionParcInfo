@@ -50,37 +50,35 @@ public class Imprimante implements IEntity{
 		this.resolution = resolution;
 	}
 
+	@Override		
+	public void remove(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(Imprimante.SQL_DELETE);
+		this.pstmt.setString(1, this.sn);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
+
 	@Override
-	
-			
-			public void remove(Connection conn) throws SQLException {
-				this.pstmt = conn.prepareStatement(Imprimante.SQL_DELETE);
-				this.pstmt.setString(1, this.sn);
-				this.pstmt.executeUpdate();
-				this.pstmt.close();
-			}
+	public void create(Connection conn) throws SQLException {
+		// TODO Auto-generated method stub
+		//Prépare la requête et l'éxécute
+		this.pstmt = conn.prepareStatement(Imprimante.SQL_INSERT);
+		this.pstmt.setString(1, this.sn);
+		this.pstmt.setString(2, this.designation);
+		this.pstmt.setInt(3, this.resolution);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+	}
 
-			@Override
-			public void create(Connection conn) throws SQLException {
-				// TODO Auto-generated method stub
-				//Prépare la requête et l'éxécute
-				this.pstmt = conn.prepareStatement(Imprimante.SQL_INSERT);
-				this.pstmt.setString(1, this.sn);
-				this.pstmt.setString(2, this.designation);
-				this.pstmt.setInt(3, this.resolution);
-				this.pstmt.executeUpdate();
-				this.pstmt.close();
-			}
-
-			@Override
-			public void update(Connection conn) throws SQLException {
-				this.pstmt = conn.prepareStatement(Imprimante.SQL_UPDATE);
-				this.pstmt.setString(1, this.designation);
-				this.pstmt.setInt(2, this.resolution);
-				this.pstmt.setString(3, this.sn);
-				this.pstmt.executeUpdate();
-				this.pstmt.close();
-				
-			}
+	@Override
+	public void update(Connection conn) throws SQLException {
+		this.pstmt = conn.prepareStatement(Imprimante.SQL_UPDATE);
+		this.pstmt.setString(1, this.designation);
+		this.pstmt.setInt(2, this.resolution);
+		this.pstmt.setString(3, this.sn);
+		this.pstmt.executeUpdate();
+		this.pstmt.close();
+		
+	}
 	
 }

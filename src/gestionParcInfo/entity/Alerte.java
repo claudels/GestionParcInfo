@@ -77,7 +77,6 @@ public class Alerte implements IEntity{
 		this.pstmt.close();
 	}
 	
-
 	@Override
 	public void remove(Connection conn) throws SQLException {
 		this.pstmt = conn.prepareStatement(Alerte.SQL_DELETE);
@@ -85,9 +84,6 @@ public class Alerte implements IEntity{
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
 	}
-
-
-	
 }
 
 	
