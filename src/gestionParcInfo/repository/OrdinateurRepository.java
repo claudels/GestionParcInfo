@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
@@ -39,17 +40,27 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			
 			//Récupération de l'employé associé (si il y en a un)
 			EmployeRepository employeRepo = new EmployeRepository(conn);
-			Employe associatedEmploye = employeRepo.findByMatricule(rs.getString(6));
+			Employe associatedEmploye = employeRepo.findByMatricule(rs.getString(8));
 			
-			try {
-				if(rs.getString(8)==null)
-				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)),null);
-				else
-					ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)), Ordinateur.dateFormatter.parse(rs.getString(8)));	
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//Récupération des dates
+			Date dateAttribution = null;
+			Date dateRestitution = null;
+			if(rs.getString(6) != null)
+				try {
+					dateAttribution = Ordinateur.dateFormatter.parse(rs.getString(6));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			if(rs.getString(7) != null)
+				try {
+					dateRestitution = Ordinateur.dateFormatter.parse(rs.getString(7));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, dateAttribution,dateRestitution);
 		}
 		
 		return ordinateur;

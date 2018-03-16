@@ -9,7 +9,7 @@ import gestionParcInfo.repository.ImprimanteRepository;
 
 public class Imprimante implements IEntity{
 	
-	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?, ?)";
+	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Imprimante SET designation=?,resolution=? WHERE sn_i=?";
 	private static final String SQL_DELETE = "DELETE FROM Imprimante WHERE sn_i=?";	
 	

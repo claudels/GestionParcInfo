@@ -10,7 +10,7 @@ import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 
 public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeurLink> {
-	private static final String SQL_FIND_ORDI_SERVEUR = "SELECT * FROM Reseau WHERE sn_o=? AND sn_s=?";
+	private static final String SQL_FIND_ORDI_SERVEUR = "SELECT * FROM Reseau WHERE SN_O=? AND SN_S=?";
 	private static final String SQL_GET_ALL = "SELECT * FROM Reseau";
 
 	public OrdinateurServeurLinkRepository(Connection conn) {
@@ -34,7 +34,7 @@ public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeu
 		rs = this.pstmt.executeQuery();
 		 
 		while(rs.next()) {
-			ordinateurServeurLink = new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(3));
+			ordinateurServeurLink = new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(1));
 		}
 		
 		return ordinateurServeurLink;

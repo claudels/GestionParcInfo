@@ -9,7 +9,7 @@ import gestionParcInfo.repository.ImprimanteRepository;
 public class OrdinateurServeurLink implements IEntity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Reseau VALUES (?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE Reseau SET quota=?, WHERE sn_o=? and sn_s=?";
+	private static final String SQL_UPDATE = "UPDATE Reseau SET quota=? WHERE sn_o=? and sn_s=?";
 	private static final String SQL_DELETE = "DELETE FROM Reseau WHERE sn_o=? and sn_s=?";	
 	
 	private PreparedStatement pstmt;
@@ -44,13 +44,11 @@ public class OrdinateurServeurLink implements IEntity {
 
 			@Override
 			public void remove(Connection conn) throws SQLException {
-				
-				
 					this.pstmt = conn.prepareStatement(OrdinateurServeurLink.SQL_DELETE);
-					this.pstmt.setInt(1, this.quota);
+					this.pstmt.setString(1, this.ordinateur.getSn());
+					this.pstmt.setString(2, this.serveur.getSn());
 					this.pstmt.executeUpdate();
 					this.pstmt.close();
-				
 }
 
 			@Override

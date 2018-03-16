@@ -14,6 +14,10 @@ import gestionParcInfo.test.TUPersistanceImprimante;
 
 public class GestionParcInfo {
 	public static void main(String[] args) {
+		executeTests();
+	}
+	
+	private static void executeTests() {
 		Connection conn = null;
 		
 		TUPersistenceEmploye tu_persistemploye = new TUPersistenceEmploye();
@@ -30,21 +34,26 @@ public class GestionParcInfo {
 			tu_persistemploye.TU_Create_Employe(conn);
 			tu_persistemploye.TU_Update_Employe(conn);
 			tu_persistemploye.TU_Remove_Employe(conn);
+			
 			tu_persistordi.TU_Create_Ordinateur(conn);
 			tu_persistordi.TU_Update_Ordinateur(conn); 
 			tu_persistordi.TU_Remove_Ordinateur(conn);
+			
 			tu_persistimpr.TU_Create_Imprimante(conn);  
 			tu_persistimpr.TU_Update_Imprimante(conn);
-			tu_persistimpr.TU_Remove_Imprimante(conn); // Pas tester (create doit être disponible d'abord)
+			tu_persistimpr.TU_Remove_Imprimante(conn);
+			
 			tu_persistalerte.TU_Create_Alerte(conn); 
 			tu_persistalerte.TU_Update_Alerte(conn); 
 			tu_persistalerte.TU_Remove_Alerte(conn); 
+			
 			tu_persistserv.TU_Create_Serveur(conn); 
 			tu_persistserv.TU_Update_Serveur(conn); 
 			tu_persistserv.TU_Remove_Serveur(conn); 
-			tu_persistordiserv.TU_Create_OrdinateurServeurLink(conn); //Ne fonctionne pas, propablement un pb de pattern lors de la récup dans la bdd
-			tu_persistordiserv.TU_Update_OrdinateurServeurLink(conn); //Pas testé
-			tu_persistordiserv.TU_Remove_OrdinateurServeurLink(conn); //pas testé
+			
+			tu_persistordiserv.TU_Create_OrdinateurServeurLink(conn); 
+			tu_persistordiserv.TU_Update_OrdinateurServeurLink(conn);
+			tu_persistordiserv.TU_Remove_OrdinateurServeurLink(conn); 
 			
 			conn.close();
 		} catch (SQLException e) {
@@ -54,6 +63,6 @@ public class GestionParcInfo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
+	
 }

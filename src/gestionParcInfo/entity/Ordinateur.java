@@ -138,13 +138,27 @@ public class Ordinateur implements IEntity{
 		this.pstmt.setString(2, this.designation);
 		this.pstmt.setInt(3, this.ram);
 		this.pstmt.setFloat(4, this.cpu);
-		this.pstmt.setString(5, this.imprimante.getSn());
-		this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateAttribution));
-		if (dateRestitution != null)
+		
+		if(this.imprimante != null)
+			this.pstmt.setString(5, this.imprimante.getSn());
+		else
+			this.pstmt.setString(5, null);
+		
+		if (this.dateAttribution != null)
+			this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateAttribution));
+		else
+			this.pstmt.setString(6, null);
+		
+		if (this.dateRestitution != null)
 			this.pstmt.setString(7, Ordinateur.dateFormatter.format(dateRestitution));
 		else
-			this.pstmt.setString(7,null);
-		this.pstmt.setString(8, this.proprietaire.getMatricule());
+			this.pstmt.setString(7, null);
+		
+		if(this.proprietaire != null)
+			this.pstmt.setString(8, this.proprietaire.getMatricule());
+		else
+			this.pstmt.setString(8, null);
+		
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
 	}
