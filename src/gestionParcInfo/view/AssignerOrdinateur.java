@@ -23,23 +23,32 @@ public class AssignerOrdinateur extends JFrame {
 	private JPanel contentPane;
 	
 	//Tableaux
-	private JTable TBL_assignerOrdinateur;
+	private JScrollPane scrllPaneAssignerOrdinateur;
+	private JTable tableAssignerOrdinateur;
 	
 	//Label statique
-	private JLabel staticLBL_matricule,staticLBL_Prenom,staticLBL_email,staticLBL_subtitle,staticLBL_tittle,staticLBL_nom   ;
+	private JLabel staticLblMatricule;
+	private JLabel staticLblPrenom;
+	private JLabel staticLblEmail;
+	private JLabel staticLblSubtitle;
+	private JLabel staticLblTitle;
+	private JLabel staticLblNom;
 	
 	//Label dynamique
-	private JLabel LBL_matricule,LBL_email,LBL_nom,LBL_prenom;
+	private JLabel lblMatricule;
+	private JLabel lblEmail;
+	private JLabel lblNom;
+	private JLabel lblPrenom;
 	
-	//Boutton
-	private JButton BTN_annuler,BTN_assigner;
+	//Boutons
+	private JButton btnAnnuler;
+	private JButton btnAssigner;
 	
-	
-	private JScrollPane SCRLPANE_assignerOrdinateur;
-	/**
-	 * Create the frame.
-	 */
 	public AssignerOrdinateur() {
+		initComponents();
+	}
+	
+	private void initComponents() {
 		//Configuration fenetre
 		setTitle("Assigner ordinateur");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,80 +59,80 @@ public class AssignerOrdinateur extends JFrame {
 		contentPane.setLayout(null);
 		
 		//Configurations des labels statiques
-		staticLBL_matricule = new JLabel("Matricule : ");
-		staticLBL_matricule.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_matricule.setBounds(10, 62, 75, 14);
-		contentPane.add(staticLBL_matricule);
+		staticLblMatricule = new JLabel("Matricule : ");
+		staticLblMatricule.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblMatricule.setBounds(10, 62, 75, 14);
+		contentPane.add(staticLblMatricule);
 		
-		staticLBL_Prenom = new JLabel("Pr\u00E9nom : ");
-		staticLBL_Prenom.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_Prenom.setBounds(305, 89, 75, 14);
-		contentPane.add(staticLBL_Prenom);
+		staticLblPrenom = new JLabel("Pr\u00E9nom : ");
+		staticLblPrenom.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblPrenom.setBounds(305, 89, 75, 14);
+		contentPane.add(staticLblPrenom);
 		
-		staticLBL_email = new JLabel("E-mail : ");
-		staticLBL_email.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_email.setBounds(10, 90, 75, 14);
-		contentPane.add(staticLBL_email);
+		staticLblEmail = new JLabel("E-mail : ");
+		staticLblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblEmail.setBounds(10, 90, 75, 14);
+		contentPane.add(staticLblEmail);
 		
-		staticLBL_subtitle = new JLabel("S\u00E9l\u00E9ctionnez un ordinateur et cliquez sur le bouton \"Assigner\" : ");
-		staticLBL_subtitle.setBounds(10, 128, 377, 22);
-		contentPane.add(staticLBL_subtitle);
+		staticLblSubtitle = new JLabel("S\u00E9l\u00E9ctionnez un ordinateur et cliquez sur le bouton \"Assigner\" : ");
+		staticLblSubtitle.setBounds(10, 128, 377, 22);
+		contentPane.add(staticLblSubtitle);
 		
-		staticLBL_tittle = new JLabel("Assigner un ordinateur");
-		staticLBL_tittle.setFont(new Font("Tahoma", Font.BOLD, 26));
-		staticLBL_tittle.setBounds(108, 0, 351, 32);
-		contentPane.add(staticLBL_tittle);
+		staticLblTitle = new JLabel("Assigner un ordinateur");
+		staticLblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLblTitle.setBounds(108, 0, 351, 32);
+		contentPane.add(staticLblTitle);
 		
-		staticLBL_nom = new JLabel("Nom : ");
-		staticLBL_nom.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_nom.setBounds(305, 61, 75, 14);
-		contentPane.add(staticLBL_nom);
+		staticLblNom = new JLabel("Nom : ");
+		staticLblNom.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblNom.setBounds(305, 61, 75, 14);
+		contentPane.add(staticLblNom);
 		
 		
 		//Configuration des labels dynamique
-		LBL_matricule = new JLabel("###########");
-		LBL_matricule.setFont(new Font("Tahoma", Font.BOLD, 13));
-		LBL_matricule.setBounds(92, 61, 129, 16);
-		contentPane.add(LBL_matricule);
+		lblMatricule = new JLabel("###########");
+		lblMatricule.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblMatricule.setBounds(92, 61, 129, 16);
+		contentPane.add(lblMatricule);
 		
 		
 		
-		LBL_email = new JLabel("############################");
-		LBL_email.setFont(new Font("Tahoma", Font.BOLD, 13));
-		LBL_email.setBounds(92, 89, 215, 16);
-		contentPane.add(LBL_email);
+		lblEmail = new JLabel("############################");
+		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblEmail.setBounds(92, 89, 215, 16);
+		contentPane.add(lblEmail);
 		
-		LBL_nom = new JLabel("###########");
-		LBL_nom.setFont(new Font("Tahoma", Font.BOLD, 13));
-		LBL_nom.setBounds(387, 60, 144, 16);
-		contentPane.add(LBL_nom);
+		lblNom = new JLabel("###########");
+		lblNom.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNom.setBounds(387, 60, 144, 16);
+		contentPane.add(lblNom);
 		
 		
 		
-		LBL_prenom = new JLabel("###########");
-		LBL_prenom.setFont(new Font("Tahoma", Font.BOLD, 13));
-		LBL_prenom.setBounds(387, 88, 144, 16);
-		contentPane.add(LBL_prenom);
+		lblPrenom = new JLabel("###########");
+		lblPrenom.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblPrenom.setBounds(387, 88, 144, 16);
+		contentPane.add(lblPrenom);
 		
 		//Configuration des boutons
-		BTN_annuler = new JButton("Annuler");
-		BTN_annuler.setBounds(325, 517, 89, 23);
-		contentPane.add(BTN_annuler);
+		btnAnnuler = new JButton("Annuler");
+		btnAnnuler.setBounds(325, 517, 89, 23);
+		contentPane.add(btnAnnuler);
 		
-		BTN_assigner = new JButton("Assigner");
-		BTN_assigner.setBounds(426, 517, 105, 23);
-		contentPane.add(BTN_assigner);
+		btnAssigner = new JButton("Assigner");
+		btnAssigner.setBounds(426, 517, 105, 23);
+		contentPane.add(btnAssigner);
 		
 		
 		//Configuration du ScrollPane
-		SCRLPANE_assignerOrdinateur = new JScrollPane();
-		SCRLPANE_assignerOrdinateur.setBounds(12, 156, 519, 345);
-		contentPane.add(SCRLPANE_assignerOrdinateur);
+		scrllPaneAssignerOrdinateur = new JScrollPane();
+		scrllPaneAssignerOrdinateur.setBounds(12, 156, 519, 345);
+		contentPane.add(scrllPaneAssignerOrdinateur);
 		
 		//Configuration du tableau
-		TBL_assignerOrdinateur = new JTable();
-		TBL_assignerOrdinateur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		TBL_assignerOrdinateur.setModel(new DefaultTableModel(
+		tableAssignerOrdinateur = new JTable();
+		tableAssignerOrdinateur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableAssignerOrdinateur.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null},
 				{null, null, null, null},
@@ -150,10 +159,9 @@ public class AssignerOrdinateur extends JFrame {
 				"SN_O", "D\u00E9signation", "RAM", "CPU"
 			}
 		));
-		TBL_assignerOrdinateur.getColumnModel().getColumn(1).setPreferredWidth(132);
-		TBL_assignerOrdinateur.getColumnModel().getColumn(2).setPreferredWidth(70);
-		TBL_assignerOrdinateur.getColumnModel().getColumn(3).setPreferredWidth(80);
-		SCRLPANE_assignerOrdinateur.setViewportView(TBL_assignerOrdinateur);
+		tableAssignerOrdinateur.getColumnModel().getColumn(1).setPreferredWidth(132);
+		tableAssignerOrdinateur.getColumnModel().getColumn(2).setPreferredWidth(70);
+		tableAssignerOrdinateur.getColumnModel().getColumn(3).setPreferredWidth(80);
+		scrllPaneAssignerOrdinateur.setViewportView(tableAssignerOrdinateur);
 	}
-
 }
