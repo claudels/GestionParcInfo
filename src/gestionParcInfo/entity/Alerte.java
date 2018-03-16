@@ -9,7 +9,7 @@ import gestionParcInfo.repository.AlerteRepository;
 public class Alerte implements IEntity{
 	//TODO:FLO MODIFIER LES REQUETES
 	private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?)";
-	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, employe=? WHERE code=?";
+	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, MATRICULE=? WHERE code=?";
 	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE code=?";	
 	
 	private PreparedStatement pstmt;
@@ -70,9 +70,9 @@ public class Alerte implements IEntity{
 	public void update(Connection conn) throws SQLException {
 		//Prépare la requete et l'éxécute
 		this.pstmt = conn.prepareStatement(Alerte.SQL_UPDATE);
-		this.pstmt.setString(2, this.message);
-		this.pstmt.setString(3, this.employe.getMatricule());
-		this.pstmt.setInt(4, this.id);
+		this.pstmt.setString(1, this.message);
+		this.pstmt.setString(2, this.employe.getMatricule());
+		this.pstmt.setInt(3, this.id);
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
 	}

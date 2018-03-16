@@ -42,7 +42,10 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			Employe associatedEmploye = employeRepo.findByMatricule(rs.getString(6));
 			
 			try {
-				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)), Ordinateur.dateFormatter.parse(rs.getString(8)));
+				if(rs.getString(8)==null)
+				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)),null);
+				else
+					ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)), Ordinateur.dateFormatter.parse(rs.getString(8)));	
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

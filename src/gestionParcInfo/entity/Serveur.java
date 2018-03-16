@@ -70,7 +70,7 @@ public class Serveur implements IEntity {
 			@Override
 			public void update(Connection conn) throws SQLException {
 				//Prépare la requete et l'éxécute
-				this.pstmt = conn.prepareStatement(Serveur.SQL_UPDATE);
+				this.pstmt = conn.prepareStatement(Serveur.SQL_UPDATE);	
 				this.pstmt.setString(1, this.designation);
 				this.pstmt.setInt(2, this.memoire);
 				this.pstmt.setString(3, this.sn);

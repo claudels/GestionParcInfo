@@ -11,7 +11,7 @@ import gestionParcInfo.repository.ImprimanteRepository;
 public class Ordinateur implements IEntity{
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?, ?, ?,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestitution=?, matricule=?  WHERE sn_o=?";
+	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
 	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
 	
 	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -140,7 +140,10 @@ public class Ordinateur implements IEntity{
 		this.pstmt.setFloat(4, this.cpu);
 		this.pstmt.setString(5, this.imprimante.getSn());
 		this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateAttribution));
-		this.pstmt.setString(7, Ordinateur.dateFormatter.format(dateRestitution));
+		if (dateRestitution != null)
+			this.pstmt.setString(7, Ordinateur.dateFormatter.format(dateRestitution));
+		else
+			this.pstmt.setString(7,null);
 		this.pstmt.setString(8, this.proprietaire.getMatricule());
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
@@ -154,7 +157,10 @@ public class Ordinateur implements IEntity{
 		this.pstmt.setFloat(3, this.cpu);
 		this.pstmt.setString(4, this.imprimante.getSn());
 		this.pstmt.setString(5, Ordinateur.dateFormatter.format(dateAttribution));
-		this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateRestitution));
+		if (dateRestitution != null)
+			this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateRestitution));
+		else
+			this.pstmt.setString(6,null);
 		this.pstmt.setString(7, this.proprietaire.getMatricule());
 		this.pstmt.setString(8, this.sn);
 		this.pstmt.executeUpdate();

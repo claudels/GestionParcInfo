@@ -1,31 +1,28 @@
 package gestionParcInfo.test;
 
-import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import gestionParcInfo.entity.Alerte;
 import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.view.GestionParc;
-import gestionParcInfo.repository.OrdinateurRepository;
+import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.repository.EmployeRepository;
-import gestionParcInfo.repository.ImprimanteRepository;
-import gestionParcInfo.repository.Repository;
 
-public class TUPersistenceEmploye {
+public class TUPersistanceAlerte {
 	
-	public void TU_Create_Employe() {
+	public void TU_Create_Alerte() {
 		Connection conn = null;
-		
-		Employe employe = new Employe("DUPOMA1","Dupont", "Martine", "dupontmar@email.com");
-		
+	
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			employe.create(conn);
-
+			EmployeRepository employerepo = new EmployeRepository(conn);
+			Employe employe = employerepo.findByMatricule("DUPOMA");
+			Alerte alerte = new Alerte(100,"TestPersist",employe);
+			alerte.create(conn);
 			conn.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -33,17 +30,19 @@ public class TUPersistenceEmploye {
 		}
 	}
 	
-	public void TU_Update_Employe() {
+	public void TU_Update_Alerte() {
 		Connection conn = null;
 		
-		Employe employe = new Employe("DUPOMA1","Dupont", "Marie", "dupontmar@email.com");
-		
+				
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			employe.update(conn);
-
+			EmployeRepository employerepo = new EmployeRepository(conn);
+			Employe employe = employerepo.findByMatricule("DUPOMA");
+			Alerte alerte = new Alerte(84,"TestPersist5",employe);
+			alerte.update(conn);
 			conn.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -51,25 +50,23 @@ public class TUPersistenceEmploye {
 		}
 	}
 	
-	public void TU_Remove_Employe() {
+	public void TU_Remove_Alerte() {
 		Connection conn = null;
-		
-		Employe employe = new Employe("DUPOMA1","Dupont", "Martine", "dupontmar@email.com");
-		
+	
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			employe.remove(conn);
-
+			EmployeRepository employerepo = new EmployeRepository(conn);
+			Employe employe = employerepo.findByMatricule("DUPOMA");
+			Alerte alerte = new Alerte(84,"TestPersist",employe);
+			alerte.remove(conn);
 			conn.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
 
 }

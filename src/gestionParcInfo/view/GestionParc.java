@@ -16,8 +16,8 @@ import javax.swing.JButton;
 public class GestionParc extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table1;
-	private JTable table2;
+	private JTable TBL_ordinateur;
+	private JTable TBL_imprimante;
 	private JTable table3;
 	private JTable table4;
 	private JTable table5;
@@ -52,19 +52,19 @@ public class GestionParc extends JFrame {
 		tabbedPane.setBounds(5, 5, 713, 450);
 		contentPane.add(tabbedPane);
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tabbedPane.addTab("Ordinateurs", null, panel, null);
+		JPanel PNL_ordinateur = new JPanel();
+		PNL_ordinateur.setLayout(null);
+		PNL_ordinateur.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tabbedPane.addTab("Ordinateurs", null, PNL_ordinateur, null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 45, 686, 351);
-		panel.add(scrollPane);
+		JScrollPane SCRLPANE_ordinateur = new JScrollPane();
+		SCRLPANE_ordinateur.setBounds(10, 45, 686, 351);
+		PNL_ordinateur.add(SCRLPANE_ordinateur);
 		
-		table1 = new JTable();
-		table1.setCellSelectionEnabled(true);
-		table1.setColumnSelectionAllowed(true);
-		table1.setModel(new DefaultTableModel(
+		TBL_ordinateur = new JTable();
+		TBL_ordinateur.setCellSelectionEnabled(true);
+		TBL_ordinateur.setColumnSelectionAllowed(true);
+		TBL_ordinateur.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, "", null, Boolean.FALSE, null},
 				{null, null, null, Boolean.TRUE, null},
@@ -98,41 +98,41 @@ public class GestionParc extends JFrame {
 				return columnTypes[columnIndex];
 			}
 		});
-		table1.getColumnModel().getColumn(0).setPreferredWidth(45);
-		table1.getColumnModel().getColumn(1).setPreferredWidth(185);
-		table1.getColumnModel().getColumn(2).setPreferredWidth(62);
-		table1.getColumnModel().getColumn(3).setPreferredWidth(58);
-		table1.getColumnModel().getColumn(4).setPreferredWidth(45);
-		scrollPane.setViewportView(table1);
+		TBL_ordinateur.getColumnModel().getColumn(0).setPreferredWidth(45);
+		TBL_ordinateur.getColumnModel().getColumn(1).setPreferredWidth(185);
+		TBL_ordinateur.getColumnModel().getColumn(2).setPreferredWidth(62);
+		TBL_ordinateur.getColumnModel().getColumn(3).setPreferredWidth(58);
+		TBL_ordinateur.getColumnModel().getColumn(4).setPreferredWidth(45);
+		SCRLPANE_ordinateur.setViewportView(TBL_ordinateur);
 		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		JButton btnAjouter = new JButton("Ajouter");
-		btnAjouter.setBounds(607, 13, 89, 23);
-		panel.add(btnAjouter);
+		JButton BTN_ajouterOrd = new JButton("Ajouter");
+		BTN_ajouterOrd.setBounds(607, 13, 89, 23);
+		PNL_ordinateur.add(BTN_ajouterOrd);
 		
-		JButton btnRetourner = new JButton("Retourner");
-		btnRetourner.setBounds(506, 13, 89, 23);
-		panel.add(btnRetourner);
+		JButton BTN_retournerOrd = new JButton("Retourner");
+		BTN_retournerOrd.setBounds(506, 13, 89, 23);
+		PNL_ordinateur.add(BTN_retournerOrd);
 		
-		JButton btnSupprimer = new JButton("Supprimer");
-		btnSupprimer.setBounds(401, 13, 93, 23);
-		panel.add(btnSupprimer);
+		JButton BTN_supprimerOrd = new JButton("Supprimer");
+		BTN_supprimerOrd.setBounds(401, 13, 93, 23);
+		PNL_ordinateur.add(BTN_supprimerOrd);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tabbedPane.addTab("Imprimantes", null, panel_1, null);
+		JPanel PNL_imprimante = new JPanel();
+		PNL_imprimante.setLayout(null);
+		PNL_imprimante.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tabbedPane.addTab("Imprimantes", null, PNL_imprimante, null);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 49, 686, 351);
-		panel_1.add(scrollPane_1);
+		JScrollPane SCRLPANE_imprimante = new JScrollPane();
+		SCRLPANE_imprimante.setBounds(10, 49, 686, 351);
+		PNL_imprimante.add(SCRLPANE_imprimante);
 		
-		table2 = new JTable();
-		table2.setModel(new DefaultTableModel(
+		TBL_imprimante = new JTable();
+		TBL_imprimante.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
 				{null, null, null},
@@ -159,26 +159,26 @@ public class GestionParc extends JFrame {
 				"SN_I", "Designation", "Ordinateurs connect\u00E9s"
 			}
 		));
-		table2.getColumnModel().getColumn(0).setPreferredWidth(63);
-		table2.getColumnModel().getColumn(0).setMinWidth(5);
-		table2.getColumnModel().getColumn(0).setMaxWidth(100);
-		scrollPane_1.setViewportView(table2);
-		JButton btnAjouter_1 = new JButton("Ajouter");
-		btnAjouter_1.setBounds(607, 13, 89, 23);
-		panel_1.add(btnAjouter_1);
+		TBL_imprimante.getColumnModel().getColumn(0).setPreferredWidth(63);
+		TBL_imprimante.getColumnModel().getColumn(0).setMinWidth(5);
+		TBL_imprimante.getColumnModel().getColumn(0).setMaxWidth(100);
+		SCRLPANE_imprimante.setViewportView(TBL_imprimante);
+		JButton BTN_ajouterImp = new JButton("Ajouter");
+		BTN_ajouterImp.setBounds(607, 13, 89, 23);
+		PNL_imprimante.add(BTN_ajouterImp);
 		
-		JButton button = new JButton("Supprimer");
-		button.setBounds(502, 13, 93, 23);
-		panel_1.add(button);
+		JButton BTN_supprimerImp = new JButton("Supprimer");
+		BTN_supprimerImp.setBounds(502, 13, 93, 23);
+		PNL_imprimante.add(BTN_supprimerImp);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(null);
-		panel_2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tabbedPane.addTab("Serveurs", null, panel_2, null);
+		JPanel PNL_serveur = new JPanel();
+		PNL_serveur.setLayout(null);
+		PNL_serveur.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tabbedPane.addTab("Serveurs", null, PNL_serveur, null);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 49, 686, 351);
-		panel_2.add(scrollPane_2);
+		JScrollPane SCRLPANE_serveur = new JScrollPane();
+		SCRLPANE_serveur.setBounds(10, 49, 686, 351);
+		PNL_serveur.add(SCRLPANE_serveur);
 		
 		table3 = new JTable();
 		table3.setModel(new DefaultTableModel(
@@ -210,16 +210,16 @@ public class GestionParc extends JFrame {
 			}
 		));
 		table3.getColumnModel().getColumn(0).setMaxWidth(100);
-		scrollPane_2.setViewportView(table3);
+		SCRLPANE_serveur.setViewportView(table3);
 		
 		
-		JButton btnAjouter_2 = new JButton("Ajouter");
-		btnAjouter_2.setBounds(607, 13, 89, 23);
-		panel_2.add(btnAjouter_2);
+		JButton BTN_ajouterSer = new JButton("Ajouter");
+		BTN_ajouterSer.setBounds(607, 13, 89, 23);
+		PNL_serveur.add(BTN_ajouterSer);
 		
-		JButton button_1 = new JButton("Supprimer");
-		button_1.setBounds(503, 13, 93, 23);
-		panel_2.add(button_1);
+		JButton BTN_supprimerSer = new JButton("Supprimer");
+		BTN_supprimerSer.setBounds(503, 13, 93, 23);
+		PNL_serveur.add(BTN_supprimerSer);
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Employ\u00E9s", null, panel_3, null);

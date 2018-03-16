@@ -35,7 +35,7 @@ public class FicheImprimante extends JFrame {
 	private JTextField TF_designation, TF_SNI;
 	
 	//Spinner
-	private JSpinner SPINNER_resolution;
+	private JSpinner SPIN_resolution;
 	
 	//Tableau ordinateur
 	private JScrollPane SCRLLPANE_ordisConnectes;
@@ -93,7 +93,7 @@ public class FicheImprimante extends JFrame {
 		contentPane.add(staticLBL_resolution);
 		
 		//Configuration des labels dynamiques
-		JLabel LBL_nbOrdisConnectes = new JLabel("#####");
+		LBL_nbOrdisConnectes = new JLabel("#####");
 		LBL_nbOrdisConnectes.setHorizontalAlignment(SwingConstants.RIGHT);
 		LBL_nbOrdisConnectes.setFont(new Font("Tahoma", Font.BOLD, 18));
 		LBL_nbOrdisConnectes.setBounds(210, 84, 124, 20);
@@ -113,11 +113,11 @@ public class FicheImprimante extends JFrame {
 		contentPane.add(TF_designation);
 		
 		//Configuration spinner
-		SPINNER_resolution = new JSpinner();
-		SPINNER_resolution.setEnabled(false);
-		SPINNER_resolution.setModel(new SpinnerNumberModel(150, 150, 300, 150));
-		SPINNER_resolution.setBounds(97, 110, 86, 20);
-		contentPane.add(SPINNER_resolution);
+		SPIN_resolution = new JSpinner();
+		SPIN_resolution.setEnabled(false);
+		SPIN_resolution.setModel(new SpinnerNumberModel(150, 150, 300, 150));
+		SPIN_resolution.setBounds(97, 110, 86, 20);
+		contentPane.add(SPIN_resolution);
 		
 		//Configuration tableau ordinateurs
 		SCRLLPANE_ordisConnectes = new JScrollPane();
