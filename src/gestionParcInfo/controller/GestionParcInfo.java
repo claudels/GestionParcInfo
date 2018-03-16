@@ -9,16 +9,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import gestionParcInfo.model.OrdinateurServeurLinks;
-import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.test.TUPersistanceAlerte;
 import gestionParcInfo.test.TUPersistanceImprimante;
 
 public class GestionParcInfo {
-	//Modèle
-	OrdinateurServeurLinks ordinateurServeurLinks = new OrdinateurServeurLinks();
-	Serveurs serveurs = new Serveurs(ordinateurServeurLinks);
-	
 	public static void main(String[] args) {
 		executeTests();
 	}
