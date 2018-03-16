@@ -13,53 +13,22 @@ import gestionParcInfo.repository.ImprimanteRepository;
 
 public class TUPersistanceImprimante {
 
-	public void TU_Create_Imprimante() {
-		Connection conn = null;
+	public void TU_Create_Imprimante(Connection conn) throws SQLException {
 		Imprimante impr = new Imprimante("12","TestPersist",50);
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			impr.create(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		
+		impr.create(conn);	
 	}
 	
-	public void TU_Update_Imprimante() {
-		Connection conn = null;
+	public void TU_Update_Imprimante(Connection conn) throws SQLException {
 		Imprimante impr = new Imprimante("1","TestPersist",50);	
-				
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
 			
-			impr.update(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		impr.update(conn);
 	}
 	
-	public void TU_Remove_Imprimante() {
-		Connection conn = null;
+	public void TU_Remove_Imprimante(Connection conn) throws SQLException {
 		Imprimante impr = new Imprimante("1","TestPersist",50);
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			impr.remove(conn);
-			conn.close();
+		
+		impr.remove(conn);
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 }

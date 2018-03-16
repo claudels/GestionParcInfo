@@ -15,112 +15,74 @@ import gestionParcInfo.repository.ImprimanteRepository;
 public class TUPersistanceOrdinateur {
 	
 	
-	public void TU_Create_Ordinateur() {
-		Connection conn = null;
+	public void TU_Create_Ordinateur(Connection conn) throws SQLException {
 		
-		//Employe employe = new Employe("DUPOMA1","Dupont", "Martine", "dupontmar@email.com");
+			
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
+		Imprimante impr = imprrepo.findBySN("1");
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		
+		
+		Ordinateur ordi = new Ordinateur("150","TestPersist",50,(float) 3.2);
+		ordi.setCpu(55);
+		ordi.setImprimante(impr);
+		ordi.setProprietaire(employe);
+		ordi.setRam(4);
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
-			
-			Imprimante impr = imprrepo.findBySN("1");
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			
-			
-			Ordinateur ordi = new Ordinateur("150","TestPersist",50,(float) 3.2);
-			ordi.setCpu(55);
-			ordi.setImprimante(impr);
-			ordi.setProprietaire(employe);
-			ordi.setRam(4);
-			try {
-				ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			ordi.create(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		ordi.create(conn);
+			
 	}
 	
-	public void TU_Update_Ordinateur() {
-		Connection conn = null;
+	public void TU_Update_Ordinateur(Connection conn) throws SQLException {
 		
-		//Employe employe = new Employe("DUPOMA1","Dupont", "Martine", "dupontmar@email.com");
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
+		Imprimante impr = imprrepo.findBySN("1");
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		
+		
+		Ordinateur ordi = new Ordinateur("105","TestPersistUpdate2",60,(float) 3.2);
+		ordi.setCpu(55);
+		ordi.setImprimante(impr);
+		ordi.setProprietaire(employe);
+		ordi.setRam(4);
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
-			
-			Imprimante impr = imprrepo.findBySN("1");
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			
-			
-			Ordinateur ordi = new Ordinateur("105","TestPersistUpdate2",60,(float) 3.2);
-			ordi.setCpu(55);
-			ordi.setImprimante(impr);
-			ordi.setProprietaire(employe);
-			ordi.setRam(4);
-			try {
-				ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			ordi.update(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		ordi.update(conn);
 	}
 	
-	public void TU_Remove_Ordinateur() {
-		Connection conn = null;
+	public void TU_Remove_Ordinateur(Connection conn) throws SQLException {
 		
 		//Employe employe = new Employe("DUPOMA1","Dupont", "Martine", "dupontmar@email.com");
+	
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
+		Imprimante impr = imprrepo.findBySN("1");
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		
+		
+		Ordinateur ordi = new Ordinateur("150","TestPersistUpdate",60,(float) 3.2);
+		ordi.setCpu(55);
+		ordi.setImprimante(impr);
+		ordi.setProprietaire(employe);
+		ordi.setRam(4);
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
-			
-			Imprimante impr = imprrepo.findBySN("1");
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			
-			
-			Ordinateur ordi = new Ordinateur("150","TestPersistUpdate",60,(float) 3.2);
-			ordi.setCpu(55);
-			ordi.setImprimante(impr);
-			ordi.setProprietaire(employe);
-			ordi.setRam(4);
-			try {
-				ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			ordi.remove(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		ordi.remove(conn);
 	}
 	
 	

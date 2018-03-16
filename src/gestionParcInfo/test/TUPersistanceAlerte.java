@@ -11,62 +11,30 @@ import gestionParcInfo.repository.EmployeRepository;
 
 public class TUPersistanceAlerte {
 	
-	public void TU_Create_Alerte() {
-		Connection conn = null;
+	public void TU_Create_Alerte(Connection conn) throws SQLException {
 	
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			Alerte alerte = new Alerte(100,"TestPersist",employe);
-			alerte.create(conn);
-			conn.close();
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		Alerte alerte = new Alerte(100,"TestPersist",employe);
+		alerte.create(conn);
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
-	public void TU_Update_Alerte() {
-		Connection conn = null;
+	public void TU_Update_Alerte(Connection conn) throws SQLException {
 		
-				
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			Alerte alerte = new Alerte(84,"TestPersist5",employe);
-			alerte.update(conn);
-			conn.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		Alerte alerte = new Alerte(84,"TestPersist5",employe);
+		alerte.update(conn);
+		
 	}
 	
-	public void TU_Remove_Alerte() {
-		Connection conn = null;
-	
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
-			EmployeRepository employerepo = new EmployeRepository(conn);
-			Employe employe = employerepo.findByMatricule("DUPOMA");
-			Alerte alerte = new Alerte(84,"TestPersist",employe);
-			alerte.remove(conn);
-			conn.close();
+	public void TU_Remove_Alerte(Connection conn) throws SQLException {
+		EmployeRepository employerepo = new EmployeRepository(conn);
+		Employe employe = employerepo.findByMatricule("DUPOMA");
+		Alerte alerte = new Alerte(84,"TestPersist",employe);
+		alerte.remove(conn);
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
