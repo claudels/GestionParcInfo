@@ -34,6 +34,9 @@ public class ServeurRepository extends Repository<Serveur> {
 			serveur = new Serveur(rs.getString(1), rs.getString(2), rs.getInt(3));
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return serveur;
 	}
 
@@ -48,6 +51,9 @@ public class ServeurRepository extends Repository<Serveur> {
 		while(rs.next()) {
 			serveurs.add(new Serveur(rs.getString(1), rs.getString(2), rs.getInt(3)));
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return serveurs;
 	}

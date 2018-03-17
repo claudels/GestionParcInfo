@@ -1,10 +1,13 @@
 package gestionParcInfo.model;
 
+import java.util.ArrayList;
+import java.util.Observer;
+
 import gestionParcInfo.entity.Alerte;
 
 public class Alertes extends ModelList<Alerte> {
 	
-	public Alertes() {
-		super();
+	public Alertes(ArrayList<Alerte> alertes, Observer obs) {
+		super(alertes, obs);
 	}
 }

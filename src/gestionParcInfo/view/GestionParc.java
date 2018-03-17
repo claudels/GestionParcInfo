@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,30 +31,13 @@ public class GestionParc extends JFrame {
 	private JTable table4;
 	private JTable table5;
 	
-	OrdinateurTab ordiTab =new OrdinateurTab();
-	ImprimanteTab imprTab =new ImprimanteTab();
-	ServeurTab servTab =new ServeurTab();
-	EmployeTab emplTab =new EmployeTab();
-	AlerteTab alerteTab =new AlerteTab();
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GestionParc frame = new GestionParc();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	private OrdinateurTab ordiTab;
+	private ImprimanteTab imprTab;
+	private ServeurTab servTab;
+	private EmployeTab emplTab;
+	private AlerteTab alerteTab;
+	
+	
 	public GestionParc() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 736, 499);
@@ -65,17 +50,24 @@ public class GestionParc extends JFrame {
 		tabbedPane.setBounds(5, 5, 713, 450);
 		contentPane.add(tabbedPane);
 		
+		ordiTab = new OrdinateurTab();
+		imprTab = new ImprimanteTab();
+		servTab = new ServeurTab();
+		emplTab = new EmployeTab();
+		alerteTab = new AlerteTab();
 		
 		tabbedPane.addTab("Ordinateurs", null,ordiTab, null);		
 		tabbedPane.addTab("Imprimantes", null, imprTab, null);		
 		tabbedPane.addTab("Serveurs", null, servTab, null);
 		tabbedPane.addTab("Employes", null, emplTab, null);
-		
-		
-		
 		tabbedPane.addTab("Alertes", null, alerteTab, null);
-		
-		
 	}
 
+	public Observer getOrdinateursObserver() {
+		return this.ordiTab;
+	}
+	
+	public Observer getServeursObserver() {
+		return this.servTab;
+	}
 }

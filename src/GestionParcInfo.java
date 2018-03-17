@@ -1,20 +1,59 @@
-package gestionParcInfo.controller;
-
 import gestionParcInfo.test.TUPersistanceOrdinateur;
 import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
 import gestionParcInfo.test.TUPersistanceServeur;
 import gestionParcInfo.test.TUPersistenceEmploye;
+import gestionParcInfo.view.GestionParc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.repository.OrdinateurRepository;
+import gestionParcInfo.repository.OrdinateurServeurLinkRepository;
+import gestionParcInfo.repository.ServeurRepository;
 import gestionParcInfo.test.TUPersistanceAlerte;
 import gestionParcInfo.test.TUPersistanceImprimante;
 
 public class GestionParcInfo {
+	public static final String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
+	public static final String dbUsername = "parcinfo";
+	public static final String dbPassword = "network";
+	
+	//Modèles
+	Ordinateurs ordinateurs;
+	Serveurs serveurs;
+	OrdinateurServeurLinks ordinateurServeurLinks;
+	
 	public static void main(String[] args) {
-		executeTests();
+		GestionParc gestionParcIHM = new GestionParc();
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver"); 
+			Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+			
+			OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
+			OrdinateurServeurLinkRepository oslRepo = new OrdinateurServeurLinkRepository(conn);
+			ServeurRepository serveurRepository = new ServeurRepository(conn);
+			
+			Ordinateurs ordinateurs = new Ordinateurs(ordiRepo.getAll(), gestionParcIHM.getOrdinateursObserver());
+			
+			OrdinateurServeurLinks ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll(), null);
+			Serveurs serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, gestionParcIHM.getServeursObserver());
+			
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		gestionParcIHM.setVisible(true);
+		//executeTests();
 	}
 	
 	private static void executeTests() {
@@ -29,7 +68,7 @@ public class GestionParcInfo {
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Florian","network");
+			conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 			
 			tu_persistemploye.TU_Create_Employe(conn);
 			tu_persistemploye.TU_Update_Employe(conn);

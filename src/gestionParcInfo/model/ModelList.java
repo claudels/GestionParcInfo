@@ -2,12 +2,18 @@ package gestionParcInfo.model;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 public class ModelList<T> extends Observable{
 	private ArrayList<T> items;
 	
-	public ModelList() {
-		this.items = new ArrayList<>();
+	public ModelList(ArrayList<T> items, Observer obs) {
+		if(obs != null)
+			this.addObserver(obs);
+		
+		this.items = items;
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	public ArrayList<T> getItems() {

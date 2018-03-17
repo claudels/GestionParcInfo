@@ -38,6 +38,9 @@ public class EmployeRepository extends Repository<Employe> {
 		while(rs.next())
 			counter++;
 		
+		pstmt.close();
+		rs.close();
+		
 		return counter;
 	}
 	
@@ -62,6 +65,9 @@ public class EmployeRepository extends Repository<Employe> {
 			employe = new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return employe;
 	}
 
@@ -79,6 +85,9 @@ public class EmployeRepository extends Repository<Employe> {
 		while(rs.next()) {
 			employes.add(new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return employes;
 	}

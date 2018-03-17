@@ -37,6 +37,9 @@ public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeu
 			ordinateurServeurLink = new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(1));
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return ordinateurServeurLink;
 	}
 
@@ -51,14 +54,17 @@ public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeu
 		while(rs.next()) {
 			//Récupération de l'ordinateur
 			OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
-			Ordinateur ordinateur = ordiRepo.findBySN(rs.getString(1));
+			Ordinateur ordinateur = ordiRepo.findBySN(rs.getString(2));
 			
 			//Récupération du serveur
 			ServeurRepository serveurRepo = new ServeurRepository(conn);
-			Serveur serveur = serveurRepo.findBySN(rs.getString(2));
+			Serveur serveur = serveurRepo.findBySN(rs.getString(3));
 			
-			ordinateurServeurLinks.add(new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(3)));
+			ordinateurServeurLinks.add(new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(1)));
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return ordinateurServeurLinks;
 	}

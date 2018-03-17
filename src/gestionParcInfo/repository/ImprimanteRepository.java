@@ -35,6 +35,9 @@ public class ImprimanteRepository extends Repository<Imprimante> {
 			imprimante = new Imprimante(rs.getString(1), rs.getString(2), rs.getInt(3));
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return imprimante;
 	}
 
@@ -49,6 +52,9 @@ public class ImprimanteRepository extends Repository<Imprimante> {
 		while(rs.next()) {
 			imprimantes.add(new Imprimante(rs.getString(1), rs.getString(2), rs.getInt(3)));
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return imprimantes;
 	}

@@ -1,5 +1,8 @@
 package gestionParcInfo.view.tab;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -7,7 +10,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class ServeurTab extends JPanel{
+public class ServeurTab extends JPanel implements Observer{
 	private JTable TBL_serveur;
 	public ServeurTab() {
 	
@@ -59,4 +62,9 @@ public class ServeurTab extends JPanel{
 		BTN_supprimerSer.setBounds(503, 13, 93, 23);
 		this.add(BTN_supprimerSer);
 }
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

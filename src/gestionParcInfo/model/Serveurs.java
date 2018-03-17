@@ -1,5 +1,6 @@
 package gestionParcInfo.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -25,8 +26,8 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 	 */
 	private OrdinateurServeurLinks ordinateurServeurLinks;
 	
-	public Serveurs(OrdinateurServeurLinks ordinateurServeurLinks) {
-		super();
+	public Serveurs(ArrayList<Serveur> serveurs, OrdinateurServeurLinks ordinateurServeurLinks, Observer obs) {
+		super(serveurs, obs);
 		
 		//Initilisation des listes
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
@@ -34,12 +35,7 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 		this.nbOrdisConnectes = new HashMap<Serveur, Long>();
 		
 		//Initialise la charge et le nombre d'ordinateur connectés pour chaque serveur
-		List<Serveur> serveurs = this.ordinateurServeurLinks.getItems()
-		.parallelStream()
-		.map(ordinateuServeurLink -> ordinateuServeurLink.getServeur())
-		.collect(Collectors.toList());
-		
-		for(Serveur serveur : serveurs) {
+		for(Serveur serveur : this.getItems()) {
 			this.chargesServeurs.put(serveur, this.calculerChargeServeur(serveur));
 			this.nbOrdisConnectes.put(serveur, this.countOrdinateursLinked(serveur));
 		}
@@ -51,7 +47,30 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 	@Override
 	public void addItem(Serveur item) {
 		super.addItem(item);
-		this.chargesServeurs.put(item, calculerChargeServeur(item));
+		this.chargesServeurs.put(item, this.calculerChargeServeur(item));
+		this.nbOrdisConnectes.put(item, this.countOrdinateursLinked(item));
+	}
+	
+	@Override
+	public void updateItem(Serveur item) throws IndexOutOfBoundsException {
+		super.updateItem(item);
+		this.chargesServeurs.put(item, this.calculerChargeServeur(item));
+		this.nbOrdisConnectes.put(item, this.countOrdinateursLinked(item));
+	}
+	
+	@Override
+	public boolean removeItem(Serveur item) {
+		this.chargesServeurs.remove(item);
+		this.nbOrdisConnectes.remove(item);
+		return super.removeItem(item);
+	}
+	
+	public HashMap<Serveur, Double> getChargesServeurs() {
+		return chargesServeurs;
+	}
+	
+	public HashMap<Serveur, Long> getNbOrdisConnectes() {
+		return nbOrdisConnectes;
 	}
 
 	@Override

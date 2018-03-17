@@ -32,6 +32,9 @@ public class AlerteRepository extends Repository<Alerte> {
 		if(rs.next());
 			id = rs.getInt(1);
 		
+		pstmt.close();
+		rs.close();
+		
 		return id;	
 		
 	}
@@ -62,6 +65,9 @@ public class AlerteRepository extends Repository<Alerte> {
 			alerte = new Alerte(rs.getInt(1), rs.getString(2), employeAssociated);
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return alerte;
 	}
 
@@ -84,6 +90,9 @@ public class AlerteRepository extends Repository<Alerte> {
 			
 			alertes.add(new Alerte(rs.getInt(1), rs.getString(2), employeAssociated));
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return alertes;
 	};

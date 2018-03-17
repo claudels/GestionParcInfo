@@ -63,6 +63,9 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, dateAttribution,dateRestitution);
 		}
 		
+		pstmt.close();
+		rs.close();
+		
 		return ordinateur;
 	}
 
@@ -81,15 +84,33 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			
 			//Récupération de l'employé associé (si il y en a un)
 			EmployeRepository employeRepo = new EmployeRepository(conn);
-			Employe associatedEmploye = employeRepo.findByMatricule(rs.getString(6));
+			Employe associatedEmploye = employeRepo.findByMatricule(rs.getString(8));
 			
-			try {
-				ordinateurs.add(new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, Ordinateur.dateFormatter.parse(rs.getString(7)), Ordinateur.dateFormatter.parse(rs.getString(8))));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			Date dateAttribution = null;
+			Date dateRestitution = null;
+			
+			if(rs.getString(6) != null) {
+				try {
+					dateAttribution = Ordinateur.dateFormatter.parse(rs.getString(6));
+					
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 			}
+			if(rs.getString(7) != null) {
+				try {
+					dateRestitution = Ordinateur.dateFormatter.parse(rs.getString(7));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+			ordinateurs.add(new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, dateAttribution, dateRestitution));
+
 		}
+		
+		pstmt.close();
+		rs.close();
 		
 		return ordinateurs;
 	}

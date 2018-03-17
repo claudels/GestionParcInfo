@@ -1,10 +1,13 @@
 package gestionParcInfo.model;
 
+import java.util.ArrayList;
+import java.util.Observer;
+
 import gestionParcInfo.entity.Employe;
 
 public class Employes extends ModelList<Employe>{
 
-	public Employes() {
-		super();
+	public Employes(ArrayList<Employe> employes, Observer obs) {
+		super(employes, obs);
 	}
 }

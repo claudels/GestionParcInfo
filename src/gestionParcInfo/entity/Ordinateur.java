@@ -14,7 +14,7 @@ public class Ordinateur implements IEntity{
 	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
 	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
 	
-	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 	
 	private PreparedStatement pstmt;
 	private String sn;
