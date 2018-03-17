@@ -22,8 +22,6 @@ import gestionParcInfo.model.Ordinateurs;
 public class OrdinateurTab extends JPanel implements Observer{
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9", "A changer", "A retourner"};
 	
-	private JPanel contentPane;
-	
 	//Modèle table
 	DefaultTableModel tableModel;
 	
@@ -35,15 +33,11 @@ public class OrdinateurTab extends JPanel implements Observer{
 	//Tableaux
 	private JScrollPane scrllpaneOrdinateur;
 	private JTable tableOrdinateur;
-	private JTable tableImprimante;
 	
 	public OrdinateurTab() {
 		super();
 		this.tableModel = new DefaultTableModel();
-		
-		for(String column : OrdinateurTab.columnsNames) {
-			this.tableModel.addColumn(column);
-		}
+		this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 		
 		initComponents();
 	}
@@ -73,11 +67,11 @@ public class OrdinateurTab extends JPanel implements Observer{
 		this.add(btnAjouter);
 		
 		btnRetourner = new JButton("Retourner");
-		btnRetourner.setBounds(506, 13, 89, 23);
+		btnRetourner.setBounds(506, 13, 96, 23);
 		this.add(btnRetourner);
 		
 		btnSupprimer = new JButton("Supprimer");
-		btnSupprimer.setBounds(401, 13, 93, 23);
+		btnSupprimer.setBounds(401, 13, 96, 23);
 		this.add(btnSupprimer);
 	}
 
@@ -87,6 +81,8 @@ public class OrdinateurTab extends JPanel implements Observer{
 	public void update(Observable obs, Object obj) {
 		if(obs instanceof Ordinateurs) {
 			Ordinateurs ordinateurs = (Ordinateurs)obs;
+			this.tableModel = new DefaultTableModel();
+			this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 			
 			for(Ordinateur ordinateur : ordinateurs.getItems()) {
 				String matricule = null;
@@ -95,14 +91,19 @@ public class OrdinateurTab extends JPanel implements Observer{
 				
 				if(ordinateur.getProprietaire() != null)
 					matricule = ordinateur.getProprietaire().getMatricule();
+				if(ordinateurs.getOrdinateursAChanger().contains(ordinateur))
+					toChange = true;
+				if(ordinateurs.getOrdinateursARetourner().contains(ordinateur))
+					toReturn = true;
 				
 				Object[] rawData = new Object[5];
 				rawData[0] = ordinateur.getSn();
 				rawData[1] = ordinateur.getDesignation();
 				rawData[2] = matricule;
-				rawData[3] = false;
-				rawData[4] = false;
+				rawData[3] = toChange;
+				rawData[4] = toReturn;
 				this.tableModel.addRow(rawData);
+				this.tableOrdinateur.setModel(this.tableModel);
 				this.tableModel.fireTableDataChanged();
 			}
 		}

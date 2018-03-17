@@ -39,6 +39,9 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 			this.chargesServeurs.put(serveur, this.calculerChargeServeur(serveur));
 			this.nbOrdisConnectes.put(serveur, this.countOrdinateursLinked(serveur));
 		}
+		
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -116,9 +119,9 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 	private double calculerChargeServeur(Serveur serveur) {
 		long sommeQuotas = this.ordinateurServeurLinks.getItems()
 				.parallelStream()
-				.filter(ordinateurServeurLink -> ordinateurServeurLink.getServeur().equals(serveur))
+				.filter(ordinateurServeurLink -> ordinateurServeurLink.getServeur().getSn().equals(serveur.getSn()))
 				.mapToLong(ordinateurServeurLink -> ordinateurServeurLink.getQuota()).sum();
 		
-		return (double)(sommeQuotas/serveur.getMemoire());
+		return (double)((double)sommeQuotas/(double)serveur.getMemoire());
 	}
 }

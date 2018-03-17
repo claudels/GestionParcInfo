@@ -12,8 +12,6 @@ public class ModelList<T> extends Observable{
 			this.addObserver(obs);
 		
 		this.items = items;
-		this.setChanged();
-		this.notifyObservers();
 	}
 	
 	public ArrayList<T> getItems() {

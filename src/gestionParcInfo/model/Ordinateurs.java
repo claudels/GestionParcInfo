@@ -48,6 +48,9 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 			else if(this.ordinateurMustBeReturned(ordinateur))
 				this.ordinateursARetourner.add(ordinateur);
 		}
+		
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	@Override
