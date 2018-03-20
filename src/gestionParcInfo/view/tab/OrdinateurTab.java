@@ -21,6 +21,9 @@ import gestionParcInfo.model.Ordinateurs;
 
 public class OrdinateurTab extends JPanel implements Observer{
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9", "A changer", "A retourner"};
+	public static final String commandeAJoutOrdi = "AJOUT_ORDI";
+	public static final String commandeSuppressionOrdi = "SUPPR_ORDI";
+	public static final String commandeRetournerOrdi = "RETURN_ORDI";
 	
 	//Modèle table
 	DefaultTableModel tableModel;
@@ -34,12 +37,18 @@ public class OrdinateurTab extends JPanel implements Observer{
 	private JScrollPane scrllpaneOrdinateur;
 	private JTable tableOrdinateur;
 	
-	public OrdinateurTab() {
+	public OrdinateurTab(ActionListener buttonsListener) {
 		super();
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 		
 		initComponents();
+		
+		//Add listeners
+		this.btnAjouter.addActionListener(buttonsListener);
+		this.btnRetourner.addActionListener(buttonsListener);
+		this.btnSupprimer.addActionListener(buttonsListener);
+		
 	}
 	
 	private void initComponents() {
@@ -64,14 +73,17 @@ public class OrdinateurTab extends JPanel implements Observer{
 		
 		btnAjouter = new JButton("Ajouter");
 		btnAjouter.setBounds(607, 13, 89, 23);
+		btnAjouter.setActionCommand(OrdinateurTab.commandeAJoutOrdi);
 		this.add(btnAjouter);
 		
 		btnRetourner = new JButton("Retourner");
 		btnRetourner.setBounds(506, 13, 96, 23);
+		btnRetourner.setActionCommand(OrdinateurTab.commandeRetournerOrdi);
 		this.add(btnRetourner);
 		
 		btnSupprimer = new JButton("Supprimer");
 		btnSupprimer.setBounds(401, 13, 96, 23);
+		btnSupprimer.setActionCommand(OrdinateurTab.commandeSuppressionOrdi);
 		this.add(btnSupprimer);
 	}
 

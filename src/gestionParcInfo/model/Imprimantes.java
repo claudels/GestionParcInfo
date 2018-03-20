@@ -7,7 +7,7 @@ import gestionParcInfo.entity.Imprimante;
 
 public class Imprimantes extends ModelList<Imprimante> {
 	
-	public Imprimantes(ArrayList<Imprimante> imprimantes, Observer obs) {
-		super(imprimantes, obs);
+	public Imprimantes(ArrayList<Imprimante> imprimantes) {
+		super(imprimantes);
 	}
 }

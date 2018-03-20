@@ -7,7 +7,7 @@ import gestionParcInfo.entity.OrdinateurServeurLink;
 
 public class OrdinateurServeurLinks extends ModelList<OrdinateurServeurLink> {
 	
-	public OrdinateurServeurLinks(ArrayList<OrdinateurServeurLink> ordinateurServeurLinks, Observer obs) {
-		super(ordinateurServeurLinks, obs);
+	public OrdinateurServeurLinks(ArrayList<OrdinateurServeurLink> ordinateurServeurLinks) {
+		super(ordinateurServeurLinks);
 	}
 }

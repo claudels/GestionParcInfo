@@ -3,11 +3,18 @@ import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
 import gestionParcInfo.test.TUPersistanceServeur;
 import gestionParcInfo.test.TUPersistenceEmploye;
 import gestionParcInfo.view.GestionParc;
+import gestionParcInfo.view.tab.AlerteTab;
+import gestionParcInfo.view.tab.EmployeTab;
+import gestionParcInfo.view.tab.ImprimanteTab;
+import gestionParcInfo.view.tab.OrdinateurTab;
+import gestionParcInfo.view.tab.ServeurTab;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import gestionParcInfo.controller.OrdinateurController;
+import gestionParcInfo.controller.ServeurController;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
@@ -22,13 +29,24 @@ public class GestionParcInfo {
 	public static final String dbUsername = "parcinfo";
 	public static final String dbPassword = "network";
 	
-	//Modèles
-	Ordinateurs ordinateurs;
-	Serveurs serveurs;
-	OrdinateurServeurLinks ordinateurServeurLinks;
-	
 	public static void main(String[] args) {
-		GestionParc gestionParcIHM = new GestionParc();
+		//Modèles
+		Ordinateurs ordinateurs = null;
+		Serveurs serveurs = null;
+		OrdinateurServeurLinks ordinateurServeurLinks = null;
+		
+		//Controleurs
+		OrdinateurController ordiController = new OrdinateurController();
+		ServeurController servController = new ServeurController();
+		
+		//Onglets du gestionnaire du parc
+		OrdinateurTab ordiTab = new OrdinateurTab(ordiController);
+		ServeurTab serveurTab = new ServeurTab(servController);
+		AlerteTab alerteTab = new AlerteTab();
+		EmployeTab employeTab = new EmployeTab();
+		ImprimanteTab imprimanteTab = new ImprimanteTab();
+		
+		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
@@ -38,10 +56,12 @@ public class GestionParcInfo {
 			OrdinateurServeurLinkRepository oslRepo = new OrdinateurServeurLinkRepository(conn);
 			ServeurRepository serveurRepository = new ServeurRepository(conn);
 			
-			Ordinateurs ordinateurs = new Ordinateurs(ordiRepo.getAll(), gestionParcIHM.getOrdinateursObserver());
+			ordinateurs = new Ordinateurs(ordiRepo.getAll(), ordiTab);
 			
-			OrdinateurServeurLinks ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll(), null);
-			Serveurs serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, gestionParcIHM.getServeursObserver());
+			
+			ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll());
+			
+			serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, serveurTab);
 			
 			conn.close();
 		} catch (SQLException e) {

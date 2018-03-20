@@ -38,7 +38,7 @@ public class GestionParc extends JFrame {
 	private AlerteTab alerteTab;
 	
 	
-	public GestionParc() {
+	public GestionParc(OrdinateurTab ordiTab, ImprimanteTab imprTab, ServeurTab servTab, EmployeTab emplTab, AlerteTab alerteTab) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 736, 499);
 		contentPane = new JPanel();
@@ -50,11 +50,11 @@ public class GestionParc extends JFrame {
 		tabbedPane.setBounds(5, 5, 713, 450);
 		contentPane.add(tabbedPane);
 		
-		ordiTab = new OrdinateurTab();
-		imprTab = new ImprimanteTab();
-		servTab = new ServeurTab();
-		emplTab = new EmployeTab();
-		alerteTab = new AlerteTab();
+		this.ordiTab = ordiTab;
+		this.imprTab = imprTab;
+		this.servTab = servTab;
+		this.emplTab = emplTab;
+		this.alerteTab = alerteTab;
 		
 		tabbedPane.addTab("Ordinateurs", null,ordiTab, null);		
 		tabbedPane.addTab("Imprimantes", null, imprTab, null);		
@@ -62,12 +62,5 @@ public class GestionParc extends JFrame {
 		tabbedPane.addTab("Employes", null, emplTab, null);
 		tabbedPane.addTab("Alertes", null, alerteTab, null);
 	}
-
-	public Observer getOrdinateursObserver() {
-		return this.ordiTab;
-	}
 	
-	public Observer getServeursObserver() {
-		return this.servTab;
-	}
 }

@@ -7,10 +7,14 @@ import java.util.Observer;
 public class ModelList<T> extends Observable{
 	private ArrayList<T> items;
 	
+	public ModelList(ArrayList<T> items) {
+		this.items = items;
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	public ModelList(ArrayList<T> items, Observer obs) {
-		if(obs != null)
-			this.addObserver(obs);
-		
+		this.addObserver(obs);
 		this.items = items;
 	}
 	

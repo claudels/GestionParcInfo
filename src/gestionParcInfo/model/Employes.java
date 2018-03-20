@@ -7,7 +7,7 @@ import gestionParcInfo.entity.Employe;
 
 public class Employes extends ModelList<Employe>{
 
-	public Employes(ArrayList<Employe> employes, Observer obs) {
-		super(employes, obs);
+	public Employes(ArrayList<Employe> employes) {
+		super(employes);
 	}
 }

@@ -1,5 +1,6 @@
 package gestionParcInfo.view.tab;
 
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,7 +30,7 @@ public class ServeurTab extends JPanel implements Observer{
 	private JButton btnSupprimer;
 	
 	
-	public ServeurTab() {
+	public ServeurTab(ActionListener buttonsListener) {
 		super();
 		
 		this.tableModel = new DefaultTableModel();
@@ -37,6 +38,9 @@ public class ServeurTab extends JPanel implements Observer{
 		
 		this.initComponents();
 		
+		//Add listeners
+		this.btnAJouter.addActionListener(buttonsListener);
+		this.btnSupprimer.addActionListener(buttonsListener);
 	}
 	
 	private void initComponents() {

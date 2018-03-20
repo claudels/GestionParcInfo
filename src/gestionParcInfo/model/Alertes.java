@@ -7,7 +7,7 @@ import gestionParcInfo.entity.Alerte;
 
 public class Alertes extends ModelList<Alerte> {
 	
-	public Alertes(ArrayList<Alerte> alertes, Observer obs) {
-		super(alertes, obs);
+	public Alertes(ArrayList<Alerte> alertes) {
+		super(alertes);
 	}
 }
