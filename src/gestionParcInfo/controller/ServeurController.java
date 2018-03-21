@@ -3,16 +3,23 @@ package gestionParcInfo.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import gestionParcInfo.view.tab.ServeurTab;
+
 public class ServeurController implements ActionListener {
 
-	public ServeurController() {
-		// TODO Auto-generated constructor stub
+	private ServeurTab servTab;
+	
+	public ServeurController(ServeurTab servTab) {
+		this.servTab = servTab;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Button clicked");
+		if(e.getSource() == this.servTab.getBtnAJouter()) {
+			System.out.println("Ajouter serveur");
+		}else if(e.getSource() == this.servTab.getBtnSupprimer()){
+			System.out.println("Supprimer serveur");
+		}
 	}
 
 }

@@ -35,16 +35,25 @@ public class GestionParcInfo {
 		Serveurs serveurs = null;
 		OrdinateurServeurLinks ordinateurServeurLinks = null;
 		
-		//Controleurs
-		OrdinateurController ordiController = new OrdinateurController();
-		ServeurController servController = new ServeurController();
-		
 		//Onglets du gestionnaire du parc
-		OrdinateurTab ordiTab = new OrdinateurTab(ordiController);
-		ServeurTab serveurTab = new ServeurTab(servController);
+		OrdinateurTab ordiTab = new OrdinateurTab();
+		ServeurTab serveurTab = new ServeurTab();
 		AlerteTab alerteTab = new AlerteTab();
 		EmployeTab employeTab = new EmployeTab();
 		ImprimanteTab imprimanteTab = new ImprimanteTab();
+		
+		//Controleurs
+		OrdinateurController ordiController = new OrdinateurController(ordiTab);
+		ServeurController servController = new ServeurController(serveurTab);
+		
+		//Add ordis listeners
+		ordiTab.getBtnAjouter().addActionListener(ordiController);
+		ordiTab.getBtnRetourner().addActionListener(ordiController);
+		ordiTab.getBtnSupprimer().addActionListener(ordiController);
+		
+		//Add serveurs listeners
+		serveurTab.getBtnAJouter().addActionListener(servController);
+		serveurTab.getBtnSupprimer().addActionListener(servController);
 		
 		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
 		

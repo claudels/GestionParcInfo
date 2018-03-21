@@ -30,17 +30,13 @@ public class ServeurTab extends JPanel implements Observer{
 	private JButton btnSupprimer;
 	
 	
-	public ServeurTab(ActionListener buttonsListener) {
+	public ServeurTab() {
 		super();
 		
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(ServeurTab.columnsNames);
 		
 		this.initComponents();
-		
-		//Add listeners
-		this.btnAJouter.addActionListener(buttonsListener);
-		this.btnSupprimer.addActionListener(buttonsListener);
 	}
 	
 	private void initComponents() {
@@ -65,6 +61,15 @@ public class ServeurTab extends JPanel implements Observer{
 		btnSupprimer.setBounds(503, 13, 96, 23);
 		this.add(btnSupprimer);
 	}
+	
+	public JButton getBtnAJouter() {
+		return btnAJouter;
+	}
+	
+	public JButton getBtnSupprimer() {
+		return btnSupprimer;
+	}
+	
 	
 	@Override
 	public void update(Observable obs, Object obj) {

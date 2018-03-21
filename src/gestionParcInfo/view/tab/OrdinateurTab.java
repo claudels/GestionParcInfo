@@ -18,12 +18,10 @@ import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Ordinateurs;
+import javax.swing.ListSelectionModel;
 
 public class OrdinateurTab extends JPanel implements Observer{
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9", "A changer", "A retourner"};
-	public static final String commandeAJoutOrdi = "AJOUT_ORDI";
-	public static final String commandeSuppressionOrdi = "SUPPR_ORDI";
-	public static final String commandeRetournerOrdi = "RETURN_ORDI";
 	
 	//Modèle table
 	DefaultTableModel tableModel;
@@ -37,17 +35,12 @@ public class OrdinateurTab extends JPanel implements Observer{
 	private JScrollPane scrllpaneOrdinateur;
 	private JTable tableOrdinateur;
 	
-	public OrdinateurTab(ActionListener buttonsListener) {
+	public OrdinateurTab() {
 		super();
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 		
 		initComponents();
-		
-		//Add listeners
-		this.btnAjouter.addActionListener(buttonsListener);
-		this.btnRetourner.addActionListener(buttonsListener);
-		this.btnSupprimer.addActionListener(buttonsListener);
 		
 	}
 	
@@ -60,8 +53,8 @@ public class OrdinateurTab extends JPanel implements Observer{
 		this.add(scrllpaneOrdinateur);
 		
 		tableOrdinateur = new JTable();
-		tableOrdinateur.setCellSelectionEnabled(true);
-		tableOrdinateur.setColumnSelectionAllowed(true);
+		tableOrdinateur.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tableOrdinateur.setFillsViewportHeight(true);
 		tableOrdinateur.setModel(this.tableModel);
 		
 		tableOrdinateur.getColumnModel().getColumn(0).setPreferredWidth(45);
@@ -73,21 +66,40 @@ public class OrdinateurTab extends JPanel implements Observer{
 		
 		btnAjouter = new JButton("Ajouter");
 		btnAjouter.setBounds(607, 13, 89, 23);
-		btnAjouter.setActionCommand(OrdinateurTab.commandeAJoutOrdi);
 		this.add(btnAjouter);
 		
 		btnRetourner = new JButton("Retourner");
 		btnRetourner.setBounds(506, 13, 96, 23);
-		btnRetourner.setActionCommand(OrdinateurTab.commandeRetournerOrdi);
 		this.add(btnRetourner);
 		
 		btnSupprimer = new JButton("Supprimer");
 		btnSupprimer.setBounds(401, 13, 96, 23);
-		btnSupprimer.setActionCommand(OrdinateurTab.commandeSuppressionOrdi);
 		this.add(btnSupprimer);
 	}
+	
+	public JButton getBtnAjouter() {
+		return btnAjouter;
+	}
 
-
+	public JButton getBtnRetourner() {
+		return btnRetourner;
+	}
+	
+	public JButton getBtnSupprimer() {
+		return btnSupprimer;
+	}
+	
+	public ArrayList<String> getSNsOrdinateursSelected() {
+		ArrayList<String> serialNumbers = new ArrayList<>();
+		
+		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(OrdinateurTab.columnsNames[0]));
+		
+		for(int index : this.tableOrdinateur.getSelectedRows()) {
+			serialNumbers.add((String)this.tableOrdinateur.getValueAt(index, columnIndex));
+		}
+		
+		return serialNumbers;
+}
 
 	@Override
 	public void update(Observable obs, Object obj) {
