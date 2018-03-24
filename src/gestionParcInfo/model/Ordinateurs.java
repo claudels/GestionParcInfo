@@ -55,22 +55,29 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	
 	@Override
 	public void addItem(Ordinateur item) {
-		super.addItem(item);
-		
 		if(this.ordinateurMustBeChanged(item))
 			this.ordinateursAChanger.add(item);
 		else if(this.ordinateurMustBeReturned(item))
 			this.ordinateursARetourner.add(item);
+		
+		super.addItem(item);
 	}
 	
 	@Override
 	public void updateItem(Ordinateur item) throws IndexOutOfBoundsException {
-		super.updateItem(item);
+		boolean mustBeChanged = this.ordinateurMustBeChanged(item);
+		boolean mustBeReturned = this.ordinateurMustBeReturned(item);
 		
-		if(this.ordinateurMustBeChanged(item) && !this.ordinateursAChanger.contains(item))
+		if(mustBeChanged && !this.ordinateursAChanger.contains(item))
 			this.ordinateursAChanger.add(item);
-		else if(this.ordinateurMustBeReturned(item) && !this.ordinateursARetourner.contains(item))
+		if(!mustBeChanged && this.ordinateursAChanger.contains(item))
+			this.ordinateursAChanger.remove(item);
+		if(mustBeReturned && !this.ordinateursARetourner.contains(item))
 			this.ordinateursARetourner.add(item);
+		if(!mustBeReturned && this.ordinateursARetourner.contains(item))
+			this.ordinateursARetourner.remove(item);
+			
+		super.updateItem(item);
 	}
 	
 	@Override
@@ -79,6 +86,17 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 			this.ordinateursARetourner.remove(item);
 		
 		return super.removeItem(item);
+	}
+	
+	public Ordinateur findBySN(String sno){
+		Ordinateur result = null;
+		
+		for(Ordinateur ordi : this.getItems()) {
+			if(ordi.getSn().equals(sno))
+				result = ordi;
+		}
+		
+		return result;
 	}
 	
 	public List<Ordinateur> getOrdinateursAChanger() {

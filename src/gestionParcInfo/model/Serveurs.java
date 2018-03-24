@@ -49,16 +49,16 @@ public class Serveurs extends ModelList<Serveur> implements Observer {
 	 */
 	@Override
 	public void addItem(Serveur item) {
-		super.addItem(item);
 		this.chargesServeurs.put(item, this.calculerChargeServeur(item));
 		this.nbOrdisConnectes.put(item, this.countOrdinateursLinked(item));
+		super.addItem(item);
 	}
 	
 	@Override
 	public void updateItem(Serveur item) throws IndexOutOfBoundsException {
-		super.updateItem(item);
 		this.chargesServeurs.put(item, this.calculerChargeServeur(item));
 		this.nbOrdisConnectes.put(item, this.countOrdinateursLinked(item));
+		super.updateItem(item);
 	}
 	
 	@Override

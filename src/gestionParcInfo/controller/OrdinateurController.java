@@ -44,7 +44,7 @@ public class OrdinateurController implements ActionListener{
 				for(String sno : this.ordiTab.getSNsOrdinateursSelected()) {
 					System.out.println("Retour : " + sno);
 					//Récupération de l'ordinateur dans la base
-					Ordinateur currentOrdinateur = ordiRepo.findBySN(sno);
+					Ordinateur currentOrdinateur = ordinateurs.findBySN(sno);
 					
 					//Mise à jour de l'ordinateur et persistance dans la base
 					currentOrdinateur.setDateRestitution(new Date());

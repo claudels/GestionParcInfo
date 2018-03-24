@@ -67,6 +67,7 @@ public class GestionParcInfo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//Controleurs
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs);
 		ServeurController servController = new ServeurController(serveurTab);

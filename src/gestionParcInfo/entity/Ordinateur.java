@@ -170,7 +170,12 @@ public class Ordinateur implements IEntity{
 		this.pstmt.setString(1, this.designation);
 		this.pstmt.setInt(2, this.ram);
 		this.pstmt.setFloat(3, this.cpu);
-		this.pstmt.setString(4, this.imprimante.getSn());
+		
+		if(this.imprimante != null)
+			this.pstmt.setString(4, this.imprimante.getSn());
+		else
+			this.pstmt.setString(4, null);
+			
 		this.pstmt.setString(5, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
 		if (dateRestitution != null)
 			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
