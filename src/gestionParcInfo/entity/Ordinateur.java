@@ -10,11 +10,12 @@ import gestionParcInfo.repository.ImprimanteRepository;
 
 public class Ordinateur implements IEntity{
 	
-	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?, ?, ?,?,?,?,?,?)";
+	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?,?,?,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
 	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
 	
-	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+	public static final SimpleDateFormat dateFormatterOracleToJava = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+	public static final SimpleDateFormat dateFormatterJavaToOracle = new SimpleDateFormat("dd/MM/yyyy");
 	
 	private PreparedStatement pstmt;
 	private String sn;
@@ -145,12 +146,12 @@ public class Ordinateur implements IEntity{
 			this.pstmt.setString(5, null);
 		
 		if (this.dateAttribution != null)
-			this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateAttribution));
+			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
 		else
 			this.pstmt.setString(6, null);
 		
 		if (this.dateRestitution != null)
-			this.pstmt.setString(7, Ordinateur.dateFormatter.format(dateRestitution));
+			this.pstmt.setString(7, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
 		else
 			this.pstmt.setString(7, null);
 		
@@ -170,9 +171,9 @@ public class Ordinateur implements IEntity{
 		this.pstmt.setInt(2, this.ram);
 		this.pstmt.setFloat(3, this.cpu);
 		this.pstmt.setString(4, this.imprimante.getSn());
-		this.pstmt.setString(5, Ordinateur.dateFormatter.format(dateAttribution));
+		this.pstmt.setString(5, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
 		if (dateRestitution != null)
-			this.pstmt.setString(6, Ordinateur.dateFormatter.format(dateRestitution));
+			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
 		else
 			this.pstmt.setString(6,null);
 		this.pstmt.setString(7, this.proprietaire.getMatricule());

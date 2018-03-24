@@ -25,13 +25,13 @@ public class TUPersistanceOrdinateur {
 		Employe employe = employerepo.findByMatricule("DUPOMA");
 		
 		
-		Ordinateur ordi = new Ordinateur("150","TestPersist",50,(float) 3.2);
+		Ordinateur ordi = new Ordinateur("1503","TestPersist",50,(float) 3.2);
 		ordi.setCpu(55);
 		ordi.setImprimante(impr);
 		ordi.setProprietaire(employe);
 		ordi.setRam(4);
 		try {
-			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+			ordi.setDateAttribution(Ordinateur.dateFormatterJavaToOracle.parse("14/11/1998"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +54,7 @@ public class TUPersistanceOrdinateur {
 		ordi.setProprietaire(employe);
 		ordi.setRam(4);
 		try {
-			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+			ordi.setDateAttribution(Ordinateur.dateFormatterJavaToOracle.parse("14/11/1998"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -72,13 +72,13 @@ public class TUPersistanceOrdinateur {
 		Employe employe = employerepo.findByMatricule("DUPOMA");
 		
 		
-		Ordinateur ordi = new Ordinateur("150","TestPersistUpdate",60,(float) 3.2);
+		Ordinateur ordi = new Ordinateur("1503","TestPersistUpdate",60,(float) 3.2);
 		ordi.setCpu(55);
 		ordi.setImprimante(impr);
 		ordi.setProprietaire(employe);
 		ordi.setRam(4);
 		try {
-			ordi.setDateAttribution(Ordinateur.dateFormatter.parse("14/11/1998"));
+			ordi.setDateAttribution(Ordinateur.dateFormatterJavaToOracle.parse("14/11/1998"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

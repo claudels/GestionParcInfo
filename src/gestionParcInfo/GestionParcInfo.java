@@ -1,4 +1,7 @@
+package gestionParcInfo;
+
 import gestionParcInfo.test.TUPersistanceOrdinateur;
+
 import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
 import gestionParcInfo.test.TUPersistanceServeur;
 import gestionParcInfo.test.TUPersistenceEmploye;
@@ -42,21 +45,6 @@ public class GestionParcInfo {
 		EmployeTab employeTab = new EmployeTab();
 		ImprimanteTab imprimanteTab = new ImprimanteTab();
 		
-		//Controleurs
-		OrdinateurController ordiController = new OrdinateurController(ordiTab);
-		ServeurController servController = new ServeurController(serveurTab);
-		
-		//Add ordis listeners
-		ordiTab.getBtnAjouter().addActionListener(ordiController);
-		ordiTab.getBtnRetourner().addActionListener(ordiController);
-		ordiTab.getBtnSupprimer().addActionListener(ordiController);
-		
-		//Add serveurs listeners
-		serveurTab.getBtnAJouter().addActionListener(servController);
-		serveurTab.getBtnSupprimer().addActionListener(servController);
-		
-		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
-		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
@@ -66,7 +54,6 @@ public class GestionParcInfo {
 			ServeurRepository serveurRepository = new ServeurRepository(conn);
 			
 			ordinateurs = new Ordinateurs(ordiRepo.getAll(), ordiTab);
-			
 			
 			ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll());
 			
@@ -80,9 +67,25 @@ public class GestionParcInfo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//Controleurs
+		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs);
+		ServeurController servController = new ServeurController(serveurTab);
 		
+		//Add ordis listeners
+		ordiTab.getBtnAjouter().addActionListener(ordiController);
+		ordiTab.getBtnRetourner().addActionListener(ordiController);
+		ordiTab.getBtnSupprimer().addActionListener(ordiController);
+		
+		//Add serveurs listeners
+		serveurTab.getBtnAJouter().addActionListener(servController);
+		serveurTab.getBtnSupprimer().addActionListener(servController);
+		
+		//Affichage de l'IHM principale
+		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
 		gestionParcIHM.setVisible(true);
-		//executeTests();
+		
+		//Execution des tests de persistence
+		executeTests();
 	}
 	
 	private static void executeTests() {

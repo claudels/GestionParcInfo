@@ -47,14 +47,14 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			Date dateRestitution = null;
 			if(rs.getString(6) != null)
 				try {
-					dateAttribution = Ordinateur.dateFormatter.parse(rs.getString(6));
+					dateAttribution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(6));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			if(rs.getString(7) != null)
 				try {
-					dateRestitution = Ordinateur.dateFormatter.parse(rs.getString(7));
+					dateRestitution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(7));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -91,7 +91,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			
 			if(rs.getString(6) != null) {
 				try {
-					dateAttribution = Ordinateur.dateFormatter.parse(rs.getString(6));
+					dateAttribution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(6));
 					
 				} catch (ParseException e1) {
 					e1.printStackTrace();
@@ -99,7 +99,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			}
 			if(rs.getString(7) != null) {
 				try {
-					dateRestitution = Ordinateur.dateFormatter.parse(rs.getString(7));
+					dateRestitution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(7));
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 				}
