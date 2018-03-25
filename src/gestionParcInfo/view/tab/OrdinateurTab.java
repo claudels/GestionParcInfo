@@ -110,26 +110,18 @@ public class OrdinateurTab extends JPanel implements Observer{
 			
 			for(Ordinateur ordinateur : ordinateurs.getItems()) {
 				String matricule = null;
-				boolean toChange = false;
-				boolean toReturn = false;
 				
-				if(ordinateur.getProprietaire() != null)
-					matricule = ordinateur.getProprietaire().getMatricule();
-				if(ordinateurs.getOrdinateursAChanger().contains(ordinateur))
-					toChange = true;
-				if(ordinateurs.getOrdinateursARetourner().contains(ordinateur))
-					toReturn = true;
-				
-				Object[] rawData = new Object[5];
+				Object[] rawData = new Object[OrdinateurTab.columnsNames.length];
 				rawData[0] = ordinateur.getSn();
 				rawData[1] = ordinateur.getDesignation();
 				rawData[2] = matricule;
-				rawData[3] = toChange;
-				rawData[4] = toReturn;
+				rawData[3] = ordinateurs.ordinateurMustBeChanged(ordinateur);
+				rawData[4] = ordinateurs.ordinateurMustBeReturned(ordinateur);
 				this.tableModel.addRow(rawData);
-				this.tableOrdinateur.setModel(this.tableModel);
-				this.tableModel.fireTableDataChanged();
 			}
+			
+			this.tableOrdinateur.setModel(this.tableModel);
+			this.tableModel.fireTableDataChanged();
 		}
 	}
 }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import gestionParcInfo.repository.EmployeRepository;
 
-public class Employe implements IEntity{
+public class Employe extends Entity{
 	private static final String SQL_INSERT = "INSERT INTO Employe VALUES (?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Employe SET nom=?, prenom=?, email=? WHERE matricule=?";
 	private static final String SQL_DELETE = "DELETE FROM Employe WHERE matricule=?";

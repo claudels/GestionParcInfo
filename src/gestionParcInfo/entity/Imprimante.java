@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import gestionParcInfo.repository.AlerteRepository;
 import gestionParcInfo.repository.ImprimanteRepository;
 
-public class Imprimante implements IEntity{
+public class Imprimante extends Entity{
 	
 	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Imprimante SET designation=?,resolution=? WHERE sn_i=?";
 	private static final String SQL_DELETE = "DELETE FROM Imprimante WHERE sn_i=?";	
 	
-	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int resolution;

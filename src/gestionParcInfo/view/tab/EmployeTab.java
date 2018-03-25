@@ -1,67 +1,99 @@
 package gestionParcInfo.view.tab;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class EmployeTab extends JPanel{
-	private JTable TBL_employe;
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.model.Employes;
+
+public class EmployeTab extends JPanel implements Observer{
+	private static final String[] columnsNames = {"Matricule", "Nom", "Pr\u00E9nom", "Nombre de PCs", "PCs \u00E0 retourner"};
+
+	//Boutons
+	JButton btnAjouter, btnSupprimer, btnAlerter;
+	
+	//Tableau
+	private JTable tblEmploye;
+	private DefaultTableModel tableModel;
+	private JScrollPane scrllpaneEmployes;
+	
 	public EmployeTab() {
+		super();
+		
+		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(EmployeTab.columnsNames);
+		
+		initComponents();
+	}
+	
+	public JButton getBtnAjouter() {
+		return btnAjouter;
+	}
+	
+	public JButton getBtnAlerter() {
+		return btnAlerter;
+	}
+	
+	public JButton getBtnSupprimer() {
+		return btnSupprimer;
+	}
+	
+	private void initComponents() {
 		this.setLayout(null);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(10, 49, 686, 351);
-		this.add(scrollPane_3);
+		scrllpaneEmployes = new JScrollPane();
+		scrllpaneEmployes.setBounds(10, 49, 686, 351);
+		this.add(scrllpaneEmployes);
 		
-		TBL_employe = new JTable();
-		TBL_employe.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				"Matricule", "Nom", "Pr\u00E9nom", "Nombre de PCs", "PC \u00E0 retourner", "PC \u00E0 changer"
-			}
-		));
-		scrollPane_3.setViewportView(TBL_employe);
+		tblEmploye = new JTable();
+		tblEmploye.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblEmploye.setFillsViewportHeight(true);
+		tblEmploye.setModel(this.tableModel);
+		scrllpaneEmployes.setViewportView(tblEmploye);
 		
-		JButton btnAjouter_3 = new JButton("Ajouter");
-		btnAjouter_3.setBounds(506, 13, 89, 23);
-		this.add(btnAjouter_3);
+		btnAjouter = new JButton("Ajouter");
+		btnAjouter.setBounds(506, 13, 89, 23);
+		this.add(btnAjouter);
 		
-		JButton button_2 = new JButton("Supprimer");
-		button_2.setBounds(401, 13, 93, 23);
-		this.add(button_2);
+		btnSupprimer = new JButton("Supprimer");
+		btnSupprimer.setBounds(401, 13, 96, 23);
+		this.add(btnSupprimer);
 		
-		JButton btnAlerter = new JButton("Alerter");
+		btnAlerter = new JButton("Alerter");
 		btnAlerter.setBounds(607, 13, 89, 23);
 		this.add(btnAlerter);
 	}
-	
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		if(obs instanceof Employes) {
+			Employes employes = (Employes)obs;
+			this.tableModel = new DefaultTableModel();
+			this.tableModel.setColumnIdentifiers(EmployeTab.columnsNames);
+			
+			for(Employe employe : employes.getItems()) {
+				Object rawData[] = new Object[EmployeTab.columnsNames.length];
+				
+				rawData[0] = employe.getMatricule();
+				rawData[1] = employe.getNom();
+				rawData[2] = employe.getPrenom();
+				rawData[3] = employes.getNbOrdisOfEmploye(employe);
+				rawData[4] = employes.getNbOrdisAChangerOfEmploye(employe);
+				
+				this.tableModel.addRow(rawData);
+			}
+			
+			this.tblEmploye.setModel(this.tableModel);
+			this.tableModel.fireTableDataChanged();
+		}
+	}
 }

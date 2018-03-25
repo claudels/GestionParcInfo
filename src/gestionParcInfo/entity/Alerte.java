@@ -6,13 +6,12 @@ import java.sql.SQLException;
 
 import gestionParcInfo.repository.AlerteRepository;
 
-public class Alerte implements IEntity{
+public class Alerte extends Entity{
 	//TODO:FLO MODIFIER LES REQUETES
 	private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Alerte SET message=?, MATRICULE=? WHERE code=?";
 	private static final String SQL_DELETE = "DELETE FROM Alerte WHERE code=?";	
 	
-	private PreparedStatement pstmt;
 	private int id =-1;
 	private String message;
 	private Employe employe;

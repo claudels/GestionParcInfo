@@ -1,10 +1,13 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Observable;
 
-public interface IEntity {
+public abstract class Entity {
 
+	protected PreparedStatement pstmt;
 	
 	/**
 	 * Créer l'entité dans la base

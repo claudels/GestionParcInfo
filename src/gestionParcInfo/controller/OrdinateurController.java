@@ -12,6 +12,7 @@ import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.OrdinateurRepository;
+import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.tab.OrdinateurTab;
 
@@ -31,7 +32,7 @@ public class OrdinateurController implements ActionListener{
 			System.out.println("Ajouter ordinateur");
 			
 			//Création du formulaire
-			FicheOrdinateur ficheOrdi = new FicheOrdinateur();
+			FicheOrdinateur ficheOrdi = new FicheOrdinateur(Fiche.State.CREATION);
 			ficheOrdi.setVisible(true);
 			
 			//TODO: Le reste ?

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,6 +51,7 @@ public class ServeurTab extends JPanel implements Observer{
 		tblServeur = new JTable();
 		tblServeur.setModel(this.tableModel);
 		tblServeur.getColumnModel().getColumn(0).setMaxWidth(100);
+		tblServeur.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		scrllpaneServeur.setViewportView(tblServeur);
 		
 		
@@ -81,15 +83,16 @@ public class ServeurTab extends JPanel implements Observer{
 			DecimalFormat f = new DecimalFormat("##0.00");
 			
 			for(Serveur serveur : serveurs.getItems()) {
-				Object[] rawData = new Object[3];
+				Object[] rawData = new Object[ServeurTab.columnsNames.length];
 				rawData[0] = serveur.getSn();
 				rawData[1] = serveur.getDesignation();
-				rawData[2] = f.format(serveurs.getChargesServeurs().get(serveur)*100) + "%";
+				rawData[2] = f.format(serveurs.calculerChargeServeur(serveur)*100) + "%";
 				
 				this.tableModel.addRow(rawData);
-				this.tblServeur.setModel(this.tableModel);
-				this.tableModel.fireTableDataChanged();
 			}
+			
+			this.tblServeur.setModel(this.tableModel);
+			this.tableModel.fireTableDataChanged();
 		}
 	}
 }

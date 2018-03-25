@@ -8,7 +8,7 @@ import java.util.Date;
 
 import gestionParcInfo.repository.ImprimanteRepository;
 
-public class Ordinateur implements IEntity{
+public class Ordinateur extends Entity{
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?,?,?,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
@@ -17,7 +17,6 @@ public class Ordinateur implements IEntity{
 	public static final SimpleDateFormat dateFormatterOracleToJava = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 	public static final SimpleDateFormat dateFormatterJavaToOracle = new SimpleDateFormat("dd/MM/yyyy");
 	
-	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int ram;

@@ -32,62 +32,18 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	 */
 	private static final long timeInMsBeforeReturn =  Ordinateurs.tempsRestitutionOrdinateurJours * (86400000L);
 	
-	private List<Ordinateur> ordinateursAChanger;
-	private List<Ordinateur> ordinateursARetourner;
-	
 	public Ordinateurs(ArrayList<Ordinateur> ordinateurs, Observer obs) {
 		super(ordinateurs, obs);
-		
-		this.ordinateursAChanger = new ArrayList<>();
-		this.ordinateursARetourner = new ArrayList<>();
-		
-		//On initialise les fonctionnalités supplémentaires du modèle
-		for(Ordinateur ordinateur: this.getItems()) {
-			if(this.ordinateurMustBeChanged(ordinateur))
-				this.ordinateursAChanger.add(ordinateur);
-			else if(this.ordinateurMustBeReturned(ordinateur))
-				this.ordinateursARetourner.add(ordinateur);
-		}
 		
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
-	@Override
-	public void addItem(Ordinateur item) {
-		if(this.ordinateurMustBeChanged(item))
-			this.ordinateursAChanger.add(item);
-		else if(this.ordinateurMustBeReturned(item))
-			this.ordinateursARetourner.add(item);
-		
-		super.addItem(item);
-	}
-	
-	@Override
-	public void updateItem(Ordinateur item) throws IndexOutOfBoundsException {
-		boolean mustBeChanged = this.ordinateurMustBeChanged(item);
-		boolean mustBeReturned = this.ordinateurMustBeReturned(item);
-		
-		if(mustBeChanged && !this.ordinateursAChanger.contains(item))
-			this.ordinateursAChanger.add(item);
-		if(!mustBeChanged && this.ordinateursAChanger.contains(item))
-			this.ordinateursAChanger.remove(item);
-		if(mustBeReturned && !this.ordinateursARetourner.contains(item))
-			this.ordinateursARetourner.add(item);
-		if(!mustBeReturned && this.ordinateursARetourner.contains(item))
-			this.ordinateursARetourner.remove(item);
-			
-		super.updateItem(item);
-	}
-	
-	@Override
-	public boolean removeItem(Ordinateur item) {
-			this.ordinateursAChanger.remove(item);
-			this.ordinateursARetourner.remove(item);
-		
-		return super.removeItem(item);
-	}
-	
+	/**
+	 * Renvoie un ordinateur selon son numéro de série
+	 * @param sno Numéro de série
+	 * @return Ordinateur
+	 */
 	public Ordinateur findBySN(String sno){
 		Ordinateur result = null;
 		
@@ -99,20 +55,12 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 		return result;
 	}
 	
-	public List<Ordinateur> getOrdinateursAChanger() {
-		return ordinateursAChanger;
-	}
-	
-	public List<Ordinateur> getOrdinateursARetourner() {
-		return ordinateursARetourner;
-	}
-	
 	/**
 	 * Vérifier si un ordinateur doit être rendu
 	 * @param ordinateur Ordinateur sur lequel effectuer la vérification
 	 * @return true si l'ordinateur doit être rendu, false sinon
 	 */
-	private boolean ordinateurMustBeChanged(Ordinateur ordinateur) {
+	public boolean ordinateurMustBeChanged(Ordinateur ordinateur) {
 		boolean result = false;
 		
 		if(ordinateur.getProprietaire() != null && ordinateur.getDateAttribution() != null) {
@@ -128,14 +76,14 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	}
 	
 	/**
-	 * Compte le nombre d'ordinateurs assignés à un Employé
+	 * Cherche les d'ordinateurs assignés à un Employé
 	 * @param employe
-	 * @return Nombre d'ordinateurs
+	 * @return La liste des ordinateurs
 	 */
-	private List<Ordinateur> findOrdinateursByEmploye(Employe employe) {
+	public List<Ordinateur> findOrdinateursByEmploye(Employe employe) {
 		return this.getItems()
 				.parallelStream()
-				.filter(ordinateur -> employe.equals(ordinateur.getProprietaire()))
+				.filter(ordinateur -> employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
 				.collect(Collectors.toList());
 	}
 	
@@ -144,7 +92,7 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	 * @param ordinateur
 	 * @return true si l'ordinateur doit être rendu, false sinon
 	 */
-	private boolean ordinateurMustBeReturned(Ordinateur ordinateur) {
+	public boolean ordinateurMustBeReturned(Ordinateur ordinateur) {
 		boolean result = false;
 		
 		Employe employe = ordinateur.getProprietaire();

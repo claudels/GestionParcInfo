@@ -20,189 +20,212 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class FicheOrdinateur extends JFrame {
-	private JPanel contentPane;
+public class FicheOrdinateur extends Fiche {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	//Tableaux
-	private JScrollPane SCRLLPANE_imprimante, SCRLLPANE_serveurs;
-	private JTable TABLE_imprimante, TABLE_serveurs;
+	private JScrollPane scrllpaneImprimante, scrllpaneServeurs;
+	private JTable tableImprimante, tblServeurs;
 	
 	//ComboBox
-	private JComboBox<String> CMBBOX_assignedTo;
+	private JComboBox<String> cmbboxAssignedTo;
 
 	//Spinners
-	private JSpinner SPIN_RAM, SPIN_CPU;
+	private JSpinner spinnerRAM, spinnerCPU;
 	
 	//TextFields
-	private JTextField TF_SNO, TF_designation, TF_dateAttribution, TF_dateRestitution;
+	private JTextField tfSNO, tfDesignation, tfDateAttribution, tfDateRestitution;
 	
 	//Labels statiques
-	private JLabel staticLBL_uniteTemps, staticLBL_title, staticLBL_SNO, staticLBL_dateAttribution, staticLBL_dateRestitution, staticLBL_imprimanteTitle, staticLBL_serveursTitle, staticLBL_aChanger, staticLBL_aRetourner, staticLBL_tempsUtilisation, staticLBL_assignedTo, staticLBL_designation, staticLBL_CPU, staticLBL_RAM;
+	private JLabel staticLblUniteTemps, staticLblTitle, staticLblSNO, staticLblDateAttribution, staticLblDateRestitution, staticLblImprimanteTitle, staticLblServeursTitle, staticLblAChanger, staticLblARetourner, staticLblTempsUtilisation, staticLblAssignedTo, staticLblDesignation, staticLblCPU, staticLblRAM;
 
 	//Labels dynamiques
-	private JLabel LBL_aChanger, LBL_joursUtilisation, LBL_aRetourner;
+	private JLabel lblAChanger, lblJoursUtilisation, lblARetourner;
 	
 	//Boutons
-	private JButton BTN_annuler, BTN_sauver, BTN_connecterImprimante, BTN_deconnecterImprimante, BTN_connecterServeurs, BTN_deconnecterServeurs;
-	private JToggleButton TGLBTN_mode;
+	private JButton btnConnecterImprimante, btnDeconnecterImprimante, btnConnecterServeurs, btnDeconnecterServeurs;
 	
 	/**
 	 * Create the frame.
 	 */
-	public FicheOrdinateur() {
+	public FicheOrdinateur(Fiche.State initialState) {
+		super(initialState);
+		initComponents();
+		this.changeState(initialState);
+	}
+	
+	@Override
+	protected void changeState(State newState) {
+		super.changeState(newState);
+		
+		switch(newState) {
+		case CREATION:
+			this.tglbtnMode.setEnabled(false);
+			this.lblAChanger.setVisible(false);
+			this.lblARetourner.setVisible(false);
+			this.lblJoursUtilisation.setText("0");
+			this.staticLblAChanger.setVisible(false);
+			this.staticLblARetourner.setVisible(false);
+			break;
+		case MODIFICATION:
+			break;
+		case VISUALISATION:
+			break;
+		}
+	}
+	
+	public void initComponents() {
+		
 		//Configuration de la fenêtre
 		setTitle("Ordinateur");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 608, 715);
 		
-		//Panel principal
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
 		//Configuration des labels statiques
-		staticLBL_SNO = new JLabel("SN_O :");
-		staticLBL_SNO.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_SNO.setBounds(64, 62, 63, 14);
-		contentPane.add(staticLBL_SNO);
+		staticLblSNO = new JLabel("SN_O :");
+		staticLblSNO.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblSNO.setBounds(64, 62, 63, 14);
+		contentPane.add(staticLblSNO);
 		
-		staticLBL_dateAttribution = new JLabel("Date d'attribution :");
-		staticLBL_dateAttribution.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_dateAttribution.setBounds(12, 82, 117, 22);
-		contentPane.add(staticLBL_dateAttribution);
+		staticLblDateAttribution = new JLabel("Date d'attribution :");
+		staticLblDateAttribution.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblDateAttribution.setBounds(12, 82, 117, 22);
+		contentPane.add(staticLblDateAttribution);
 		
-		staticLBL_dateRestitution = new JLabel("Date de resitution :");
-		staticLBL_dateRestitution.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_dateRestitution.setBounds(0, 110, 128, 22);
-		contentPane.add(staticLBL_dateRestitution);
+		staticLblDateRestitution = new JLabel("Date de resitution :");
+		staticLblDateRestitution.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblDateRestitution.setBounds(0, 110, 128, 22);
+		contentPane.add(staticLblDateRestitution);
 		
-		staticLBL_aChanger = new JLabel("A changer :");
-		staticLBL_aChanger.setBounds(53, 184, 76, 22);
-		contentPane.add(staticLBL_aChanger);
+		staticLblAChanger = new JLabel("A changer :");
+		staticLblAChanger.setBounds(53, 184, 76, 22);
+		contentPane.add(staticLblAChanger);
 		
-		staticLBL_aRetourner = new JLabel("A retourner : ");
-		staticLBL_aRetourner.setBounds(223, 184, 81, 22);
-		contentPane.add(staticLBL_aRetourner);
+		staticLblARetourner = new JLabel("A retourner : ");
+		staticLblARetourner.setBounds(223, 184, 81, 22);
+		contentPane.add(staticLblARetourner);
 		
-		staticLBL_designation = new JLabel("Designation : ");
-		staticLBL_designation.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_designation.setBounds(43, 151, 86, 20);
-		contentPane.add(staticLBL_designation);
+		staticLblDesignation = new JLabel("Designation : ");
+		staticLblDesignation.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblDesignation.setBounds(43, 151, 86, 20);
+		contentPane.add(staticLblDesignation);
 		
-		staticLBL_CPU = new JLabel("CPU : ");
-		staticLBL_CPU.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_CPU.setBounds(346, 114, 63, 14);
-		contentPane.add(staticLBL_CPU);
+		staticLblCPU = new JLabel("CPU : ");
+		staticLblCPU.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblCPU.setBounds(346, 114, 63, 14);
+		contentPane.add(staticLblCPU);
 		
-		staticLBL_assignedTo = new JLabel("Assign\u00E9 \u00E0 : ");
-		staticLBL_assignedTo.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_assignedTo.setBounds(328, 54, 81, 22);
-		contentPane.add(staticLBL_assignedTo);
+		staticLblAssignedTo = new JLabel("Assign\u00E9 \u00E0 : ");
+		staticLblAssignedTo.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblAssignedTo.setBounds(328, 54, 81, 22);
+		contentPane.add(staticLblAssignedTo);
 		
-		staticLBL_RAM = new JLabel(" RAM : ");
-		staticLBL_RAM.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_RAM.setBounds(346, 86, 63, 14);
-		contentPane.add(staticLBL_RAM);
+		staticLblRAM = new JLabel(" RAM : ");
+		staticLblRAM.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblRAM.setBounds(346, 86, 63, 14);
+		contentPane.add(staticLblRAM);
 		
-		staticLBL_tempsUtilisation = new JLabel("Temps d'utilisation :");
-		staticLBL_tempsUtilisation.setBounds(406, 151, 147, 20);
-		contentPane.add(staticLBL_tempsUtilisation);
+		staticLblTempsUtilisation = new JLabel("Temps d'utilisation :");
+		staticLblTempsUtilisation.setBounds(406, 151, 147, 20);
+		contentPane.add(staticLblTempsUtilisation);
 		
-		staticLBL_imprimanteTitle = new JLabel("Imprimante connect\u00E9e :");
-		staticLBL_imprimanteTitle.setBounds(10, 248, 169, 22);
-		contentPane.add(staticLBL_imprimanteTitle);
+		staticLblImprimanteTitle = new JLabel("Imprimante connect\u00E9e :");
+		staticLblImprimanteTitle.setBounds(10, 248, 169, 22);
+		contentPane.add(staticLblImprimanteTitle);
 		
-		staticLBL_serveursTitle = new JLabel("Serveurs connect\u00E9s :");
-		staticLBL_serveursTitle.setBounds(10, 346, 169, 22);
-		contentPane.add(staticLBL_serveursTitle);
+		staticLblServeursTitle = new JLabel("Serveurs connect\u00E9s :");
+		staticLblServeursTitle.setBounds(10, 346, 169, 22);
+		contentPane.add(staticLblServeursTitle);
 		
-		staticLBL_uniteTemps = new JLabel("Jours");
-		staticLBL_uniteTemps.setHorizontalAlignment(SwingConstants.LEFT);
-		staticLBL_uniteTemps.setFont(new Font("Tahoma", Font.BOLD, 18));
-		staticLBL_uniteTemps.setBounds(487, 184, 63, 20);
-		contentPane.add(staticLBL_uniteTemps);
+		staticLblUniteTemps = new JLabel("Jours");
+		staticLblUniteTemps.setHorizontalAlignment(SwingConstants.LEFT);
+		staticLblUniteTemps.setFont(new Font("Tahoma", Font.BOLD, 18));
+		staticLblUniteTemps.setBounds(487, 184, 63, 20);
+		contentPane.add(staticLblUniteTemps);
 		
-		staticLBL_title = new JLabel("Ordinateur");
-		staticLBL_title.setFont(new Font("Tahoma", Font.BOLD, 26));
-		staticLBL_title.setBounds(219, 13, 154, 32);
-		contentPane.add(staticLBL_title);
+		staticLblTitle = new JLabel("Ordinateur");
+		staticLblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLblTitle.setBounds(219, 13, 154, 32);
+		contentPane.add(staticLblTitle);
 		
 		//Configuration TextFields
-		TF_SNO = new JTextField();
-		TF_SNO.setEditable(false);
-		TF_SNO.setBounds(139, 59, 117, 20);
-		contentPane.add(TF_SNO);
-		TF_SNO.setColumns(10);
+		tfSNO = new JTextField();
+		tfSNO.setEditable(false);
+		tfSNO.setBounds(139, 59, 117, 20);
+		contentPane.add(tfSNO);
+		tfSNO.setColumns(10);
 		
-		TF_designation = new JTextField();
-		TF_designation.setEditable(false);
-		TF_designation.setColumns(0);
-		TF_designation.setBounds(139, 151, 234, 20);
-		contentPane.add(TF_designation);
+		tfDesignation = new JTextField();
+		tfDesignation.setEditable(false);
+		tfDesignation.setColumns(0);
+		tfDesignation.setBounds(139, 151, 234, 20);
+		contentPane.add(tfDesignation);
 		
-		TF_dateAttribution = new JTextField();
-		TF_dateAttribution.setEditable(false);
-		TF_dateAttribution.setColumns(10);
-		TF_dateAttribution.setBounds(139, 84, 117, 20);
-		contentPane.add(TF_dateAttribution);
+		tfDateAttribution = new JTextField();
+		tfDateAttribution.setEditable(false);
+		tfDateAttribution.setColumns(10);
+		tfDateAttribution.setBounds(139, 84, 117, 20);
+		contentPane.add(tfDateAttribution);
 		
-		TF_dateRestitution = new JTextField();
-		TF_dateRestitution.setEditable(false);
-		TF_dateRestitution.setColumns(10);
-		TF_dateRestitution.setBounds(139, 110, 117, 20);
-		contentPane.add(TF_dateRestitution);
+		tfDateRestitution = new JTextField();
+		tfDateRestitution.setEditable(false);
+		tfDateRestitution.setColumns(10);
+		tfDateRestitution.setBounds(139, 110, 117, 20);
+		contentPane.add(tfDateRestitution);
 		
 		//Configuration Spinners
-		SPIN_RAM = new JSpinner();
-		SPIN_RAM.setEnabled(false);
-		SPIN_RAM.setModel(new SpinnerNumberModel(4, 4, 8, 4));
-		SPIN_RAM.setBounds(421, 84, 117, 20);
-		contentPane.add(SPIN_RAM);
+		spinnerRAM = new JSpinner();
+		spinnerRAM.setEnabled(false);
+		spinnerRAM.setModel(new SpinnerNumberModel(4, 4, 8, 4));
+		spinnerRAM.setBounds(421, 84, 117, 20);
+		contentPane.add(spinnerRAM);
 		
-		SPIN_CPU = new JSpinner();
-		SPIN_CPU.setEnabled(false);
-		SPIN_CPU.setModel(new SpinnerNumberModel(4096, 4096, 8192, 4096));
-		SPIN_CPU.setBounds(421, 112, 117, 20);
-		contentPane.add(SPIN_CPU);
+		spinnerCPU = new JSpinner();
+		spinnerCPU.setEnabled(false);
+		spinnerCPU.setModel(new SpinnerNumberModel(4096, 4096, 8192, 4096));
+		spinnerCPU.setBounds(421, 112, 117, 20);
+		contentPane.add(spinnerCPU);
 		
 		//Configuration ComboBox
-		CMBBOX_assignedTo = new JComboBox<>();
-		CMBBOX_assignedTo.setEnabled(false);
-		CMBBOX_assignedTo.setEditable(true);
-		CMBBOX_assignedTo.setBounds(421, 55, 117, 20);
-		contentPane.add(CMBBOX_assignedTo);
+		cmbboxAssignedTo = new JComboBox<>();
+		cmbboxAssignedTo.setEnabled(false);
+		cmbboxAssignedTo.setEditable(true);
+		cmbboxAssignedTo.setBounds(421, 55, 117, 20);
+		contentPane.add(cmbboxAssignedTo);
 		
 		//Configuration Labels dynamiques
-		LBL_aChanger = new JLabel("NON");
-		LBL_aChanger.setFont(new Font("Tahoma", Font.BOLD, 18));
-		LBL_aChanger.setBounds(135, 184, 63, 20);
-		contentPane.add(LBL_aChanger);
+		lblAChanger = new JLabel("NON");
+		lblAChanger.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblAChanger.setBounds(135, 184, 63, 20);
+		contentPane.add(lblAChanger);
 		
-		LBL_aRetourner = new JLabel("NON");
-		LBL_aRetourner.setHorizontalAlignment(SwingConstants.RIGHT);
-		LBL_aRetourner.setFont(new Font("Tahoma", Font.BOLD, 18));
-		LBL_aRetourner.setBounds(284, 184, 63, 20);
-		contentPane.add(LBL_aRetourner);
+		lblARetourner = new JLabel("NON");
+		lblARetourner.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblARetourner.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblARetourner.setBounds(284, 184, 63, 20);
+		contentPane.add(lblARetourner);
 		
-		LBL_joursUtilisation = new JLabel("#####");
-		LBL_joursUtilisation.setHorizontalAlignment(SwingConstants.RIGHT);
-		LBL_joursUtilisation.setFont(new Font("Tahoma", Font.BOLD, 18));
-		LBL_joursUtilisation.setBounds(396, 184, 86, 20);
-		contentPane.add(LBL_joursUtilisation);
+		lblJoursUtilisation = new JLabel("#####");
+		lblJoursUtilisation.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblJoursUtilisation.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblJoursUtilisation.setBounds(396, 184, 86, 20);
+		contentPane.add(lblJoursUtilisation);
 		
 		//Configuration des tableaux
-		SCRLLPANE_imprimante = new JScrollPane();
-		SCRLLPANE_imprimante.setBounds(10, 276, 452, 51);
-		contentPane.add(SCRLLPANE_imprimante);
+		scrllpaneImprimante = new JScrollPane();
+		scrllpaneImprimante.setBounds(10, 276, 452, 51);
+		contentPane.add(scrllpaneImprimante);
 		
-		JScrollPane SCRLLPANE_serveurs = new JScrollPane();
-		SCRLLPANE_serveurs.setBounds(10, 374, 567, 180);
-		contentPane.add(SCRLLPANE_serveurs);
+		scrllpaneServeurs = new JScrollPane();
+		scrllpaneServeurs.setBounds(10, 374, 567, 180);
+		contentPane.add(scrllpaneServeurs);
 		
-		TABLE_imprimante = new JTable();
-		TABLE_imprimante.setFillsViewportHeight(true);
-		TABLE_imprimante.setModel(new DefaultTableModel(
+		tableImprimante = new JTable();
+		tableImprimante.setFillsViewportHeight(true);
+		tableImprimante.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
 			},
@@ -210,11 +233,11 @@ public class FicheOrdinateur extends JFrame {
 				"SN_I", "D\u00E9signation", "R\u00E9solution"
 			}
 		));
-		TABLE_imprimante.getColumnModel().getColumn(1).setPreferredWidth(200);
-		SCRLLPANE_imprimante.setViewportView(TABLE_imprimante);
+		tableImprimante.getColumnModel().getColumn(1).setPreferredWidth(200);
+		scrllpaneImprimante.setViewportView(tableImprimante);
 		
-		TABLE_serveurs = new JTable();
-		TABLE_serveurs.setModel(new DefaultTableModel(
+		tblServeurs = new JTable();
+		tblServeurs.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
 				{null, null, null},
@@ -231,43 +254,34 @@ public class FicheOrdinateur extends JFrame {
 				"SN_S", "D\u00E9signation", "Charge"
 			}
 		));
-		TABLE_serveurs.getColumnModel().getColumn(0).setPreferredWidth(150);
-		TABLE_serveurs.getColumnModel().getColumn(1).setPreferredWidth(200);
-		TABLE_serveurs.getColumnModel().getColumn(2).setPreferredWidth(70);
-		SCRLLPANE_serveurs.setViewportView(TABLE_serveurs);
+		tblServeurs.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tblServeurs.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tblServeurs.getColumnModel().getColumn(2).setPreferredWidth(70);
+		scrllpaneServeurs.setViewportView(tblServeurs);
 		
 		//Configuration des boutons
-		BTN_annuler = new JButton("Annuler");
-		BTN_annuler.setBounds(242, 632, 89, 23);
-		contentPane.add(BTN_annuler);
+		btnAnnuler.setBounds(242, 632, this.btnAnnuler.getWidth(), this.btnAnnuler.getHeight());
+		tglbtnMode.setBounds(333, 632, this.tglbtnMode.getWidth(), this.tglbtnMode.getHeight());
+		btnSauver.setBounds(472, 632, this.btnSauver.getWidth(), this.btnSauver.getHeight());
 		
-		TGLBTN_mode = new JToggleButton("Mode visualisation");
-		TGLBTN_mode.setBounds(333, 632, 137, 23);
-		contentPane.add(TGLBTN_mode);
+		btnConnecterImprimante = new JButton("Connecter");
+		btnConnecterImprimante.setEnabled(false);
+		btnConnecterImprimante.setBounds(466, 276, 111, 25);
+		contentPane.add(btnConnecterImprimante);
 		
-		BTN_sauver = new JButton("Sauvegarder");
-		BTN_sauver.setEnabled(false);
-		BTN_sauver.setBounds(472, 632, 105, 23);
-		contentPane.add(BTN_sauver);
+		btnDeconnecterImprimante = new JButton("D\u00E9connecter");
+		btnDeconnecterImprimante.setEnabled(false);
+		btnDeconnecterImprimante.setBounds(466, 302, 111, 25);
+		contentPane.add(btnDeconnecterImprimante);
 		
-		BTN_connecterImprimante = new JButton("Connecter");
-		BTN_connecterImprimante.setEnabled(false);
-		BTN_connecterImprimante.setBounds(466, 276, 111, 25);
-		contentPane.add(BTN_connecterImprimante);
+		btnConnecterServeurs = new JButton("Connecter");
+		btnConnecterServeurs.setEnabled(false);
+		btnConnecterServeurs.setBounds(10, 564, 111, 25);
+		contentPane.add(btnConnecterServeurs);
 		
-		BTN_deconnecterImprimante = new JButton("D\u00E9connecter");
-		BTN_deconnecterImprimante.setEnabled(false);
-		BTN_deconnecterImprimante.setBounds(466, 302, 111, 25);
-		contentPane.add(BTN_deconnecterImprimante);
-		
-		BTN_connecterServeurs = new JButton("Connecter");
-		BTN_connecterServeurs.setEnabled(false);
-		BTN_connecterServeurs.setBounds(10, 564, 111, 25);
-		contentPane.add(BTN_connecterServeurs);
-		
-		BTN_deconnecterServeurs = new JButton("D\u00E9connecter");
-		BTN_deconnecterServeurs.setEnabled(false);
-		BTN_deconnecterServeurs.setBounds(127, 564, 111, 25);
-		contentPane.add(BTN_deconnecterServeurs);
+		btnDeconnecterServeurs = new JButton("D\u00E9connecter");
+		btnDeconnecterServeurs.setEnabled(false);
+		btnDeconnecterServeurs.setBounds(127, 564, 111, 25);
+		contentPane.add(btnDeconnecterServeurs);
 	}
 }

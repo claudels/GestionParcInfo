@@ -6,13 +6,12 @@ import java.sql.SQLException;
 
 import gestionParcInfo.repository.ImprimanteRepository;
 
-public class Serveur implements IEntity {
+public class Serveur extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Serveur VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Serveur SET designation=?, memoire=? WHERE sn_s=?";
 	private static final String SQL_DELETE = "DELETE FROM Serveur WHERE sn_s=?";	
 	
-	private PreparedStatement pstmt;
 	private String sn;
 	private String designation;
 	private int memoire;

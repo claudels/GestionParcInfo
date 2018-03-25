@@ -6,13 +6,12 @@ import java.sql.SQLException;
 
 import gestionParcInfo.repository.ImprimanteRepository;
 
-public class OrdinateurServeurLink implements IEntity {
+public class OrdinateurServeurLink extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Reseau VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Reseau SET quota=? WHERE sn_o=? and sn_s=?";
 	private static final String SQL_DELETE = "DELETE FROM Reseau WHERE sn_o=? and sn_s=?";	
 	
-	private PreparedStatement pstmt;
 	private Ordinateur ordinateur;
 	private Serveur serveur;
 	private int quota = -1;
