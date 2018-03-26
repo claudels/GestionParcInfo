@@ -27,9 +27,9 @@ public class Employes extends ModelList<Employe>{
 	public int getNbOrdisAChangerOfEmploye(Employe employe) {
 		int nbOrdisAChanger = 0;
 		
-		List<Ordinateur> ordinateurss = ordinateurs.findOrdinateursByEmploye(employe);
+		List<Ordinateur> ordinateursOfEmploye = ordinateurs.findOrdinateursByEmploye(employe);
 		
-		for(Ordinateur ordinateur : ordinateurss) {
+		for(Ordinateur ordinateur : ordinateursOfEmploye) {
 			if(ordinateurs.ordinateurMustBeChanged(ordinateur)) {
 				nbOrdisAChanger++;
 			}	

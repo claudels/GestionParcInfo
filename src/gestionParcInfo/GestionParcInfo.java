@@ -17,13 +17,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import gestionParcInfo.controller.EmployeController;
+import gestionParcInfo.controller.ImprimanteController;
 import gestionParcInfo.controller.OrdinateurController;
 import gestionParcInfo.controller.ServeurController;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.repository.EmployeRepository;
+import gestionParcInfo.repository.ImprimanteRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.repository.OrdinateurServeurLinkRepository;
 import gestionParcInfo.repository.ServeurRepository;
@@ -41,6 +44,7 @@ public class GestionParcInfo {
 		Serveurs serveurs = null;
 		OrdinateurServeurLinks ordinateurServeurLinks = null;
 		Employes employes = null;
+		Imprimantes imprimantes = null;
 		
 		//Onglets du gestionnaire du parc
 		OrdinateurTab ordiTab = new OrdinateurTab();
@@ -58,12 +62,14 @@ public class GestionParcInfo {
 			OrdinateurServeurLinkRepository oslRepo = new OrdinateurServeurLinkRepository(conn);
 			ServeurRepository serveurRepository = new ServeurRepository(conn);
 			EmployeRepository employeRepository = new EmployeRepository(conn);
+			ImprimanteRepository imprimanteRepository = new ImprimanteRepository(conn);
 			
 			//Instanciation des modèles
 			ordinateurs = new Ordinateurs(ordiRepo.getAll(), ordiTab);
 			ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll());
 			serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, serveurTab);
 			employes = new Employes(employeRepository.getAll(), ordinateurs, employeTab);
+			imprimantes = new Imprimantes(imprimanteRepository.getAll(), ordinateurs, imprimanteTab);
 			
 			conn.close();
 		} catch (SQLException e) {
@@ -78,6 +84,7 @@ public class GestionParcInfo {
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs);
 		ServeurController servController = new ServeurController(serveurTab);
 		EmployeController employeController = new EmployeController(employeTab);
+		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab);
 		
 		//Add ordis listeners
 		ordiTab.getBtnAjouter().addActionListener(ordiController);
@@ -88,10 +95,14 @@ public class GestionParcInfo {
 		serveurTab.getBtnAJouter().addActionListener(servController);
 		serveurTab.getBtnSupprimer().addActionListener(servController);
 		
-		//Add emoloye listeners
+		//Add employe listeners
 		employeTab.getBtnAjouter().addActionListener(employeController);
 		employeTab.getBtnAlerter().addActionListener(employeController);
 		employeTab.getBtnSupprimer().addActionListener(employeController);
+		
+		//Add imprimante listeners
+		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
+		imprimanteTab.getBtnSupprimer().addActionListener(imprimanteController);
 		
 		//Affichage de l'IHM principale
 		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);

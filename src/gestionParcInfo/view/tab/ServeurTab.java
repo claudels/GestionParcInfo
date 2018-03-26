@@ -1,6 +1,5 @@
 package gestionParcInfo.view.tab;
 
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,9 +12,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 
 public class ServeurTab extends JPanel implements Observer{

@@ -1,5 +1,8 @@
 package gestionParcInfo.view.tab;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -7,56 +10,87 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class ImprimanteTab extends JPanel {
-	private JTable TBL_imprimante;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.model.Imprimantes;
+
+public class ImprimanteTab extends JPanel implements Observer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final String[] columnsNames = {"SN_I", "Designation", "Ordinateurs connect\u00E9s"};
+	
+	//Boutons
+	JButton btnAjouter, btnSupprimer;
+	
+	//Tableau
+	private JTable tblImprimante;
+	private DefaultTableModel tableModel;
+	private JScrollPane scrllpaneImprimante;
 	
 	public ImprimanteTab() {
 		super();
+		
+		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(ImprimanteTab.columnsNames);
+		
+		initComponents();
+	}
+	
+	public JButton getBtnAjouter() {
+		return btnAjouter;
+	}
+	
+	public JButton getBtnSupprimer() {
+		return btnSupprimer;
+	}
+	
+	public void initComponents() {
+		//Panel
 		this.setLayout(null);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		JScrollPane SCRLPANE_imprimante = new JScrollPane();
-		SCRLPANE_imprimante.setBounds(10, 49, 686, 351);
-		this.add(SCRLPANE_imprimante);
+		//Tableau
+		scrllpaneImprimante = new JScrollPane();
+		scrllpaneImprimante.setBounds(10, 49, 686, 351);
+		this.add(scrllpaneImprimante);
 		
-		TBL_imprimante = new JTable();
-		TBL_imprimante.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"SN_I", "Designation", "Ordinateurs connect\u00E9s"
+		tblImprimante = new JTable();
+		tblImprimante.setModel(this.tableModel);
+		tblImprimante.getColumnModel().getColumn(0).setPreferredWidth(63);
+		tblImprimante.getColumnModel().getColumn(0).setMinWidth(5);
+		tblImprimante.getColumnModel().getColumn(0).setMaxWidth(100);
+		scrllpaneImprimante.setViewportView(tblImprimante);
+		
+		//Boutons
+		btnAjouter = new JButton("Ajouter");
+		btnAjouter.setBounds(607, 13, 89, 23);
+		this.add(btnAjouter);
+		
+		btnSupprimer = new JButton("Supprimer");
+		btnSupprimer.setBounds(502, 13, 98, 23);
+		this.add(btnSupprimer);
+	}
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		if(obs instanceof Imprimantes) {
+			Imprimantes imprimantes = (Imprimantes)obs;
+			this.tableModel = new DefaultTableModel();
+			this.tableModel.setColumnIdentifiers(ImprimanteTab.columnsNames);
+			
+			for(Imprimante imprimante : imprimantes.getItems()) {
+				Object[] rawData = new Object[ImprimanteTab.columnsNames.length];
+				rawData[0] = imprimante.getSn();
+				rawData[1] = imprimante.getDesignation();
+				rawData[2] = imprimantes.countOrdinateurs(imprimante);
+				
+				this.tableModel.addRow(rawData);
 			}
-		));
-		TBL_imprimante.getColumnModel().getColumn(0).setPreferredWidth(63);
-		TBL_imprimante.getColumnModel().getColumn(0).setMinWidth(5);
-		TBL_imprimante.getColumnModel().getColumn(0).setMaxWidth(100);
-		SCRLPANE_imprimante.setViewportView(TBL_imprimante);
-		JButton BTN_ajouterImp = new JButton("Ajouter");
-		BTN_ajouterImp.setBounds(607, 13, 89, 23);
-		this.add(BTN_ajouterImp);
-		
-		JButton BTN_supprimerImp = new JButton("Supprimer");
-		BTN_supprimerImp.setBounds(502, 13, 93, 23);
-		this.add(BTN_supprimerImp);
+			
+			this.tblImprimante.setModel(this.tableModel);
+			this.tableModel.fireTableDataChanged();
+		}
 	}
-	}
+}
