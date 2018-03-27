@@ -63,12 +63,22 @@ public class FicheOrdinateur extends Fiche {
 		
 		switch(newState) {
 		case CREATION:
+			//Blocage fonctionnalités
 			this.tglbtnMode.setEnabled(false);
 			this.lblAChanger.setVisible(false);
 			this.lblARetourner.setVisible(false);
 			this.lblJoursUtilisation.setText("0");
 			this.staticLblAChanger.setVisible(false);
 			this.staticLblARetourner.setVisible(false);
+			
+			//Autorisation fonctionnalités
+			this.btnConnecterImprimante.setEnabled(true);
+			this.btnConnecterServeurs.setEnabled(true);
+			this.btnDeconnecterImprimante.setEnabled(true);
+			this.btnDeconnecterServeurs.setEnabled(true);
+			this.tfDesignation.setEditable(true);
+			this.tfSNO.setEditable(true);
+			
 			break;
 		case MODIFICATION:
 			break;
@@ -81,7 +91,6 @@ public class FicheOrdinateur extends Fiche {
 		
 		//Configuration de la fenêtre
 		setTitle("Ordinateur");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 608, 715);
 		
 		//Configuration des labels statiques

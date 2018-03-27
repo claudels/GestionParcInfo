@@ -47,7 +47,8 @@ public class Serveurs extends ModelList<Serveur> {
 		long sommeQuotas = this.ordinateurServeurLinks.getItems()
 				.parallelStream()
 				.filter(ordinateurServeurLink -> ordinateurServeurLink.getServeur().getSn().equals(serveur.getSn()))
-				.mapToLong(ordinateurServeurLink -> ordinateurServeurLink.getQuota()).sum();
+				.mapToLong(ordinateurServeurLink -> ordinateurServeurLink.getQuota())
+				.sum();
 		
 		return (double)((double)sommeQuotas/(double)serveur.getMemoire());
 	}

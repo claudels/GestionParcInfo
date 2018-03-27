@@ -52,6 +52,8 @@ public class Fiche extends JFrame implements ActionListener, Observer {
 	}
 	
 	private void initComponents() {
+		//Configuration fenetre
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(contentPane);
