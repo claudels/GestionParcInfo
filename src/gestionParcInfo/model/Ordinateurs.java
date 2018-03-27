@@ -103,6 +103,7 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 			for(Ordinateur ordinateurEmploye : findOrdinateursByEmploye(employe)) {
 				if(!this.ordinateurMustBeChanged(ordinateurEmploye) &&
 						ordinateur.getDateRestitution() == null &&
+						ordinateurEmploye.getDateAttribution() != null &&
 						(System.currentTimeMillis() - ordinateurEmploye.getDateAttribution().getTime()) >= timeInMsBeforeReturn) {
 					result = true;
 				}
