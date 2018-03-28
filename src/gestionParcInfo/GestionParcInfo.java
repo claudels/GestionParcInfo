@@ -26,6 +26,7 @@ import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.repository.AlerteRepository;
 import gestionParcInfo.repository.EmployeRepository;
 import gestionParcInfo.repository.ImprimanteRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
@@ -36,7 +37,7 @@ import gestionParcInfo.test.TUPersistanceImprimante;
 
 public class GestionParcInfo {
 	public static final String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
-	public static final String dbUsername = "parcinfo";
+	public static final String dbUsername = "Florian";
 	public static final String dbPassword = "network";
 	
 	public static void main(String[] args) {
