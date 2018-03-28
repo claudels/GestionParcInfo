@@ -20,6 +20,7 @@ import gestionParcInfo.controller.EmployeController;
 import gestionParcInfo.controller.ImprimanteController;
 import gestionParcInfo.controller.OrdinateurController;
 import gestionParcInfo.controller.ServeurController;
+import gestionParcInfo.model.Alertes;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
@@ -45,6 +46,7 @@ public class GestionParcInfo {
 		OrdinateurServeurLinks ordinateurServeurLinks = null;
 		Employes employes = null;
 		Imprimantes imprimantes = null;
+		Alertes alertes = null;
 		
 		//Onglets du gestionnaire du parc
 		OrdinateurTab ordiTab = new OrdinateurTab();
@@ -63,6 +65,7 @@ public class GestionParcInfo {
 			ServeurRepository serveurRepository = new ServeurRepository(conn);
 			EmployeRepository employeRepository = new EmployeRepository(conn);
 			ImprimanteRepository imprimanteRepository = new ImprimanteRepository(conn);
+			AlerteRepository alerteRepository = new AlerteRepository(conn);
 			
 			//Instanciation des modèles
 			ordinateurs = new Ordinateurs(ordiRepo.getAll(), ordiTab);
@@ -70,6 +73,7 @@ public class GestionParcInfo {
 			serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, serveurTab);
 			employes = new Employes(employeRepository.getAll(), ordinateurs, employeTab);
 			imprimantes = new Imprimantes(imprimanteRepository.getAll(), ordinateurs, imprimanteTab);
+			alertes = new Alertes(alerteRepository.getAll(), alerteTab);
 			
 			conn.close();
 		} catch (SQLException e) {
@@ -85,6 +89,7 @@ public class GestionParcInfo {
 		ServeurController servController = new ServeurController(serveurTab);
 		EmployeController employeController = new EmployeController(employeTab);
 		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab);
+		//TODO: FLO : Créer Controleur Alerte
 		
 		//Add ordis listeners
 		ordiTab.getBtnAjouter().addActionListener(ordiController);
@@ -103,6 +108,9 @@ public class GestionParcInfo {
 		//Add imprimante listeners
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
 		imprimanteTab.getBtnSupprimer().addActionListener(imprimanteController);
+		
+		//TODO: FLO : Ajouter listeners aux bouton
+		//Add alerte listeners
 		
 		//Affichage de l'IHM principale
 		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
