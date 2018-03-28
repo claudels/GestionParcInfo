@@ -63,21 +63,22 @@ public class FicheOrdinateur extends Fiche {
 		
 		switch(newState) {
 		case CREATION:
-			//Blocage fonctionnalités
-			this.tglbtnMode.setEnabled(false);
-			this.lblAChanger.setVisible(false);
-			this.lblARetourner.setVisible(false);
-			this.lblJoursUtilisation.setText("0");
-			this.staticLblAChanger.setVisible(false);
-			this.staticLblARetourner.setVisible(false);
+			//Interdit à la création
+			this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
+			this.lblAChanger.setVisible(newState != Fiche.State.CREATION);
+			this.lblARetourner.setVisible(newState != Fiche.State.CREATION);
+			this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":"##");
+			this.staticLblAChanger.setVisible(newState != Fiche.State.CREATION);
+			this.staticLblARetourner.setVisible(newState != Fiche.State.CREATION);
 			
-			//Autorisation fonctionnalités
-			this.btnConnecterImprimante.setEnabled(true);
-			this.btnConnecterServeurs.setEnabled(true);
-			this.btnDeconnecterImprimante.setEnabled(true);
-			this.btnDeconnecterServeurs.setEnabled(true);
-			this.tfDesignation.setEditable(true);
-			this.tfSNO.setEditable(true);
+			//Interdit à la visualisation
+			this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
+			this.cmbboxAssignedTo.setEditable(newState != Fiche.State.VISUALISATION);
+			this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
+			this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
+			
+			//Autorisé pour création
+			this.tfSNO.setEditable(newState == Fiche.State.CREATION);
 			
 			break;
 		case MODIFICATION:
@@ -85,6 +86,22 @@ public class FicheOrdinateur extends Fiche {
 		case VISUALISATION:
 			break;
 		}
+	}
+	
+	public JButton getBtnConnecterImprimante() {
+		return btnConnecterImprimante;
+	}
+	
+	public JButton getBtnConnecterServeurs() {
+		return btnConnecterServeurs;
+	}
+	
+	public JButton getBtnDeconnecterImprimante() {
+		return btnDeconnecterImprimante;
+	}
+	
+	public JButton getBtnDeconnecterServeurs() {
+		return btnDeconnecterServeurs;
 	}
 	
 	public void initComponents() {
@@ -274,22 +291,18 @@ public class FicheOrdinateur extends Fiche {
 		btnSauver.setBounds(472, 632, this.btnSauver.getWidth(), this.btnSauver.getHeight());
 		
 		btnConnecterImprimante = new JButton("Connecter");
-		btnConnecterImprimante.setEnabled(false);
 		btnConnecterImprimante.setBounds(466, 276, 111, 25);
 		contentPane.add(btnConnecterImprimante);
 		
 		btnDeconnecterImprimante = new JButton("D\u00E9connecter");
-		btnDeconnecterImprimante.setEnabled(false);
 		btnDeconnecterImprimante.setBounds(466, 302, 111, 25);
 		contentPane.add(btnDeconnecterImprimante);
 		
 		btnConnecterServeurs = new JButton("Connecter");
-		btnConnecterServeurs.setEnabled(false);
 		btnConnecterServeurs.setBounds(10, 564, 111, 25);
 		contentPane.add(btnConnecterServeurs);
 		
 		btnDeconnecterServeurs = new JButton("D\u00E9connecter");
-		btnDeconnecterServeurs.setEnabled(false);
 		btnDeconnecterServeurs.setBounds(127, 564, 111, 25);
 		contentPane.add(btnDeconnecterServeurs);
 	}

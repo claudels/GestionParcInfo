@@ -81,7 +81,7 @@ public class GestionParcInfo {
 		}
 		
 		//Controleurs
-		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs);
+		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs, serveurs);
 		ServeurController servController = new ServeurController(serveurTab);
 		EmployeController employeController = new EmployeController(employeTab);
 		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab);
