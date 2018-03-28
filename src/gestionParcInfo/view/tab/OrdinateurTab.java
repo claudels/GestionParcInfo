@@ -111,6 +111,9 @@ public class OrdinateurTab extends JPanel implements Observer{
 			for(Ordinateur ordinateur : ordinateurs.getItems()) {
 				String matricule = null;
 				
+				if(ordinateur.getProprietaire() != null)
+					matricule = ordinateur.getProprietaire().getMatricule();
+				
 				Object[] rawData = new Object[OrdinateurTab.columnsNames.length];
 				rawData[0] = ordinateur.getSn();
 				rawData[1] = ordinateur.getDesignation();
