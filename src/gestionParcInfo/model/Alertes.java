@@ -25,5 +25,14 @@ public class Alertes extends ModelList<Alerte> {
 				.collect(Collectors.toList());
 	}
 	
-
+	public Alerte findByCode(int code){
+		Alerte result = null;
+		
+		for(Alerte alerte : this.getItems()) {
+			if(alerte.getId() == (code))
+				result = alerte;
+		}
+		
+		return result;
+	}
 }

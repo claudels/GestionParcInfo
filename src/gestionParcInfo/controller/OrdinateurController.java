@@ -78,13 +78,32 @@ public class OrdinateurController implements ActionListener, WindowListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 		}else if(e.getSource() == this.ordiTab.getBtnSupprimer()){
-			System.out.println("Supprimer ordinateur");
-			for(String sno : this.ordiTab.getSNsOrdinateursSelected()) {
-				System.out.println("Suppression : " + sno);
-				//TODO: Pour chaque SN_O, supprimer de la base l'ordi correspondant
-				//TODO: Si la suppression s'est bien passée, on le supprime du modèle
-			}
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver"); 
+				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
+				System.out.println("Supprimer ordinateur");
+				
+				for(String sno : this.ordiTab.getSNsOrdinateursSelected()) {
+					
+					//Récupération de l'ordinateur dans la base
+					System.out.println("Suppression : " + sno);
+					Ordinateur currentOrdinateur = ordinateurs.findBySN(sno);
+					
+					//Suppression de l'ordinateur et persistance dans la base
+					currentOrdinateur.remove(conn);
+					
+					//Mise à Suppression du modèle des ordinateurs
+					this.ordinateurs.removeItem(currentOrdinateur);
+				}
+				conn.close();
+			}catch (SQLException | ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+		}
+			
 		}else if(e.getSource() == this.ficheOrdinateur.getBtnConnecterImprimante()) {
 			System.out.println("Connexion imprimante");
 		}

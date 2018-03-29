@@ -37,4 +37,14 @@ public class Employes extends ModelList<Employe>{
 		
 		return nbOrdisAChanger;
 	}
+	public Employe findByMatricule(String matricule){
+		Employe result = null;
+		
+		for(Employe employe : this.getItems()) {
+			if(employe.getMatricule().equals(matricule))
+				result = employe;
+		}
+		
+		return result;
+	}
 }

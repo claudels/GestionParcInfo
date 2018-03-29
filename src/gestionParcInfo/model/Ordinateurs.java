@@ -87,6 +87,7 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 				.collect(Collectors.toList());
 	}
 	
+
 	/**
 	 * Détermine si un ordinateur doit être rendu. Un employé à 15 jours pour rendre un pc après l'attribution d'un nouveau
 	 * @param ordinateur

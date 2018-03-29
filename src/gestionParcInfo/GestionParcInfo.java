@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import gestionParcInfo.controller.AlerteController;
 import gestionParcInfo.controller.EmployeController;
 import gestionParcInfo.controller.ImprimanteController;
 import gestionParcInfo.controller.OrdinateurController;
@@ -41,6 +42,9 @@ public class GestionParcInfo {
 	public static final String dbPassword = "network";
 	
 	public static void main(String[] args) {
+		
+		executeTests();
+		
 		//Modèles
 		Ordinateurs ordinateurs = null;
 		Serveurs serveurs = null;
@@ -87,10 +91,10 @@ public class GestionParcInfo {
 		
 		//Controleurs
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs, serveurs);
-		ServeurController servController = new ServeurController(serveurTab);
-		EmployeController employeController = new EmployeController(employeTab);
-		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab);
-		//TODO: FLO : Créer Controleur Alerte
+		ServeurController servController = new ServeurController(serveurTab,serveurs);
+		EmployeController employeController = new EmployeController(employeTab,employes);
+		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab,imprimantes);
+		AlerteController alerteController = new AlerteController(alerteTab,alertes);
 		
 		//Add ordis listeners
 		ordiTab.getBtnAjouter().addActionListener(ordiController);
@@ -110,15 +114,14 @@ public class GestionParcInfo {
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
 		imprimanteTab.getBtnSupprimer().addActionListener(imprimanteController);
 		
-		//TODO: FLO : Ajouter listeners aux bouton
-		//Add alerte listeners
+		alerteTab.getBtnSupprimer().addActionListener(alerteController);
 		
 		//Affichage de l'IHM principale
 		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
 		gestionParcIHM.setVisible(true);
 		
 		//Execution des tests de persistence
-		executeTests();
+		
 	}
 	
 	private static void executeTests() {

@@ -1,5 +1,6 @@
 package gestionParcInfo.view.tab;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -45,6 +46,18 @@ public class ImprimanteTab extends JPanel implements Observer {
 	public JButton getBtnSupprimer() {
 		return btnSupprimer;
 	}
+	
+	public ArrayList<String> getSNsImprimanteSelected() {
+		ArrayList<String> serialNumbers = new ArrayList<>();
+		
+		int columnIndex = this.tblImprimante.convertColumnIndexToView(this.tableModel.findColumn(ImprimanteTab.columnsNames[0]));
+		
+		for(int index : this.tblImprimante.getSelectedRows()) {
+			serialNumbers.add((String)this.tblImprimante.getValueAt(index, columnIndex));
+		}
+		
+		return serialNumbers;
+}
 	
 	public void initComponents() {
 		//Panel

@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
+import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 
@@ -26,6 +27,16 @@ public class Serveurs extends ModelList<Serveur> {
 		this.notifyObservers();
 	}
 	
+	/*public Serveur findBySN(String sns){
+		Serveur result = null;
+		
+		for(Serveur serveur : this.getItems()) {
+			if(serveur.getSn().equals(sns))
+				result = serveur;
+		}
+		
+		return result;
+	}*/
 	/**
 	 * Compte le nombre d'ordinateurs connectés à un serveur
 	 * @param serveur Serveur pour lequel compter les ordinateurs
@@ -52,4 +63,17 @@ public class Serveurs extends ModelList<Serveur> {
 		
 		return (double)((double)sommeQuotas/(double)serveur.getMemoire());
 	}
+
+	public Serveur findBySN(String sns) {
+	Serveur result = null;
+			
+			for(Serveur serveur : this.getItems()) {
+				if(serveur.getSn().equals(sns))
+					result = serveur;
+			}
+			
+			return result;
+		}
+
+	
 }

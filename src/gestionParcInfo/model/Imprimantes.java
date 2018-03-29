@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observer;
 
 import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
 
 public class Imprimantes extends ModelList<Imprimante> {
 	
@@ -23,5 +24,15 @@ public class Imprimantes extends ModelList<Imprimante> {
 				.parallelStream()
 				.filter(ordinateur -> ordinateur.getImprimante() != null && ordinateur.getImprimante().getSn().equals(imprimante.getSn()))
 				.count();
+	}
+	public Imprimante findBySN(String sni){
+		Imprimante result = null;
+		
+		for(Imprimante impr : this.getItems()) {
+			if(impr.getSn().equals(sni))
+				result = impr;
+		}
+		
+		return result;
 	}
 }

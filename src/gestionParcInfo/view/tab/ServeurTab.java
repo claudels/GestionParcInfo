@@ -1,6 +1,7 @@
 package gestionParcInfo.view.tab;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -69,6 +70,17 @@ public class ServeurTab extends JPanel implements Observer{
 		return btnSupprimer;
 	}
 	
+	public ArrayList<String> getSNsServeursSelected() {
+		ArrayList<String> serialNumbers = new ArrayList<>();
+		
+		int columnIndex = this.tblServeur.convertColumnIndexToView(this.tableModel.findColumn(ServeurTab.columnsNames[0]));
+		
+		for(int index : this.tblServeur.getSelectedRows()) {
+			serialNumbers.add((String)this.tblServeur.getValueAt(index, columnIndex));
+		}
+		
+		return serialNumbers;
+}
 	
 	@Override
 	public void update(Observable obs, Object obj) {

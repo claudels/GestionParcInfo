@@ -1,5 +1,6 @@
 package gestionParcInfo.view.tab;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -96,4 +97,16 @@ public class EmployeTab extends JPanel implements Observer{
 			this.tableModel.fireTableDataChanged();
 		}
 	}
+	
+	public ArrayList<String> getMatEmployeSelected() {
+		ArrayList<String> Matricule = new ArrayList<>();
+		
+		int columnIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+		
+		for(int index : this.tblEmploye.getSelectedRows()) {
+			Matricule.add((String)this.tblEmploye.getValueAt(index, columnIndex));
+		}
+		
+		return Matricule;
+}
 }

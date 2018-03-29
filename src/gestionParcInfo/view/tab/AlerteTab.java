@@ -1,6 +1,7 @@
 package gestionParcInfo.view.tab;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -98,5 +99,18 @@ public class AlerteTab extends JPanel implements Observer {
 			this.tableModel.fireTableDataChanged();
 		}
 		
+	
+	
+	}
+	public ArrayList<Integer>  getCodeAlerteSelected() {
+		ArrayList<Integer> Code = new ArrayList<>();
+		
+		int columnIndex = this.tblAlerte.convertColumnIndexToView(this.tableModel.findColumn(AlerteTab.columnsNames[0]));
+		
+		for(int index : this.tblAlerte.getSelectedRows()) {
+			Code.add((Integer)this.tblAlerte.getValueAt(index, columnIndex));
+		}
+		
+		return Code;
 	}
 }
