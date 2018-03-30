@@ -17,13 +17,18 @@ import javax.swing.AbstractListModel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+
+import gestionParcInfo.view.fiche.Fiche.State;
+
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class FicheImprimante extends JFrame {
-
-	private JPanel contentPane;
+public class FicheImprimante extends Fiche {
+	
+	private static final long serialVersionUID = 1L;
+	
+	
 
 	//Labels statiques
 	private JLabel staticLBL_SNI, staticLBL_uniteOrdinateur, staticLBL_ordisConnectesTitle, staticLBL_title, staticLBL_nbOrdiConnectes, staticLBL_designation, staticLBL_resolution;
@@ -42,21 +47,42 @@ public class FicheImprimante extends JFrame {
 	private JTable TABLE_ordisConnectes;
 	
 	//Boutons
-	JButton BTN_sauver, BTN_annuler, BTN_deconnecter;
-	JToggleButton TGLBTN_mode;
+	JButton BTN_deconnecter;
+	
 	
 	/**
 	 * Create the frame.
 	 */
-	public FicheImprimante() {
+	public FicheImprimante(Fiche.State initialState) {
+		super(initialState);
+		initComponents();
+		this.changeState(initialState);
+	}
+	
+	@Override
+	protected void changeState(State newState) {
+		super.changeState(newState);
+		
+		//Interdit à la création
+		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
+		this.BTN_deconnecter.setVisible(newState != Fiche.State.CREATION);
+		
+		
+		//Interdit à la visualisation
+		this.TF_designation.setEditable(newState != Fiche.State.VISUALISATION);
+		this.SPIN_resolution.setEnabled(newState != Fiche.State.VISUALISATION);
+		
+		
+		//Autorisé pour création
+		this.TF_SNI.setEditable(newState == Fiche.State.CREATION);
+		
+	}
+	
+	public void initComponents() {
 		//Configuration fenetre
 		setTitle("Imprimante");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 494, 649);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		
 		
 		//Configuration labels statiques
 		staticLBL_SNI = new JLabel("SN_I : ");
@@ -162,24 +188,17 @@ public class FicheImprimante extends JFrame {
 		});
 		SCRLLPANE_ordisConnectes.setViewportView(TABLE_ordisConnectes);
 		
-		//Configuration des boutons
-		BTN_sauver = new JButton("Sauvegarder");
-		BTN_sauver.setEnabled(false);
-		BTN_sauver.setBounds(369, 566, 105, 23);
-		contentPane.add(BTN_sauver);
 		
-		TGLBTN_mode = new JToggleButton("Mode visualisation");
-		TGLBTN_mode.setBounds(230, 566, 137, 23);
-		contentPane.add(TGLBTN_mode);
+		btnAnnuler.setBounds(139, 566, this.btnAnnuler.getWidth(), this.btnAnnuler.getHeight());
+		tglbtnMode.setBounds(230, 566, this.tglbtnMode.getWidth(), this.tglbtnMode.getHeight());
+		btnSauver.setBounds(369, 566, this.btnSauver.getWidth(), this.btnSauver.getHeight());
 		
-		BTN_annuler = new JButton("Annuler");
-		BTN_annuler.setBounds(139, 566, 89, 23);
-		contentPane.add(BTN_annuler);
 		
 		BTN_deconnecter = new JButton("D\u00E9connecter");
-		BTN_deconnecter.setEnabled(false);
+		BTN_deconnecter.setEnabled(true);
 		BTN_deconnecter.setBounds(10, 524, 111, 25);
 		contentPane.add(BTN_deconnecter);
-
+		
+		
 	}
 }

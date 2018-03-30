@@ -12,14 +12,17 @@ import java.awt.Label;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import gestionParcInfo.view.fiche.Fiche.State;
+
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 
-public class FicheEmploye extends JFrame {
+public class FicheEmploye extends Fiche {
 
-	private JPanel contentPane;
+
 
 	//labels statiques
 	private JLabel staticLBL_matricule, staticLBL_nom,staticLBL_prenom, staticLBL_email, staticLBL_title, staticLBL_ordinateurs;
@@ -28,8 +31,8 @@ public class FicheEmploye extends JFrame {
 	private JTextField TF_prenom, TF_nom, TF_matricule, TF_email;
 	
 	//Boutons
-	private JButton BTN_assignerOrdinateur, BTN_annuler, BTN_sauver;
-	private JToggleButton TGLBTN_mode;
+	private JButton BTN_assignerOrdinateur;
+
 	
 	//Table ordinateurs
 	private JScrollPane SCRLLPANE_ordinateurs;
@@ -37,16 +40,39 @@ public class FicheEmploye extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FicheEmploye() {
+	public FicheEmploye(Fiche.State initialState) {
+		super(initialState);
+		initComponents();
+		this.changeState(initialState);
+	}
+	
+	@Override
+	protected void changeState(State newState) {
+		super.changeState(newState);
+		
+		//Interdit à la création
+		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
+		
+		
+		
+		//Interdit à la visualisation
+		this.TF_matricule.setEditable(newState != Fiche.State.VISUALISATION);
+		this.TF_nom.setEditable(newState != Fiche.State.VISUALISATION);
+		this.TF_prenom.setEditable(newState != Fiche.State.VISUALISATION);
+		this.TF_email.setEditable(newState != Fiche.State.VISUALISATION);
+		
+		
+		
+		//Autorisé pour création
+		this.TF_matricule.setEditable(newState == Fiche.State.CREATION);
+		
+	}
+	public void initComponents() {
 		
 		//Configuration fenêtre
 		setTitle("Employ\u00E9");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 558, 357);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		
 		
 		//Configuration label statiques
 		staticLBL_matricule = new JLabel("Matricule : ");
@@ -103,21 +129,13 @@ public class FicheEmploye extends JFrame {
 		contentPane.add(TF_email);
 		
 		//Configuration boutons
-		TGLBTN_mode = new JToggleButton("Mode visualisation");
-		TGLBTN_mode.setBounds(284, 274, 137, 23);
-		contentPane.add(TGLBTN_mode);
-		
-		BTN_annuler = new JButton("Annuler");
-		BTN_annuler.setBounds(193, 274, 89, 23);
-		contentPane.add(BTN_annuler);
-		
-		BTN_sauver = new JButton("Sauvegarder");
-		BTN_sauver.setEnabled(false);
-		BTN_sauver.setBounds(423, 274, 105, 23);
-		contentPane.add(BTN_sauver);
+	
+		btnAnnuler.setBounds(193, 274, this.btnAnnuler.getWidth(), this.btnAnnuler.getHeight());
+		tglbtnMode.setBounds(284, 274, this.tglbtnMode.getWidth(), this.tglbtnMode.getHeight());
+		btnSauver.setBounds(423, 274, this.btnSauver.getWidth(), this.btnSauver.getHeight());
 		
 		BTN_assignerOrdinateur = new JButton("Assigner un ordinateur");
-		BTN_assignerOrdinateur.setEnabled(false);
+		BTN_assignerOrdinateur.setEnabled(true);
 		BTN_assignerOrdinateur.setBounds(10, 224, 198, 25);
 		contentPane.add(BTN_assignerOrdinateur);
 		
