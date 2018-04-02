@@ -20,7 +20,7 @@ public class Ordinateur extends Entity{
 	private String sn;
 	private String designation;
 	private int ram;
-	private float cpu;
+	private double cpu;
 	private Imprimante imprimante;
 	private Employe proprietaire;
 	private Date dateAttribution;
@@ -33,7 +33,7 @@ public class Ordinateur extends Entity{
 	 * @param ram
 	 * @param cpu
 	 */
-	public Ordinateur(String sn, String designation, int ram, float cpu) {
+	public Ordinateur(String sn, String designation, int ram, double cpu) {
 		this.sn = sn;
 		this.designation = designation;
 		this.ram = ram;
@@ -51,7 +51,7 @@ public class Ordinateur extends Entity{
 	 * @param dateAttribution
 	 * @param dateRestitution
 	 */
-	public Ordinateur(String sn, String designation, int ram, float cpu, Imprimante imprimante, Employe proprietaire, Date dateAttribution, Date dateRestitution) {
+	public Ordinateur(String sn, String designation, int ram, double cpu, Imprimante imprimante, Employe proprietaire, Date dateAttribution, Date dateRestitution) {
 		this.sn = sn;
 		this.designation = designation;
 		this.ram = ram;
@@ -62,7 +62,7 @@ public class Ordinateur extends Entity{
 		this.dateRestitution = dateRestitution;
 	}
 	
-	public float getCpu() {
+	public double getCpu() {
 		return cpu;
 	}
 	
@@ -94,7 +94,7 @@ public class Ordinateur extends Entity{
 		return sn;
 	}
 	
-	public void setCpu(float cpu) {
+	public void setCpu(double cpu) {
 		this.cpu = cpu;
 	}
 	
@@ -137,7 +137,7 @@ public class Ordinateur extends Entity{
 		this.pstmt.setString(1, this.sn);
 		this.pstmt.setString(2, this.designation);
 		this.pstmt.setInt(3, this.ram);
-		this.pstmt.setFloat(4, this.cpu);
+		this.pstmt.setDouble(4, this.cpu);
 		
 		if(this.imprimante != null)
 			this.pstmt.setString(5, this.imprimante.getSn());
@@ -168,7 +168,7 @@ public class Ordinateur extends Entity{
 		this.pstmt = conn.prepareStatement(Ordinateur.SQL_UPDATE);
 		this.pstmt.setString(1, this.designation);
 		this.pstmt.setInt(2, this.ram);
-		this.pstmt.setFloat(3, this.cpu);
+		this.pstmt.setDouble(3, this.cpu);
 		
 		if(this.imprimante != null)
 			this.pstmt.setString(4, this.imprimante.getSn());

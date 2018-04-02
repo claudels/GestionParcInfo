@@ -6,21 +6,42 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 import javax.swing.JSplitPane;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.ConnexionServeur;
+
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class FicheOrdinateur extends Fiche {
+public class FicheOrdinateur extends Fiche implements ActionListener {
+	private static final String[] columnsTableServeurs = {"SN_S", "D\u00E9signation", "Mémoire restante (Go)"};
+	private static final String[] columnsTableImprimante = {"SN_I", "D\u00E9signation", "R\u00E9solution"};
+	
 	/**
 	 * 
 	 */
@@ -29,9 +50,11 @@ public class FicheOrdinateur extends Fiche {
 	//Tableaux
 	private JScrollPane scrllpaneImprimante, scrllpaneServeurs;
 	private JTable tableImprimante, tblServeurs;
+	private DefaultTableModel tableModelServeurs, tableModelImprimante;
 	
 	//ComboBox
 	private JComboBox<String> cmbboxAssignedTo;
+	private DefaultComboBoxModel<String> cmbboxModel;
 
 	//Spinners
 	private JSpinner spinnerRAM, spinnerCPU;
@@ -48,11 +71,95 @@ public class FicheOrdinateur extends Fiche {
 	//Boutons
 	private JButton btnConnecterImprimante, btnDeconnecterImprimante, btnConnecterServeurs, btnDeconnecterServeurs;
 	
+	//Modèles
+	private Employes employes;
+	private OrdinateurServeurLinks ordinateurServeurLinks;
+	private Serveurs serveurs;
+	
+	//ArrayList contenant les ajouts ou suppressions de liens vers les serveurs
+	private ArrayList<Serveur> deletedLinks;
+	private HashMap<Serveur, Integer> addedLinks;
+	
+	
+	//Formulaire de connexion aux serveurs
+	private ConnexionServeur connexionServeurForm = null;
+	
 	/**
-	 * Create the frame.
+	 * Constructeur pour un nouvel ordinateur
+	 * @param employes
+	 * @param ordinateurServeurLinks
+	 * @param serveurs
 	 */
-	public FicheOrdinateur(Fiche.State initialState) {
+	public FicheOrdinateur(Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs) {
+		super(Fiche.State.CREATION);
+		Fiche.State initialState = Fiche.State.CREATION;
+		
+		//Modèles
+		this.employes = employes;
+		this.ordinateurServeurLinks = ordinateurServeurLinks;
+		this.serveurs = serveurs;
+		
+		//Listes de delta
+		this.addedLinks = new HashMap<Serveur, Integer>();
+		this.deletedLinks = new ArrayList<Serveur>();
+		
+		//Modèle de la combobox
+		this.cmbboxModel = new DefaultComboBoxModel<String>();
+		this.cmbboxModel.addElement(null);
+		
+		for(Employe employe : employes.getItems()) {
+			this.cmbboxModel.addElement(employe.getMatricule());
+		}
+		
+		//Modèle tables imprimante et serveurs
+		this.tableModelServeurs = new DefaultTableModel();
+		this.tableModelImprimante = new DefaultTableModel();
+		this.tableModelServeurs.setColumnIdentifiers(FicheOrdinateur.columnsTableServeurs);
+		this.tableModelImprimante.setColumnIdentifiers(FicheOrdinateur.columnsTableImprimante);
+		
+		initComponents();
+		this.changeState(initialState);
+	}
+	
+	/**
+	 * Constructeur pour un ordinateur existant
+	 * @param initialState
+	 * @param ordinateur
+	 * @param employes
+	 * @param ordinateurServeurLinks
+	 * @param serveurs
+	 */
+	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs) {
 		super(initialState);
+		
+		this.employes = employes;
+		this.ordinateurServeurLinks = ordinateurServeurLinks;
+		
+		//Modèle de la combobox
+		this.cmbboxModel = new DefaultComboBoxModel<String>();
+		this.cmbboxModel.addElement(null);
+		
+		for(Employe employe : employes.getItems()) {
+			this.cmbboxModel.addElement(employe.getMatricule());
+		}
+		
+		//Modèle tables imprimante et serveurs
+		this.tableModelServeurs = new DefaultTableModel();
+		this.tableModelImprimante = new DefaultTableModel();
+		this.tableModelServeurs.setColumnIdentifiers(FicheOrdinateur.columnsTableServeurs);
+		this.tableModelImprimante.setColumnIdentifiers(FicheOrdinateur.columnsTableImprimante);
+		
+		//Ajout des liens existants
+		Object[] rowDataLink = new Object[FicheOrdinateur.columnsTableServeurs.length];
+		
+		for(OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNO(ordinateur.getSn())) {
+			rowDataLink[0] = ordinateurServeurLink.getServeur().getSn();
+			rowDataLink[1] = ordinateurServeurLink.getServeur().getDesignation();
+			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur())/1024;
+			
+			this.tableModelServeurs.addRow(rowDataLink);
+		}
+		
 		initComponents();
 		this.changeState(initialState);
 	}
@@ -61,31 +168,23 @@ public class FicheOrdinateur extends Fiche {
 	protected void changeState(State newState) {
 		super.changeState(newState);
 		
-		switch(newState) {
-		case CREATION:
-			//Interdit à la création
-			this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
-			this.lblAChanger.setVisible(newState != Fiche.State.CREATION);
-			this.lblARetourner.setVisible(newState != Fiche.State.CREATION);
-			this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":"##");
-			this.staticLblAChanger.setVisible(newState != Fiche.State.CREATION);
-			this.staticLblARetourner.setVisible(newState != Fiche.State.CREATION);
-			
-			//Interdit à la visualisation
-			this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
-			this.cmbboxAssignedTo.setEditable(newState != Fiche.State.VISUALISATION);
-			this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
-			this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
-			
-			//Autorisé pour création
-			this.tfSNO.setEditable(newState == Fiche.State.CREATION);
-			
-			break;
-		case MODIFICATION:
-			break;
-		case VISUALISATION:
-			break;
-		}
+		//Interdit à la création
+		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
+		this.lblAChanger.setVisible(newState != Fiche.State.CREATION);
+		this.lblARetourner.setVisible(newState != Fiche.State.CREATION);
+		this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":"##");
+		this.staticLblAChanger.setVisible(newState != Fiche.State.CREATION);
+		this.staticLblARetourner.setVisible(newState != Fiche.State.CREATION);
+		
+		//Interdit à la visualisation
+		this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
+		this.cmbboxAssignedTo.setEditable(newState != Fiche.State.VISUALISATION);
+		this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
+		
+		//Autorisé pour création
+		this.tfSNO.setEditable(newState == Fiche.State.CREATION);
+		
 	}
 	
 	public JButton getBtnConnecterImprimante() {
@@ -102,6 +201,94 @@ public class FicheOrdinateur extends Fiche {
 	
 	public JButton getBtnDeconnecterServeurs() {
 		return btnDeconnecterServeurs;
+	}
+
+	public String getSN() {
+		return this.tfSNO.getText();
+	}
+	
+	public String getDesignation() {
+		return this.tfDesignation.getText();
+	}
+	
+	public int getRAM() {
+		return (int)this.spinnerRAM.getValue();
+	}
+	
+	public double getCPU() {
+		return (double)this.spinnerCPU.getValue();
+	}
+	
+	public Employe getProprietaire() {
+		return this.employes.findByMatricule((String)this.cmbboxAssignedTo.getModel().getSelectedItem());
+	}
+	
+	public HashMap<Serveur, Integer> getAddedLinks() {
+		return addedLinks;
+	}
+	
+	public ArrayList<Serveur> getDeletedLinks() {
+		return deletedLinks;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		
+		if(e.getSource() == this.btnConnecterServeurs) {
+			if(this.connexionServeurForm == null) {
+				//On détermine les serveurs pour lesquels on peut se connecter
+				ArrayList<Serveur> serveursDisponibles = new ArrayList<>(this.serveurs.getItems());
+				
+				int columnSNSIndex = this.tblServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
+				for(int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
+					Serveur serveur = this.serveurs.findBySN((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
+					if(serveursDisponibles.contains(serveur))
+						serveursDisponibles.remove(serveur);
+				}
+				
+				//On ouvre le formulaire
+				this.connexionServeurForm = new ConnexionServeur(serveursDisponibles, this.serveurs, this);
+				this.connexionServeurForm.getBtnSauvegarder().addActionListener(this);
+				this.connexionServeurForm.setVisible(true);
+			}
+			
+			this.connexionServeurForm.toFront();
+		}
+		if(this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
+			//On récupère les numéros de série séléctionnés
+			for(Serveur serveur : this.connexionServeurForm.getSelectedServeurs()) {
+				//On ajoute le liens aux liens ajoutés
+				this.addedLinks.put(serveur, this.connexionServeurForm.getQuotaSelected());
+				
+				//On ajoute la ligne à la table
+				Object[] rowData = new Object[FicheOrdinateur.columnsTableServeurs.length];
+				rowData[0] = serveur.getSn();
+				rowData[1] = serveur.getDesignation();
+				rowData[2] = serveur.getMemoire() - (this.serveurs.calculerSommeQuotas(serveur) + this.connexionServeurForm.getQuotaSelected())/1024;
+				this.tableModelServeurs.addRow(rowData);
+				this.tableModelServeurs.fireTableDataChanged();
+			}
+			
+			//Fermeture du formulaire
+			this.connexionServeurForm.dispose();
+			this.connexionServeurForm = null;
+		}
+		if(e.getSource() == this.btnDeconnecterServeurs) {
+			int deletedRowsCounter = 0;
+			int columnSNSIndex = this.tblServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
+			
+			for(int rowIndex : this.tblServeurs.getSelectedRows()) {
+				Serveur serveur = this.serveurs.findBySN((String) this.tblServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				if(this.addedLinks.containsKey(serveur)) {
+					this.addedLinks.remove(serveur);
+				}else {
+					this.deletedLinks.add(serveur);
+				}
+				this.tableModelServeurs.removeRow(rowIndex - deletedRowsCounter);
+				deletedRowsCounter++;
+			}
+		}
 	}
 	
 	public void initComponents() {
@@ -179,13 +366,11 @@ public class FicheOrdinateur extends Fiche {
 		
 		//Configuration TextFields
 		tfSNO = new JTextField();
-		tfSNO.setEditable(false);
 		tfSNO.setBounds(139, 59, 117, 20);
 		contentPane.add(tfSNO);
 		tfSNO.setColumns(10);
 		
 		tfDesignation = new JTextField();
-		tfDesignation.setEditable(false);
 		tfDesignation.setColumns(0);
 		tfDesignation.setBounds(139, 151, 234, 20);
 		contentPane.add(tfDesignation);
@@ -204,22 +389,20 @@ public class FicheOrdinateur extends Fiche {
 		
 		//Configuration Spinners
 		spinnerRAM = new JSpinner();
-		spinnerRAM.setEnabled(false);
-		spinnerRAM.setModel(new SpinnerNumberModel(4, 4, 8, 4));
+		spinnerRAM.setModel(new SpinnerNumberModel(4, 2, 64, 1));
 		spinnerRAM.setBounds(421, 84, 117, 20);
 		contentPane.add(spinnerRAM);
 		
 		spinnerCPU = new JSpinner();
-		spinnerCPU.setEnabled(false);
-		spinnerCPU.setModel(new SpinnerNumberModel(4096, 4096, 8192, 4096));
+		spinnerCPU.setModel(new SpinnerNumberModel(3.1, 2.0, 5.0, 0.1));
 		spinnerCPU.setBounds(421, 112, 117, 20);
 		contentPane.add(spinnerCPU);
 		
 		//Configuration ComboBox
 		cmbboxAssignedTo = new JComboBox<>();
-		cmbboxAssignedTo.setEnabled(false);
 		cmbboxAssignedTo.setEditable(true);
 		cmbboxAssignedTo.setBounds(421, 55, 117, 20);
+		this.cmbboxAssignedTo.setModel(this.cmbboxModel);
 		contentPane.add(cmbboxAssignedTo);
 		
 		//Configuration Labels dynamiques
@@ -251,35 +434,13 @@ public class FicheOrdinateur extends Fiche {
 		
 		tableImprimante = new JTable();
 		tableImprimante.setFillsViewportHeight(true);
-		tableImprimante.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"SN_I", "D\u00E9signation", "R\u00E9solution"
-			}
-		));
+		tableImprimante.setModel(this.tableModelImprimante);
 		tableImprimante.getColumnModel().getColumn(1).setPreferredWidth(200);
 		scrllpaneImprimante.setViewportView(tableImprimante);
 		
 		tblServeurs = new JTable();
-		tblServeurs.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"SN_S", "D\u00E9signation", "Charge"
-			}
-		));
+		tblServeurs.setFillsViewportHeight(true);
+		tblServeurs.setModel(this.tableModelServeurs);
 		tblServeurs.getColumnModel().getColumn(0).setPreferredWidth(150);
 		tblServeurs.getColumnModel().getColumn(1).setPreferredWidth(200);
 		tblServeurs.getColumnModel().getColumn(2).setPreferredWidth(70);

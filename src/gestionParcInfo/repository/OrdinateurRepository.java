@@ -60,7 +60,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 					e1.printStackTrace();
 				}
 			
-				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, dateAttribution,dateRestitution);
+				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), imprimante, associatedEmploye, dateAttribution,dateRestitution);
 		}
 		
 		pstmt.close();
@@ -105,7 +105,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 				}
 			}
 
-			ordinateurs.add(new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getFloat(4), imprimante, associatedEmploye, dateAttribution, dateRestitution));
+			ordinateurs.add(new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), imprimante, associatedEmploye, dateAttribution, dateRestitution));
 
 		}
 		

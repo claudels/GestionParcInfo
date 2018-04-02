@@ -9,9 +9,22 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.fiche.FicheOrdinateur;
+import gestionParcInfo.view.tab.OrdinateurTab;
+
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -19,13 +32,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.SpinnerNumberModel;
 
-public class ConnexionServeur extends JFrame {
+public class ConnexionServeur extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final String[] columnNames = {"SN_S", "D\u00E9signation", "PCs connect\u00E9s", "Charge", "M\u00E9moire disponible (Go)"};
 	
 	//Fenetre principale
 	private JPanel contentPane;
 	
 	//Tableaux
 	private JTable tableConnexionServeur;
+	private DefaultTableModel tableModel;
 
 	//Labels statiques
 	private JLabel staticLblTitle;
@@ -39,11 +59,7 @@ public class ConnexionServeur extends JFrame {
 	private JLabel lblDesignation;
 	private JLabel lblProprietaire;
 	private JLabel staticLblUniteQuota;
-	
-	//Boutons
-	private JButton btnAnnuler;
 	private JButton btnSauvegarder;
-	private JToggleButton tglbtnMode;
 	
 	//Spinner
 	private JSpinner spinnerQuota ;
@@ -51,13 +67,47 @@ public class ConnexionServeur extends JFrame {
 	//ScrollPane
 	private JScrollPane scrllpaneConnexionServeur;
 	
-	public ConnexionServeur() {
+	//Serveurs
+	private Serveurs serveurs;
+	
+	FicheOrdinateur ficheOrdinateur;
+	
+	public ConnexionServeur(ArrayList<Serveur> serveursToShow, Serveurs serveurs, FicheOrdinateur ficheOrdinateur) {
+		this.serveurs = serveurs;
+		this.ficheOrdinateur = ficheOrdinateur;
+		
+		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(ConnexionServeur.columnNames);
+		
+		//Remplissage table
+		DecimalFormat f = new DecimalFormat("##0.00");
+		
+		for(Serveur serveur : serveursToShow) {
+			Object[] rowData = new Object[ConnexionServeur.columnNames.length];
+			rowData[0] = serveur.getSn();
+			rowData[1] = serveur.getDesignation();
+			rowData[2] = serveurs.countOrdinateursLinked(serveur);
+			rowData[3] = f.format(serveurs.calculerChargeServeur(serveur)*100) + "%";
+			rowData[4] = serveur.getMemoire() - serveurs.calculerSommeQuotas(serveur)/1024;
+			this.tableModel.addRow(rowData);
+		}
+		
 		this.initComponents();
+		
+		//Modification du texte des label
+		this.lblSNO.setText(this.ficheOrdinateur.getSN());
+		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
+		if(this.ficheOrdinateur.getProprietaire() != null)
+			this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
+	}
+	
+	public JButton getBtnSauvegarder() {
+		return btnSauvegarder;
 	}
 	
 	private void initComponents() {
 		setTitle("Employ\u00E9");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 664, 577);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -95,17 +145,17 @@ public class ConnexionServeur extends JFrame {
 		contentPane.add(staticLblQuota);
 		
 		//Configuration des labels dynamique
-		lblSNO = new JLabel("###########");
+		lblSNO = new JLabel();
 		lblSNO.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblSNO.setBounds(206, 65, 115, 16);
 		contentPane.add(lblSNO);
 		
-		lblDesignation = new JLabel("############################");
+		lblDesignation = new JLabel();
 		lblDesignation.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDesignation.setBounds(206, 93, 215, 16);
 		contentPane.add(lblDesignation);
 		
-		lblProprietaire = new JLabel("###########");
+		lblProprietaire = new JLabel();
 		lblProprietaire.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblProprietaire.setBounds(206, 123, 125, 16);
 		contentPane.add(lblProprietaire);
@@ -115,18 +165,7 @@ public class ConnexionServeur extends JFrame {
 		staticLblUniteQuota.setBounds(615, 452, 19, 14);
 		contentPane.add(staticLblUniteQuota);
 		
-		//Configuration des bouttons toggles
-		tglbtnMode = new JToggleButton("Mode visualisation");
-		tglbtnMode.setBounds(394, 495, 137, 23);
-		contentPane.add(tglbtnMode);
-		
-		//Configuration des bouttons
-		btnAnnuler = new JButton("Annuler");
-		btnAnnuler.setBounds(303, 495, 89, 23);
-		contentPane.add(btnAnnuler);
-		
 		btnSauvegarder = new JButton("Sauvegarder");
-		btnSauvegarder.setEnabled(false);
 		btnSauvegarder.setBounds(533, 495, 105, 23);
 		contentPane.add(btnSauvegarder);
 		
@@ -143,31 +182,27 @@ public class ConnexionServeur extends JFrame {
 		
 		//Configuration du tableau
 		tableConnexionServeur = new JTable();
-		tableConnexionServeur.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"SN_S", "D\u00E9signation", "PCs connect\u00E9s", "Charge", "M\u00E9moire disponible"
-			}
-		));
+		this.tableConnexionServeur.setModel(this.tableModel);
 		tableConnexionServeur.getColumnModel().getColumn(1).setPreferredWidth(132);
 		tableConnexionServeur.getColumnModel().getColumn(2).setPreferredWidth(70);
 		tableConnexionServeur.getColumnModel().getColumn(3).setPreferredWidth(80);
 		tableConnexionServeur.getColumnModel().getColumn(4).setPreferredWidth(120);
 		scrllpaneConnexionServeur.setViewportView(tableConnexionServeur);
+	}
+	
+	public ArrayList<Serveur> getSelectedServeurs() {
+		ArrayList<Serveur> result = new ArrayList<>();
+		
+		int columnSNSIndex = this.tableConnexionServeur.convertColumnIndexToView(this.tableModel.findColumn(ConnexionServeur.columnNames[0]));
+
+		for(int rowIndex : this.tableConnexionServeur.getSelectedRows()) {
+			result.add(this.serveurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex)));
+		}
+		
+		return result;
+	}
+	
+	public int getQuotaSelected() {
+		return (int)this.spinnerQuota.getValue();
 	}
 }

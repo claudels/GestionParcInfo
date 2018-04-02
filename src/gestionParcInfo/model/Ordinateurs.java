@@ -83,7 +83,7 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	public List<Ordinateur> findOrdinateursByEmploye(Employe employe) {
 		return this.getItems()
 				.parallelStream()
-				.filter(ordinateur -> employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
+				.filter(ordinateur -> ordinateur.getProprietaire() != null && employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
 				.collect(Collectors.toList());
 	}
 	

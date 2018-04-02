@@ -31,7 +31,7 @@ public class FicheServeur extends Fiche {
 	private JTable tblServeur;
 	
 	//labels statiques
-	private JLabel staticLblNumeroDeSerie, staticLblOrdinateursConnectés, staticLblTitle, staticLbldesignation, staticLblCharge, staticLblPourcent, staticLblNbOrdinateursConnectés;
+	private JLabel staticLblUniteMemoire, staticLblNumeroDeSerie, staticLblOrdinateursConnectés, staticLblTitle, staticLbldesignation, staticLblCharge, staticLblPourcent, staticLblNbOrdinateursConnectés;
 	
 	//labels dynamique
 	private JLabel lblBnOrdinateursConnectés, lblMemoire,lblCharge;
@@ -112,6 +112,10 @@ public class FicheServeur extends Fiche {
 		staticLblNbOrdinateursConnectés.setBounds(12, 126, 206, 22);
 		contentPane.add(staticLblNbOrdinateursConnectés);
 		
+		staticLblUniteMemoire = new JLabel("Go");
+		staticLblUniteMemoire.setBounds(180, 333, 24, 16);
+		contentPane.add(staticLblUniteMemoire);
+		
 		//Configuration des label dynamique
 		lblBnOrdinateursConnectés = new JLabel("#####");
 		lblBnOrdinateursConnectés.setHorizontalAlignment(SwingConstants.CENTER);
@@ -190,7 +194,7 @@ public class FicheServeur extends Fiche {
 				{null, null, null, null},
 			},
 			new String[] {
-				"SN_O", "Description", "Quota", "Employe"
+				"SN_O", "Description", "Quota (Mo)", "Employe"
 			}
 		) {
 			Class[] columnTypes = new Class[] {

@@ -51,6 +51,14 @@ public class Fiche extends JFrame implements ActionListener, Observer {
 		this.tglbtnMode.setText(newState.toString());
 	}
 	
+	public JButton getBtnSauver() {
+		return btnSauver;
+	}
+	
+	public State getCurrentState() {
+		return currentState;
+	}
+	
 	private void initComponents() {
 		//Configuration fenetre
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -27,7 +27,37 @@ public class Serveurs extends ModelList<Serveur> {
 		this.notifyObservers();
 	}
 	
-	/*public Serveur findBySN(String sns){
+	/**
+	 * Compte le nombre d'ordinateurs connectés à un serveur
+	 * @param serveur Serveur pour lequel compter les ordinateurs
+	 * @return long Nombre d'ordinateurs connectés
+	 */
+	public long countOrdinateursLinked(Serveur serveur) {
+		return this.ordinateurServeurLinks.findBySNS(serveur.getSn()).size();
+	}
+	
+	/**
+	 * Calcule la charge théorique maximale du serveur (somme quotas ordinateurs/mémoire)
+	 * @param serveur Serveur pour lequel calculer la charge
+	 * @return Un pourcentage compris entre 0.0 et 1.0
+	 */
+	public double calculerChargeServeur(Serveur serveur) {	
+		return (double)(((double)calculerSommeQuotas(serveur)/1024)/(double)serveur.getMemoire());
+	}
+	
+	/**
+	 * Retourne la somme des quotas des ordinateurs reliés au serveur (en MegaOctets
+	 * @param serveur
+	 * @return
+	 */
+	public long calculerSommeQuotas(Serveur serveur) {
+		return this.ordinateurServeurLinks.findBySNS(serveur.getSn())
+				.parallelStream()
+				.mapToLong(ordinateurServeurLink -> ordinateurServeurLink.getQuota())
+				.sum();
+	}
+
+	public Serveur findBySN(String sns) {
 		Serveur result = null;
 		
 		for(Serveur serveur : this.getItems()) {
@@ -36,44 +66,7 @@ public class Serveurs extends ModelList<Serveur> {
 		}
 		
 		return result;
-	}*/
-	/**
-	 * Compte le nombre d'ordinateurs connectés à un serveur
-	 * @param serveur Serveur pour lequel compter les ordinateurs
-	 * @return long Nombre d'ordinateurs connectés
-	 */
-	public long countOrdinateursLinked(Serveur serveur) {
-		return this.ordinateurServeurLinks.getItems()
-		.parallelStream()
-		.filter(ordinateurServeurLink -> ordinateurServeurLink.getServeur().getSn().equals(serveur.getSn()))
-		.count();
 	}
-	
-	/**
-	 * Calcule la charge théorique maximale du serveur (somme quotas ordinateurs/mémoire)
-	 * @param serveur Serveur pour lequel calculer la charge
-	 * @return Un pourcentage compris entre 0.0 et 1.0
-	 */
-	public double calculerChargeServeur(Serveur serveur) {
-		long sommeQuotas = this.ordinateurServeurLinks.getItems()
-				.parallelStream()
-				.filter(ordinateurServeurLink -> ordinateurServeurLink.getServeur().getSn().equals(serveur.getSn()))
-				.mapToLong(ordinateurServeurLink -> ordinateurServeurLink.getQuota())
-				.sum();
-		
-		return (double)((double)sommeQuotas/(double)serveur.getMemoire());
-	}
-
-	public Serveur findBySN(String sns) {
-	Serveur result = null;
-			
-			for(Serveur serveur : this.getItems()) {
-				if(serveur.getSn().equals(sns))
-					result = serveur;
-			}
-			
-			return result;
-		}
 
 	
 }
