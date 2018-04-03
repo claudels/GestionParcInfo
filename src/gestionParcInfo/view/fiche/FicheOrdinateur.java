@@ -32,6 +32,7 @@ import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.view.ConnexionServeur;
 
@@ -49,7 +50,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	
 	//Tableaux
 	private JScrollPane scrllpaneImprimante, scrllpaneServeurs;
-	private JTable tableImprimante, tblServeurs;
+	private JTable tableImprimante, tableServeurs;
 	private DefaultTableModel tableModelServeurs, tableModelImprimante;
 	
 	//ComboBox
@@ -129,11 +130,12 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
 	 */
-	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs) {
+	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs) {
 		super(initialState);
 		
 		this.employes = employes;
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
+		this.serveurs = serveurs;
 		
 		//Modèle de la combobox
 		this.cmbboxModel = new DefaultComboBoxModel<String>();
@@ -141,6 +143,9 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		
 		for(Employe employe : employes.getItems()) {
 			this.cmbboxModel.addElement(employe.getMatricule());
+			if(ordinateur.getProprietaire() != null && ordinateur.getProprietaire().getMatricule().equals(employe.getMatricule())) {
+				this.cmbboxModel.setSelectedItem(employe.getMatricule());
+			}
 		}
 		
 		//Modèle tables imprimante et serveurs
@@ -162,6 +167,20 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		
 		initComponents();
 		this.changeState(initialState);
+		
+		//On initialise les champs du formulaire avec les attributs de l'ordinateur 
+		this.tfSNO.setText(ordinateur.getSn());
+		this.tfDesignation.setText(ordinateur.getDesignation());
+		
+		if(ordinateur.getDateAttribution() != null)
+			this.tfDateAttribution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateAttribution()));
+		if(ordinateur.getDateRestitution() != null)
+			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
+		
+		this.lblAChanger.setText(ordinateurs.ordinateurMustBeChanged(ordinateur) ? "OUI" : "NON");
+		this.lblAChanger.setText(ordinateurs.ordinateurMustBeReturned(ordinateur) ? "OUI" : "NON");
+		this.spinnerCPU.setValue(ordinateur.getCpu());
+		this.spinnerRAM.setValue(ordinateur.getRam());
 	}
 	
 	@Override
@@ -178,7 +197,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		
 		//Interdit à la visualisation
 		this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
-		this.cmbboxAssignedTo.setEditable(newState != Fiche.State.VISUALISATION);
+		this.cmbboxAssignedTo.setEnabled(newState != Fiche.State.VISUALISATION);
 		this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
 		this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
 		
@@ -240,7 +259,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 				//On détermine les serveurs pour lesquels on peut se connecter
 				ArrayList<Serveur> serveursDisponibles = new ArrayList<>(this.serveurs.getItems());
 				
-				int columnSNSIndex = this.tblServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
+				int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 				for(int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
 					Serveur serveur = this.serveurs.findBySN((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
 					if(serveursDisponibles.contains(serveur))
@@ -276,10 +295,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		}
 		if(e.getSource() == this.btnDeconnecterServeurs) {
 			int deletedRowsCounter = 0;
-			int columnSNSIndex = this.tblServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
+			int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 			
-			for(int rowIndex : this.tblServeurs.getSelectedRows()) {
-				Serveur serveur = this.serveurs.findBySN((String) this.tblServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+			for(int rowIndex : this.tableServeurs.getSelectedRows()) {
+				Serveur serveur = this.serveurs.findBySN((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
 				if(this.addedLinks.containsKey(serveur)) {
 					this.addedLinks.remove(serveur);
 				}else {
@@ -308,7 +327,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		staticLblDateAttribution.setBounds(12, 82, 117, 22);
 		contentPane.add(staticLblDateAttribution);
 		
-		staticLblDateRestitution = new JLabel("Date de resitution :");
+		staticLblDateRestitution = new JLabel("Date de restitution :");
 		staticLblDateRestitution.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblDateRestitution.setBounds(0, 110, 128, 22);
 		contentPane.add(staticLblDateRestitution);
@@ -438,13 +457,13 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		tableImprimante.getColumnModel().getColumn(1).setPreferredWidth(200);
 		scrllpaneImprimante.setViewportView(tableImprimante);
 		
-		tblServeurs = new JTable();
-		tblServeurs.setFillsViewportHeight(true);
-		tblServeurs.setModel(this.tableModelServeurs);
-		tblServeurs.getColumnModel().getColumn(0).setPreferredWidth(150);
-		tblServeurs.getColumnModel().getColumn(1).setPreferredWidth(200);
-		tblServeurs.getColumnModel().getColumn(2).setPreferredWidth(70);
-		scrllpaneServeurs.setViewportView(tblServeurs);
+		tableServeurs = new JTable();
+		tableServeurs.setFillsViewportHeight(true);
+		tableServeurs.setModel(this.tableModelServeurs);
+		tableServeurs.getColumnModel().getColumn(0).setPreferredWidth(150);
+		tableServeurs.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tableServeurs.getColumnModel().getColumn(2).setPreferredWidth(70);
+		scrllpaneServeurs.setViewportView(tableServeurs);
 		
 		//Configuration des boutons
 		btnAnnuler.setBounds(242, 632, this.btnAnnuler.getWidth(), this.btnAnnuler.getHeight());

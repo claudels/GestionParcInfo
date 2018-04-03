@@ -3,6 +3,8 @@ package gestionParcInfo.controller;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -27,7 +29,7 @@ import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.tab.OrdinateurTab;
 
-public class OrdinateurController implements ActionListener, WindowListener{
+public class OrdinateurController implements ActionListener, WindowListener, MouseListener{
 	
 	private OrdinateurTab ordiTab;
 	private Ordinateurs ordinateurs;
@@ -55,7 +57,7 @@ public class OrdinateurController implements ActionListener, WindowListener{
 				ficheOrdinateur.setVisible(true);
 				
 				//Ajout des listeners
-				this.ficheOrdinateur.addWindowListener(this);;
+				this.ficheOrdinateur.addWindowListener(this);
 				this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
 				this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this);
 				this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this);
@@ -137,7 +139,7 @@ public class OrdinateurController implements ActionListener, WindowListener{
 						
 						if(this.ficheOrdinateur.getProprietaire() != null) {
 							newOrdinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
-							newOrdinateur.setDateRestitution(new Date());
+							newOrdinateur.setDateAttribution(new Date());
 						}
 						
 						//Persistance de l'ordinateur et ajout au modèle
@@ -207,6 +209,56 @@ public class OrdinateurController implements ActionListener, WindowListener{
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == this.ordiTab.getTableOrdinateur())
+			if (e.getClickCount() == 2) {
+				System.out.println("DoubleClick on table ordinateur");
+				//Création du formulaire
+				if(this.ficheOrdinateur == null) {
+					Ordinateur ordinateur = this.ordinateurs.findBySN(this.ordiTab.getSNOrdinateurClicked());
+					
+					this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs);
+					ficheOrdinateur.setVisible(true);
+					
+					//Ajout des listeners
+					this.ficheOrdinateur.addWindowListener(this);
+					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
+					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this);
+					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this);
+					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
+					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
+					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
+				}else {
+					this.ficheOrdinateur.toFront();
+				}
+		   }
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}

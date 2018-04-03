@@ -77,6 +77,10 @@ public class OrdinateurTab extends JPanel implements Observer{
 		this.add(btnSupprimer);
 	}
 	
+	public JTable getTableOrdinateur() {
+		return tableOrdinateur;
+	}
+	
 	public JButton getBtnAjouter() {
 		return btnAjouter;
 	}
@@ -99,13 +103,24 @@ public class OrdinateurTab extends JPanel implements Observer{
 		}
 		
 		return serialNumbers;
-}
+	}
+	
+	public String getSNOrdinateurClicked() {
+		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(OrdinateurTab.columnsNames[0]));
+		return (String)this.tableOrdinateur.getValueAt(this.tableOrdinateur.getSelectedRow(), columnIndex);
+	}
 
 	@Override
 	public void update(Observable obs, Object obj) {
 		if(obs instanceof Ordinateurs) {
 			Ordinateurs ordinateurs = (Ordinateurs)obs;
-			this.tableModel = new DefaultTableModel();
+			this.tableModel = new DefaultTableModel(){
+				 @Override
+				    public boolean isCellEditable(int row, int column) {
+				       //all cells false
+				       return false;
+				    }
+				};
 			this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 			
 			for(Ordinateur ordinateur : ordinateurs.getItems()) {

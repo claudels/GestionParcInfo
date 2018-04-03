@@ -56,9 +56,9 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	}
 	
 	/**
-	 * Vérifier si un ordinateur doit être rendu
+	 * Vérifier si un ordinateur doit être changé
 	 * @param ordinateur Ordinateur sur lequel effectuer la vérification
-	 * @return true si l'ordinateur doit être rendu, false sinon
+	 * @return true si l'ordinateur doit être changé, false sinon
 	 */
 	public boolean ordinateurMustBeChanged(Ordinateur ordinateur) {
 		boolean result = false;

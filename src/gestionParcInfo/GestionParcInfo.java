@@ -100,6 +100,7 @@ public class GestionParcInfo {
 		ordiTab.getBtnAjouter().addActionListener(ordiController);
 		ordiTab.getBtnRetourner().addActionListener(ordiController);
 		ordiTab.getBtnSupprimer().addActionListener(ordiController);
+		ordiTab.getTableOrdinateur().addMouseListener(ordiController);
 		
 		//Add serveurs listeners
 		serveurTab.getBtnAJouter().addActionListener(servController);

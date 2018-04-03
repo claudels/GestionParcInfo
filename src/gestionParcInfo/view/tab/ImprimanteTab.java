@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -71,6 +72,7 @@ public class ImprimanteTab extends JPanel implements Observer {
 		
 		tblImprimante = new JTable();
 		tblImprimante.setModel(this.tableModel);
+		tblImprimante.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		tblImprimante.getColumnModel().getColumn(0).setPreferredWidth(63);
 		tblImprimante.getColumnModel().getColumn(0).setMinWidth(5);
 		tblImprimante.getColumnModel().getColumn(0).setMaxWidth(100);
