@@ -100,9 +100,10 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 		
 		//On cherche si l'employé à un PC qui est valide (ne devant pas être changé) et si ca fait plus de 15 jours qu'il l'a
 		//et que l'ordinateur passé en paramètre n'est pas restitué; alors l'ordinateur en paramètre doit ête restitué
-		if(employe != null && ordinateur.getDateAttribution() != null) {
+		if(employe != null && ordinateur.getDateAttribution() != null && (System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
 			for(Ordinateur ordinateurEmploye : findOrdinateursByEmploye(employe)) {
-				if(!this.ordinateurMustBeChanged(ordinateurEmploye) &&
+				if(!ordinateur.equals(ordinateurEmploye) &&
+						!this.ordinateurMustBeChanged(ordinateurEmploye) &&
 						ordinateur.getDateRestitution() == null &&
 						ordinateurEmploye.getDateAttribution() != null &&
 						(System.currentTimeMillis() - ordinateurEmploye.getDateAttribution().getTime()) >= timeInMsBeforeReturn) {

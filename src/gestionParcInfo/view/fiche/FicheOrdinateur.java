@@ -178,7 +178,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
 		
 		this.lblAChanger.setText(ordinateurs.ordinateurMustBeChanged(ordinateur) ? "OUI" : "NON");
-		this.lblAChanger.setText(ordinateurs.ordinateurMustBeReturned(ordinateur) ? "OUI" : "NON");
+		this.lblARetourner.setText(ordinateurs.ordinateurMustBeReturned(ordinateur) ? "OUI" : "NON");
 		this.spinnerCPU.setValue(ordinateur.getCpu());
 		this.spinnerRAM.setValue(ordinateur.getRam());
 	}
@@ -200,6 +200,12 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		this.cmbboxAssignedTo.setEnabled(newState != Fiche.State.VISUALISATION);
 		this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
 		this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnAnnuler.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnConnecterImprimante.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnConnecterServeurs.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnDeconnecterImprimante.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnDeconnecterServeurs.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnSauver.setEnabled(newState != Fiche.State.VISUALISATION);
 		
 		//Autorisé pour création
 		this.tfSNO.setEditable(newState == Fiche.State.CREATION);
