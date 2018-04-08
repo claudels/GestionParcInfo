@@ -27,13 +27,16 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.ConnexionImprimante;
 import gestionParcInfo.view.ConnexionServeur;
 
 import javax.swing.SwingConstants;
@@ -76,14 +79,18 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	private Employes employes;
 	private OrdinateurServeurLinks ordinateurServeurLinks;
 	private Serveurs serveurs;
+	private Imprimantes imprimantes;
 	
 	//ArrayList contenant les ajouts ou suppressions de liens vers les serveurs
 	private ArrayList<Serveur> deletedLinks;
 	private HashMap<Serveur, Integer> addedLinks;
+
 	
 	
 	//Formulaire de connexion aux serveurs
 	private ConnexionServeur connexionServeurForm = null;
+	private ConnexionImprimante connexionImprimanteForm = null;
+
 	
 	/**
 	 * Constructeur pour un nouvel ordinateur
@@ -91,7 +98,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
 	 */
-	public FicheOrdinateur(Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs) {
+	public FicheOrdinateur(Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Imprimantes imprimantes) {
 		super(Fiche.State.CREATION);
 		Fiche.State initialState = Fiche.State.CREATION;
 		
@@ -99,6 +106,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		this.employes = employes;
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
 		this.serveurs = serveurs;
+		this.imprimantes = imprimantes;
 		
 		//Listes de delta
 		this.addedLinks = new HashMap<Serveur, Integer>();
@@ -130,12 +138,13 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
 	 */
-	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs) {
+	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
 		super(initialState);
 		
 		this.employes = employes;
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
 		this.serveurs = serveurs;
+		this.imprimantes = imprimantes;
 		
 		//Modèle de la combobox
 		this.cmbboxModel = new DefaultComboBoxModel<String>();
@@ -252,13 +261,12 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		return addedLinks;
 	}
 	
-	public ArrayList<Serveur> getDeletedLinks() {
-		return deletedLinks;
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
+		
+		
 		
 		if(e.getSource() == this.btnConnecterServeurs) {
 			if(this.connexionServeurForm == null) {
@@ -279,6 +287,17 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 			}
 			
 			this.connexionServeurForm.toFront();
+		}
+		if(e.getSource() == this.btnConnecterImprimante) {
+			if(this.connexionImprimanteForm == null) {
+				
+				//On ouvre le formulaire
+				this.connexionImprimanteForm = new ConnexionImprimante(this.imprimantes, this);
+				this.connexionImprimanteForm.getBtnSauvegarder().addActionListener(this);
+				this.connexionImprimanteForm.setVisible(true);
+			}
+			
+			this.connexionImprimanteForm.toFront();
 		}
 		if(this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
 			//On récupère les numéros de série séléctionnés
@@ -314,7 +333,8 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 				deletedRowsCounter++;
 			}
 		}
-	}
+		}
+	
 	
 	public void initComponents() {
 		

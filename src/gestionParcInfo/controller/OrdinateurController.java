@@ -16,16 +16,19 @@ import java.util.Map.Entry;
 import javax.swing.JButton;
 
 import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.view.ConnexionServeur;
 import gestionParcInfo.view.fiche.Fiche;
+import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.tab.OrdinateurTab;
 
@@ -37,13 +40,15 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 	private FicheOrdinateur ficheOrdinateur;
 	private Employes employes;
 	private OrdinateurServeurLinks ordinateurServeurLinks;
+	private Imprimantes imprimantes;
 	
-	public OrdinateurController(OrdinateurTab ordiTab, Ordinateurs ordinateurs, Serveurs serveurs, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks) {
+	public OrdinateurController(OrdinateurTab ordiTab, Ordinateurs ordinateurs, Serveurs serveurs, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Imprimantes imprimantes) {
 		this.ordiTab = ordiTab;
 		this.ordinateurs = ordinateurs;
 		this.serveurs = serveurs;
 		this.employes = employes;
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
+		this.imprimantes = imprimantes;
 	}
 	
 	@Override
@@ -53,7 +58,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 			
 			//Création du formulaire
 			if(this.ficheOrdinateur == null) {
-				this.ficheOrdinateur = new FicheOrdinateur(this.employes, this.ordinateurServeurLinks, this.serveurs);
+				this.ficheOrdinateur = new FicheOrdinateur(this.employes, this.ordinateurServeurLinks, this.serveurs, this.imprimantes);
 				ficheOrdinateur.setVisible(true);
 				
 				//Ajout des listeners
@@ -117,8 +122,6 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}else if(e.getSource() == this.ficheOrdinateur.getBtnConnecterImprimante()) {
-			System.out.println("Connexion imprimante");
 		}
 		else if(e.getSource() == this.ficheOrdinateur.getBtnDeconnecterImprimante()) {
 			System.out.println("Déconnexion imprimante");
@@ -151,6 +154,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 							OrdinateurServeurLink newLink = new OrdinateurServeurLink(newOrdinateur, entry.getKey(), entry.getValue());
 							newLink.create(conn);
 							this.ordinateurServeurLinks.addItem(newLink);
+							
 						}
 						
 						conn.close();
@@ -163,6 +167,37 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				}
 				break;
 			case MODIFICATION:
+				if(this.ficheOrdinateur.getSN() != null && this.ficheOrdinateur.getDesignation() != null) {
+					try {
+						Connection conn;
+						conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+						Ordinateur newOrdinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
+						
+						if(this.ficheOrdinateur.getProprietaire() != null) {
+							newOrdinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
+							newOrdinateur.setDateAttribution(new Date());
+						}
+						
+						//Persistance de l'ordinateur et ajout au modèle
+						newOrdinateur.update(conn);
+						ordinateurs.updateItem(newOrdinateur);
+						
+						//Persistance des liens et ajouts au modèle
+						for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
+							OrdinateurServeurLink newLink = new OrdinateurServeurLink(newOrdinateur, entry.getKey(), entry.getValue());
+							newLink.update(conn);
+							this.ordinateurServeurLinks.updateItem(newLink);
+						}
+						
+						
+						conn.close();
+						this.ficheOrdinateur.dispose();
+						this.ficheOrdinateur = null;
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				break;
 			case VISUALISATION:
 				break;
@@ -222,14 +257,13 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				if(this.ficheOrdinateur == null) {
 					Ordinateur ordinateur = this.ordinateurs.findBySN(this.ordiTab.getSNOrdinateurClicked());
 					
-					this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs);
+					this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs, this.imprimantes);
 					ficheOrdinateur.setVisible(true);
 					
 					//Ajout des listeners
 					this.ficheOrdinateur.addWindowListener(this);
 					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
-					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this);
-					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this);
+					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
 					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
