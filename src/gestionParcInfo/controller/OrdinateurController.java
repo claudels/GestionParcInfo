@@ -171,24 +171,35 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					try {
 						Connection conn;
 						conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-						Ordinateur newOrdinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
+						Ordinateur ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSN());
 						
-						if(this.ficheOrdinateur.getProprietaire() != null) {
-							newOrdinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
-							newOrdinateur.setDateAttribution(new Date());
+						if(!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
+							ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
+							ordinateur.setDateAttribution(new Date());
+							ordinateur.setDateRestitution(null);
 						}
 						
+						ordinateur.setCpu(this.ficheOrdinateur.getCPU());
+						ordinateur.setDesignation(this.ficheOrdinateur.getDesignation());
+						ordinateur.setRam(this.ficheOrdinateur.getRAM());
+						
 						//Persistance de l'ordinateur et ajout au modèle
-						newOrdinateur.update(conn);
-						ordinateurs.updateItem(newOrdinateur);
+						ordinateur.update(conn);
+						ordinateurs.updateItem(ordinateur);
+						
+						//Suppression des liens à supprimer
+						for(Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
+							OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySNOAndSNS(ordinateur.getSn(), serveur.getSn());
+							linkToDelete.remove(conn);
+							this.ordinateurServeurLinks.removeItem(linkToDelete);
+						}
 						
 						//Persistance des liens et ajouts au modèle
 						for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
-							OrdinateurServeurLink newLink = new OrdinateurServeurLink(newOrdinateur, entry.getKey(), entry.getValue());
-							newLink.update(conn);
-							this.ordinateurServeurLinks.updateItem(newLink);
+							OrdinateurServeurLink newLink = new OrdinateurServeurLink(ordinateur, entry.getKey(), entry.getValue());
+							newLink.create(conn);
+							this.ordinateurServeurLinks.addItem(newLink);
 						}
-						
 						
 						conn.close();
 						this.ficheOrdinateur.dispose();

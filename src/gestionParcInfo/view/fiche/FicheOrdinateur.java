@@ -15,8 +15,10 @@ import javax.swing.JToggleButton;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.swing.JSplitPane;
@@ -146,6 +148,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		this.serveurs = serveurs;
 		this.imprimantes = imprimantes;
 		
+		//Listes de delta
+		this.addedLinks = new HashMap<Serveur, Integer>();
+		this.deletedLinks = new ArrayList<Serveur>();
+		
 		//Modèle de la combobox
 		this.cmbboxModel = new DefaultComboBoxModel<String>();
 		this.cmbboxModel.addElement(null);
@@ -181,11 +187,19 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		this.tfSNO.setText(ordinateur.getSn());
 		this.tfDesignation.setText(ordinateur.getDesignation());
 		
-		if(ordinateur.getDateAttribution() != null)
-			this.tfDateAttribution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateAttribution()));
-		if(ordinateur.getDateRestitution() != null)
-			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
+		String tempsUtilisation = null;
 		
+		if(ordinateur.getDateRestitution() != null) {
+			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
+			tempsUtilisation = Long.toString(TimeUnit.MILLISECONDS.toDays(ordinateur.getDateRestitution().getTime() - ordinateur.getDateAttribution().getTime()));
+		}
+		if(ordinateur.getDateAttribution() != null) {
+			this.tfDateAttribution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateAttribution()));
+			if(tempsUtilisation == null)
+				tempsUtilisation = Long.toString(TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()));
+		}
+			
+		this.lblJoursUtilisation.setText(tempsUtilisation);
 		this.lblAChanger.setText(ordinateurs.ordinateurMustBeChanged(ordinateur) ? "OUI" : "NON");
 		this.lblARetourner.setText(ordinateurs.ordinateurMustBeReturned(ordinateur) ? "OUI" : "NON");
 		this.spinnerCPU.setValue(ordinateur.getCpu());
@@ -259,6 +273,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	
 	public HashMap<Serveur, Integer> getAddedLinks() {
 		return addedLinks;
+	}
+	
+	public ArrayList<Serveur> getDeletedLinks() {
+		return deletedLinks;
 	}
 	
 	
