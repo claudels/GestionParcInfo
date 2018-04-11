@@ -95,14 +95,13 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 
 	
 	/**
-	 * Constructeur pour un nouvel ordinateur
+	 * Constructeur par default
 	 * @param employes
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
 	 */
-	public FicheOrdinateur(Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Imprimantes imprimantes) {
-		super(Fiche.State.CREATION);
-		Fiche.State initialState = Fiche.State.CREATION;
+	public FicheOrdinateur(Fiche.State initialState, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Imprimantes imprimantes) {
+		super(initialState);
 		
 		//Modèles
 		this.employes = employes;
@@ -139,36 +138,16 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	 * @param employes
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
-	 * @wbp.parser.constructor
 	 */
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
-		super(initialState);
+		this(initialState, employes, ordinateurServeurLinks, serveurs, imprimantes);
 		
-		this.employes = employes;
-		this.ordinateurServeurLinks = ordinateurServeurLinks;
-		this.serveurs = serveurs;
-		this.imprimantes = imprimantes;
-		
-		//Listes de delta
-		this.addedLinks = new HashMap<Serveur, Integer>();
-		this.deletedLinks = new ArrayList<Serveur>();
-		
-		//Modèle de la combobox
-		this.cmbboxModel = new DefaultComboBoxModel<String>();
-		this.cmbboxModel.addElement(null);
-		
+		//Selection du matricule de l'employé associé
 		for(Employe employe : employes.getItems()) {
-			this.cmbboxModel.addElement(employe.getMatricule());
 			if(ordinateur.getProprietaire() != null && ordinateur.getProprietaire().getMatricule().equals(employe.getMatricule())) {
 				this.cmbboxModel.setSelectedItem(employe.getMatricule());
 			}
 		}
-		
-		//Modèle tables imprimante et serveurs
-		this.tableModelServeurs = new DefaultTableModel();
-		this.tableModelImprimante = new DefaultTableModel();
-		this.tableModelServeurs.setColumnIdentifiers(FicheOrdinateur.columnsTableServeurs);
-		this.tableModelImprimante.setColumnIdentifiers(FicheOrdinateur.columnsTableImprimante);
 		
 		//Ajout des liens existants
 		Object[] rowDataLink = new Object[FicheOrdinateur.columnsTableServeurs.length];
@@ -180,9 +159,6 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 			
 			this.tableModelServeurs.addRow(rowDataLink);
 		}
-		
-		initComponents();
-		this.changeState(initialState);
 		
 		//On initialise les champs du formulaire avec les attributs de l'ordinateur 
 		this.tfSNO.setText(ordinateur.getSn());
@@ -215,7 +191,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
 		this.lblAChanger.setVisible(newState != Fiche.State.CREATION);
 		this.lblARetourner.setVisible(newState != Fiche.State.CREATION);
-		this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":"##");
+		this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":this.lblJoursUtilisation.getText());
 		this.staticLblAChanger.setVisible(newState != Fiche.State.CREATION);
 		this.staticLblARetourner.setVisible(newState != Fiche.State.CREATION);
 		
@@ -284,9 +260,6 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		
-		
-		
 		if(e.getSource() == this.btnConnecterServeurs) {
 			if(this.connexionServeurForm == null) {
 				//On détermine les serveurs pour lesquels on peut se connecter
@@ -317,6 +290,21 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 			}
 			
 			this.connexionImprimanteForm.toFront();
+		}
+		if(this.connexionImprimanteForm != null && e.getSource() == this.connexionImprimanteForm.getBtnSauvegarder()){
+			Imprimante imprimante = this.connexionImprimanteForm.getSelectedImprimante();
+			
+			//On met à jour la table
+			Object[] rowData = new Object[FicheOrdinateur.columnsTableImprimante.length];
+			rowData[0] = imprimante.getSn();
+			rowData[1] = imprimante.getDesignation();
+			rowData[2] = imprimante.getResolution();
+			this.tableModelImprimante.addRow(rowData);
+			this.tableModelImprimante.fireTableDataChanged();
+			
+			//Fermeture du formulaire
+			this.connexionImprimanteForm.dispose();
+			this.connexionImprimanteForm = null;
 		}
 		if(this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
 			//On récupère les numéros de série séléctionnés

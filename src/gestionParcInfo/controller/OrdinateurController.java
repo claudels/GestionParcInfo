@@ -58,7 +58,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 			
 			//Création du formulaire
 			if(this.ficheOrdinateur == null) {
-				this.ficheOrdinateur = new FicheOrdinateur(this.employes, this.ordinateurServeurLinks, this.serveurs, this.imprimantes);
+				this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.CREATION, this.employes, this.ordinateurServeurLinks, this.serveurs, this.imprimantes);
 				ficheOrdinateur.setVisible(true);
 				
 				//Ajout des listeners

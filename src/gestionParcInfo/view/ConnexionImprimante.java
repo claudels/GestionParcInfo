@@ -129,16 +129,10 @@ public class ConnexionImprimante extends JFrame{
 	
 	}
 	
-	public ArrayList<Imprimante> getSelectedImprimante() {
-		ArrayList<Imprimante> result = new ArrayList<>();
-		
+	public Imprimante getSelectedImprimante() {
 		int columnSNSIndex = this.tableConnexionImprimante.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
-
-		for(int rowIndex : this.tableConnexionImprimante.getSelectedRows()) {
-			result.add(this.imprimantes.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex)));
-		}
-		
-		return result;
+		int rowIndex = this.tableConnexionImprimante.getSelectedRow();
+		return this.imprimantes.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
 	}
 	
 
