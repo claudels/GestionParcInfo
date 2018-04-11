@@ -33,6 +33,7 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.ListSelectionModel;
 
 public class ConnexionImprimante extends JFrame{
 	/**
@@ -67,6 +68,12 @@ public class ConnexionImprimante extends JFrame{
 	private Imprimantes imprimantes;
 	
 	FicheOrdinateur ficheOrdinateur;
+	private JLabel staticLblSNO;
+	private JLabel staticLblDesignation;
+	private JLabel staticLblProprietaire;
+	private JLabel lblSNO;
+	private JLabel lblProprietaire;
+	private JLabel lblDesignation;
 	
 	public ConnexionImprimante(Imprimantes imprimantes, FicheOrdinateur ficheOrdinateur) {
 		this.imprimantes = imprimantes;
@@ -88,6 +95,9 @@ public class ConnexionImprimante extends JFrame{
 		
 		this.initComponents();
 		
+		this.lblSNO.setText(this.ficheOrdinateur.getSN());
+		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
+		this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
 	}	
 	public JButton getBtnSauvegarder() {
 		return btnSauvegarder;
@@ -105,12 +115,45 @@ public class ConnexionImprimante extends JFrame{
 		//Configuration des labels statiques
 		staticLblTitle = new JLabel("Connexions imprimantes");
 		staticLblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
-		staticLblTitle.setBounds(127, 0, 294, 32);
+		staticLblTitle.setBounds(127, 0, 359, 32);
 		contentPane.add(staticLblTitle);
 		
 		staticLblSubtitle = new JLabel("S\u00E9l\u00E9ctionnez une ou plusieurs imprimante(s) puis cliquez sur le bouton \"Connecter\" : ");
 		staticLblSubtitle.setBounds(10, 171, 487, 22);
 		contentPane.add(staticLblSubtitle);
+		
+		staticLblSNO = new JLabel("SN_O : ");
+		staticLblSNO.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblSNO.setBounds(226, 62, 75, 14);
+		contentPane.add(staticLblSNO);
+		
+		staticLblDesignation = new JLabel("D\u00E9signation : ");
+		staticLblDesignation.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblDesignation.setBounds(198, 90, 103, 14);
+		contentPane.add(staticLblDesignation);
+		
+		staticLblProprietaire = new JLabel("Propri\u00E9taire : ");
+		staticLblProprietaire.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblProprietaire.setBounds(212, 120, 89, 14);
+		contentPane.add(staticLblProprietaire);
+		
+		//Configuration labels dynamiques
+		lblSNO = new JLabel();
+		lblSNO.setText((String) null);
+		lblSNO.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblSNO.setBounds(307, 61, 115, 16);
+		contentPane.add(lblSNO);
+		
+		lblProprietaire = new JLabel();
+		lblProprietaire.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblProprietaire.setBounds(307, 119, 125, 16);
+		contentPane.add(lblProprietaire);
+		
+		lblDesignation = new JLabel();
+		lblDesignation.setText((String) null);
+		lblDesignation.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDesignation.setBounds(307, 89, 215, 16);
+		contentPane.add(lblDesignation);
 		
 		//Configuration du scroll pane
 		scrllpaneConnexionImprimante = new JScrollPane();
@@ -119,14 +162,15 @@ public class ConnexionImprimante extends JFrame{
 		
 		//Configuration du tableau
 		tableConnexionImprimante = new JTable();
+		tableConnexionImprimante.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.tableConnexionImprimante.setModel(this.tableModel);
 		scrllpaneConnexionImprimante.setViewportView(tableConnexionImprimante);
 		
+		//Configuration bouton
 		btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.setBounds(533, 495, 105, 23);
 		contentPane.add(btnSauvegarder);
-		
-	
+
 	}
 	
 	public Imprimante getSelectedImprimante() {
