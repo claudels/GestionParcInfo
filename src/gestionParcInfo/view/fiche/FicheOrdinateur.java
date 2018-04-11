@@ -15,6 +15,8 @@ import javax.swing.JToggleButton;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,7 @@ import gestionParcInfo.view.ConnexionServeur;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class FicheOrdinateur extends Fiche implements ActionListener {
+public class FicheOrdinateur extends Fiche implements ActionListener, WindowListener {
 	private static final String[] columnsTableServeurs = {"SN_S", "D\u00E9signation", "Mémoire restante (Go)"};
 	private static final String[] columnsTableImprimante = {"SN_I", "D\u00E9signation", "R\u00E9solution"};
 	
@@ -156,8 +158,16 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 			rowDataLink[0] = ordinateurServeurLink.getServeur().getSn();
 			rowDataLink[1] = ordinateurServeurLink.getServeur().getDesignation();
 			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur())/1024;
-			
 			this.tableModelServeurs.addRow(rowDataLink);
+		}
+		
+		//Ajout de l'imprimante
+		if(ordinateur.getImprimante() != null) {
+			Object[] rowDataImprimante = new Object[FicheOrdinateur.columnsTableImprimante.length];
+			rowDataImprimante[0] = ordinateur.getImprimante().getSn();
+			rowDataImprimante[1] = ordinateur.getImprimante().getDesignation();
+			rowDataImprimante[2] = ordinateur.getImprimante().getResolution();
+			this.tableModelImprimante.addRow(rowDataImprimante);
 		}
 		
 		//On initialise les champs du formulaire avec les attributs de l'ordinateur 
@@ -256,10 +266,50 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		return deletedLinks;
 	}
 	
+	public Imprimante getImprimante() {
+		Imprimante imprimante = null;
+		
+		if(this.tableModelImprimante.getRowCount() > 0) {
+			int columnSNIIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelImprimante.findColumn(FicheOrdinateur.columnsTableImprimante[0]));
+			imprimante = this.imprimantes.findBySN((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
+		}
+		
+		return imprimante;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
+		if(e.getSource() == this.btnConnecterImprimante) {
+			if(this.connexionImprimanteForm == null) {
+				//On ouvre le formulaire
+				this.connexionImprimanteForm = new ConnexionImprimante(this.imprimantes, this);
+				this.connexionImprimanteForm.getBtnSauvegarder().addActionListener(this);
+				this.connexionImprimanteForm.addWindowListener(this);
+				this.connexionImprimanteForm.setVisible(true);
+			}
+			
+			this.connexionImprimanteForm.toFront();
+		}
+		if(this.connexionImprimanteForm != null && e.getSource() == this.connexionImprimanteForm.getBtnSauvegarder()){
+			Imprimante imprimante = this.connexionImprimanteForm.getSelectedImprimante();
+			
+			//On met à jour la table
+			Object[] rowData = new Object[FicheOrdinateur.columnsTableImprimante.length];
+			rowData[0] = imprimante.getSn();
+			rowData[1] = imprimante.getDesignation();
+			rowData[2] = imprimante.getResolution();
+			this.tableModelImprimante.setRowCount(0);
+			this.tableModelImprimante.addRow(rowData);
+			this.tableModelImprimante.fireTableDataChanged();
+			
+			//Fermeture du formulaire
+			this.connexionImprimanteForm.dispose();
+			this.connexionImprimanteForm = null;
+		}
+		if(e.getSource() == this.btnDeconnecterImprimante) {
+			this.tableModelImprimante.setRowCount(0);
+		}
 		if(e.getSource() == this.btnConnecterServeurs) {
 			if(this.connexionServeurForm == null) {
 				//On détermine les serveurs pour lesquels on peut se connecter
@@ -275,36 +325,11 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 				//On ouvre le formulaire
 				this.connexionServeurForm = new ConnexionServeur(serveursDisponibles, this.serveurs, this);
 				this.connexionServeurForm.getBtnSauvegarder().addActionListener(this);
+				this.connexionServeurForm.addWindowListener(this);
 				this.connexionServeurForm.setVisible(true);
 			}
 			
 			this.connexionServeurForm.toFront();
-		}
-		if(e.getSource() == this.btnConnecterImprimante) {
-			if(this.connexionImprimanteForm == null) {
-				
-				//On ouvre le formulaire
-				this.connexionImprimanteForm = new ConnexionImprimante(this.imprimantes, this);
-				this.connexionImprimanteForm.getBtnSauvegarder().addActionListener(this);
-				this.connexionImprimanteForm.setVisible(true);
-			}
-			
-			this.connexionImprimanteForm.toFront();
-		}
-		if(this.connexionImprimanteForm != null && e.getSource() == this.connexionImprimanteForm.getBtnSauvegarder()){
-			Imprimante imprimante = this.connexionImprimanteForm.getSelectedImprimante();
-			
-			//On met à jour la table
-			Object[] rowData = new Object[FicheOrdinateur.columnsTableImprimante.length];
-			rowData[0] = imprimante.getSn();
-			rowData[1] = imprimante.getDesignation();
-			rowData[2] = imprimante.getResolution();
-			this.tableModelImprimante.addRow(rowData);
-			this.tableModelImprimante.fireTableDataChanged();
-			
-			//Fermeture du formulaire
-			this.connexionImprimanteForm.dispose();
-			this.connexionImprimanteForm = null;
 		}
 		if(this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
 			//On récupère les numéros de série séléctionnés
@@ -340,7 +365,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 				deletedRowsCounter++;
 			}
 		}
-		}
+	}
 	
 	
 	public void initComponents() {
@@ -518,5 +543,51 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 		btnDeconnecterServeurs = new JButton("D\u00E9connecter");
 		btnDeconnecterServeurs.setBounds(127, 564, 111, 25);
 		contentPane.add(btnDeconnecterServeurs);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		if(e.getSource() == this.connexionImprimanteForm) {
+			this.connexionImprimanteForm = null;
+		}
+		if(e.getSource() == this.connexionServeurForm) {
+			this.connexionServeurForm = null;
+		}
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

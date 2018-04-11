@@ -64,9 +64,8 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				//Ajout des listeners
 				this.ficheOrdinateur.addWindowListener(this);
 				this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
-				this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this);
-				this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this);
-				this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
+				this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this.ficheOrdinateur);
+				this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this.ficheOrdinateur);
 				this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
 				this.ficheOrdinateur.getBtnSauver().addActionListener(this);
 			}else {
@@ -123,96 +122,63 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				e1.printStackTrace();
 			}
 		}
-		else if(e.getSource() == this.ficheOrdinateur.getBtnDeconnecterImprimante()) {
-			System.out.println("Déconnexion imprimante");
-		}
-		else if(e.getSource() == this.ficheOrdinateur.getBtnDeconnecterServeurs()) {
-			System.out.println("Déconnexion serveur(s)");
-		}
-		else if(e.getSource() == this.ficheOrdinateur.getBtnSauver()) {
+		else if(e.getSource() == this.ficheOrdinateur.getBtnSauver() && (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION || this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver ordinateur");
-			
-			switch(this.ficheOrdinateur.getCurrentState()) {
-			case CREATION:
-				if(this.ficheOrdinateur.getSN() != null && this.ficheOrdinateur.getDesignation() != null) {
-					try {
-						Connection conn;
-						conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-						Ordinateur newOrdinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
-						
-						if(this.ficheOrdinateur.getProprietaire() != null) {
-							newOrdinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
-							newOrdinateur.setDateAttribution(new Date());
-						}
-						
-						//Persistance de l'ordinateur et ajout au modèle
-						newOrdinateur.create(conn);
-						ordinateurs.addItem(newOrdinateur);
-						
-						//Persistance des liens et ajouts au modèle
-						for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
-							OrdinateurServeurLink newLink = new OrdinateurServeurLink(newOrdinateur, entry.getKey(), entry.getValue());
-							newLink.create(conn);
-							this.ordinateurServeurLinks.addItem(newLink);
-							
-						}
-						
-						conn.close();
-						this.ficheOrdinateur.dispose();
-						this.ficheOrdinateur = null;
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				break;
-			case MODIFICATION:
-				if(this.ficheOrdinateur.getSN() != null && this.ficheOrdinateur.getDesignation() != null) {
-					try {
-						Connection conn;
-						conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-						Ordinateur ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSN());
-						
-						if(!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
-							ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
-							ordinateur.setDateAttribution(new Date());
-							ordinateur.setDateRestitution(null);
-						}
-						
-						ordinateur.setCpu(this.ficheOrdinateur.getCPU());
-						ordinateur.setDesignation(this.ficheOrdinateur.getDesignation());
-						ordinateur.setRam(this.ficheOrdinateur.getRAM());
-						
-						//Persistance de l'ordinateur et ajout au modèle
-						ordinateur.update(conn);
-						ordinateurs.updateItem(ordinateur);
-						
-						//Suppression des liens à supprimer
-						for(Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
-							OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySNOAndSNS(ordinateur.getSn(), serveur.getSn());
-							linkToDelete.remove(conn);
-							this.ordinateurServeurLinks.removeItem(linkToDelete);
-						}
-						
-						//Persistance des liens et ajouts au modèle
-						for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
-							OrdinateurServeurLink newLink = new OrdinateurServeurLink(ordinateur, entry.getKey(), entry.getValue());
-							newLink.create(conn);
-							this.ordinateurServeurLinks.addItem(newLink);
-						}
-						
-						conn.close();
-						this.ficheOrdinateur.dispose();
-						this.ficheOrdinateur = null;
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				break;
-			case VISUALISATION:
-				break;
+
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Ordinateur ordinateur = null;
 				
+				if(this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION) {
+					ordinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
+					
+					if(this.ficheOrdinateur.getProprietaire() != null) {
+						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
+						ordinateur.setDateAttribution(new Date());
+					}
+					
+					//Persistance de l'ordinateur et ajout au modèle
+					ordinateur.create(conn);
+					ordinateurs.addItem(ordinateur);
+				}else if(this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
+					ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSN());
+					
+					if(!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
+						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
+					}
+					
+					//Suppression des liens à supprimer
+					for(Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
+						OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySNOAndSNS(ordinateur.getSn(), serveur.getSn());
+						linkToDelete.remove(conn);
+						this.ordinateurServeurLinks.removeItem(linkToDelete);
+					}
+				}
+				
+				ordinateur.setCpu(this.ficheOrdinateur.getCPU());
+				ordinateur.setDesignation(this.ficheOrdinateur.getDesignation());
+				ordinateur.setRam(this.ficheOrdinateur.getRAM());
+				ordinateur.setImprimante(this.ficheOrdinateur.getImprimante());
+				
+				//Persistance de l'ordinateur et ajout au modèle
+				ordinateur.update(conn);
+				ordinateurs.updateItem(ordinateur);
+				
+				//Persistance des liens et ajouts au modèle
+				for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
+					OrdinateurServeurLink newLink = new OrdinateurServeurLink(ordinateur, entry.getKey(), entry.getValue());
+					newLink.create(conn);
+					this.ordinateurServeurLinks.addItem(newLink);
+					
+				}
+				
+				conn.close();
+				this.ficheOrdinateur.dispose();
+				this.ficheOrdinateur = null;
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -275,7 +241,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					this.ficheOrdinateur.addWindowListener(this);
 					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this.ficheOrdinateur);
-					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
+					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
 				}else {
