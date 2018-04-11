@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.repository.ImprimanteRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
@@ -23,11 +24,12 @@ import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.tab.ImprimanteTab;
 
-public class ImprimanteController implements ActionListener, WindowListener {
+public class ImprimanteController implements ActionListener, WindowListener, MouseListener {
 
 	private ImprimanteTab imprimanteTab;
 	private Imprimantes imprimantes;
 	private FicheImprimante ficheImprimante;
+	private Employes employes;
 	public ImprimanteController(ImprimanteTab imprimanteTab,Imprimantes imprimantes) {
 		this.imprimanteTab = imprimanteTab;
 		this.imprimantes = imprimantes;
@@ -45,6 +47,7 @@ public class ImprimanteController implements ActionListener, WindowListener {
 					
 					//Ajout des listeners
 					this.ficheImprimante.addWindowListener(this);
+					
 				
 				}else {
 					this.ficheImprimante.toFront();
@@ -120,7 +123,7 @@ public class ImprimanteController implements ActionListener, WindowListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		/*
+		
 		if(e.getSource() == this.imprimanteTab.getTableImprimante())
 			if (e.getClickCount() == 2) {
 				System.out.println("DoubleClick on table imprimante");
@@ -128,20 +131,40 @@ public class ImprimanteController implements ActionListener, WindowListener {
 				if(this.ficheImprimante == null) {
 					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSNImprimanteClicked());
 					
-					this.ficheImprimante = new ficheImprimante(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs, this.imprimantes);
+					this.ficheImprimante = new FicheImprimante(Fiche.State.VISUALISATION,imprimante,this.employes);
 					ficheImprimante.setVisible(true);
 					
 					//Ajout des listeners
-					this.ficheOrdinateur.addWindowListener(this);
-					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
-					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this.ficheOrdinateur);
-					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
-					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
-					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
+					this.ficheImprimante.addWindowListener(this);		
+					this.ficheImprimante.getBtnSauver().addActionListener(this);
 				}else {
-					this.ficheOrdinateur.toFront();
+					this.ficheImprimante.toFront();
 				}
 		   }
-		   */
+		   
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

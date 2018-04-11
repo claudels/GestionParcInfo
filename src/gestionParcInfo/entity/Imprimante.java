@@ -3,6 +3,8 @@ package gestionParcInfo.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import gestionParcInfo.repository.AlerteRepository;
 import gestionParcInfo.repository.ImprimanteRepository;
@@ -49,6 +51,7 @@ public class Imprimante extends Entity{
 	public Employe getProprietaire() {
 		return proprietaire;
 	}
+	
 	
 	public void setResolution(int resolution) {
 		this.resolution = resolution;

@@ -19,18 +19,27 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.view.fiche.Fiche.State;
+import gestionParcInfo.view.tab.OrdinateurTab;
 
 import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
 public class FicheImprimante extends Fiche {
 	
+	private DefaultTableModel tableModel;
+	private Imprimantes imprimantes;
+	
 	private static final long serialVersionUID = 1L;
-	
-	
+	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9"};
+	private Employes employes;
+	private Ordinateurs ordinateurs;
 
 	//Labels statiques
 	private JLabel staticLBL_SNI, staticLBL_uniteOrdinateur, staticLBL_ordisConnectesTitle, staticLBL_title, staticLBL_nbOrdiConnectes, staticLBL_designation, staticLBL_resolution;
@@ -59,6 +68,12 @@ public class FicheImprimante extends Fiche {
 		super(initialState);
 		initComponents();
 		this.changeState(initialState);
+	}
+	
+	public FicheImprimante(Fiche.State initialState,Imprimante imprimante, Employes employes) {
+		this(initialState);
+		employes=this.employes;
+		
 	}
 	
 	@Override
@@ -152,42 +167,32 @@ public class FicheImprimante extends Fiche {
 		SCRLLPANE_ordisConnectes.setBounds(10, 170, 457, 349);
 		contentPane.add(SCRLLPANE_ordisConnectes);
 		
+		
+		/*tableOrdinateur = new JTable();
+		tableOrdinateur.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tableOrdinateur.setFillsViewportHeight(true);
+		tableOrdinateur.setModel(this.tableModel);*/
+		
 		TABLE_ordisConnectes = new JTable();
-		TABLE_ordisConnectes.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"SN_O", "Designation", "Employ\u00E9"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Long.class, Object.class, Object.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		TABLE_ordisConnectes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		TABLE_ordisConnectes.setModel(this.tableModel);
+		this.tableModel.setColumnIdentifiers(FicheImprimante.columnsNames);
+		
+		for(Ordinateur ordinateur : ordinateurs.getItems()) {
+			String matricule = null;
+			
+			if(ordinateur.getProprietaire() != null)
+				matricule = ordinateur.getProprietaire().getMatricule();
+			
+			Object[] rawData = new Object[FicheImprimante.columnsNames.length];
+			rawData[0] = ordinateur.getSn();
+			rawData[1] = ordinateur.getDesignation();
+			rawData[2] = matricule;
+			this.tableModel.addRow(rawData);
+		}
+		
+		this.TABLE_ordisConnectes.setModel(this.tableModel);
+		this.tableModel.fireTableDataChanged();
 		SCRLLPANE_ordisConnectes.setViewportView(TABLE_ordisConnectes);
 		
 		

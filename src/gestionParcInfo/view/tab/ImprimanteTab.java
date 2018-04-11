@@ -73,6 +73,8 @@ public class ImprimanteTab extends JPanel implements Observer {
 		tblImprimante = new JTable();
 		tblImprimante.setModel(this.tableModel);
 		tblImprimante.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblImprimante.setFillsViewportHeight(true);
+		
 		tblImprimante.getColumnModel().getColumn(0).setPreferredWidth(63);
 		tblImprimante.getColumnModel().getColumn(0).setMinWidth(5);
 		tblImprimante.getColumnModel().getColumn(0).setMaxWidth(100);
@@ -92,7 +94,12 @@ public class ImprimanteTab extends JPanel implements Observer {
 	public void update(Observable obs, Object obj) {
 		if(obs instanceof Imprimantes) {
 			Imprimantes imprimantes = (Imprimantes)obs;
-			this.tableModel = new DefaultTableModel();
+			this.tableModel = new DefaultTableModel() {
+				   public boolean isCellEditable(int row, int column) {
+				       //all cells false
+				       return false;
+				   }
+			};
 			this.tableModel.setColumnIdentifiers(ImprimanteTab.columnsNames);
 			
 			for(Imprimante imprimante : imprimantes.getItems()) {

@@ -114,6 +114,7 @@ public class GestionParcInfo {
 		//Add imprimante listeners
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
 		imprimanteTab.getBtnSupprimer().addActionListener(imprimanteController);
+		imprimanteTab.getTableImprimante().addMouseListener(imprimanteController);
 		
 		alerteTab.getBtnSupprimer().addActionListener(alerteController);
 		

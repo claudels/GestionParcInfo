@@ -142,7 +142,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
 		this(initialState, employes, ordinateurServeurLinks, serveurs, imprimantes);
 		
-		//Selection du matricule de l'employé associé
+		//Selection du matricule de l'employé associé"
 		for(Employe employe : employes.getItems()) {
 			if(ordinateur.getProprietaire() != null && ordinateur.getProprietaire().getMatricule().equals(employe.getMatricule())) {
 				this.cmbboxModel.setSelectedItem(employe.getMatricule());
