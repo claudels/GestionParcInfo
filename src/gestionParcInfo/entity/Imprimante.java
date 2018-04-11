@@ -16,6 +16,7 @@ public class Imprimante extends Entity{
 	private String sn;
 	private String designation;
 	private int resolution;
+	private Employe proprietaire;
 	
 	/**
 	 * Creation d'une imprimante (Déjà présente en base ou pas)
@@ -43,6 +44,10 @@ public class Imprimante extends Entity{
 	
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	
+	public Employe getProprietaire() {
+		return proprietaire;
 	}
 	
 	public void setResolution(int resolution) {

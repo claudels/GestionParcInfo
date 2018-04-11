@@ -139,6 +139,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener {
 	 * @param employes
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
+	 * @wbp.parser.constructor
 	 */
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
 		super(initialState);

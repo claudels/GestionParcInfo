@@ -3,10 +3,14 @@ package gestionParcInfo.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+
 
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Imprimante;
@@ -113,5 +117,31 @@ public class ImprimanteController implements ActionListener, WindowListener {
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		/*
+		if(e.getSource() == this.imprimanteTab.getTableImprimante())
+			if (e.getClickCount() == 2) {
+				System.out.println("DoubleClick on table imprimante");
+				//Création du formulaire
+				if(this.ficheImprimante == null) {
+					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSNImprimanteClicked());
+					
+					this.ficheImprimante = new ficheImprimante(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs, this.imprimantes);
+					ficheImprimante.setVisible(true);
+					
+					//Ajout des listeners
+					this.ficheOrdinateur.addWindowListener(this);
+					this.ficheOrdinateur.getBtnConnecterServeurs().addActionListener(this.ficheOrdinateur);
+					this.ficheOrdinateur.getBtnConnecterImprimante().addActionListener(this.ficheOrdinateur);
+					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this);
+					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
+					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
+				}else {
+					this.ficheOrdinateur.toFront();
+				}
+		   }
+		   */
 	}
 }

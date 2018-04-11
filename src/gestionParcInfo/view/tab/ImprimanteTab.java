@@ -108,4 +108,14 @@ public class ImprimanteTab extends JPanel implements Observer {
 			this.tableModel.fireTableDataChanged();
 		}
 	}
+
+	public JTable getTableImprimante() {
+		
+		return tblImprimante;
+	}
+
+	public String getSNImprimanteClicked() {
+		int columnIndex = this.tblImprimante.convertColumnIndexToView(this.tableModel.findColumn(ImprimanteTab.columnsNames[0]));
+		return (String)this.tblImprimante.getValueAt(this.tblImprimante.getSelectedRow(), columnIndex);
+	}
 }

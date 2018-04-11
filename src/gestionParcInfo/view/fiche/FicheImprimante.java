@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.model.Employes;
 import gestionParcInfo.view.fiche.Fiche.State;
 
 import javax.swing.JToggleButton;
