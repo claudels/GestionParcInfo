@@ -9,12 +9,14 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-
+import java.util.Date;
+import java.util.Map.Entry;
 
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.Ordinateurs;
@@ -31,10 +33,12 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 	private Imprimantes imprimantes;
 	private FicheImprimante ficheImprimante;
 	private Ordinateurs ordinateurs;
+	private Imprimante imprimante;
 	public ImprimanteController(ImprimanteTab imprimanteTab,Imprimantes imprimantes,Ordinateurs ordinateurs) {
 		this.ordinateurs = ordinateurs;
 		this.imprimanteTab = imprimanteTab;
 		this.imprimantes = imprimantes;
+		
 	}
 	
 	@Override
@@ -44,12 +48,13 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				
 				//Création du formulaire
 				if(this.ficheImprimante == null) {
-					this.ficheImprimante = new FicheImprimante(Fiche.State.MODIFICATION);
+					this.ficheImprimante = new FicheImprimante(Fiche.State.CREATION);
 					ficheImprimante.setVisible(true);
 					
 					//Ajout des listeners
 					this.ficheImprimante.addWindowListener(this);
-					
+					this.ficheImprimante.getBtnSauver().addActionListener(this);
+					this.ficheImprimante.getBtnDeconnecter().addActionListener(this.ficheImprimante);
 				
 				}else {
 					this.ficheImprimante.toFront();
@@ -78,6 +83,48 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				e1.printStackTrace();
 		}
 		}
+		else if(e.getSource() == this.ficheImprimante.getBtnSauver() && (this.ficheImprimante.getCurrentState() == Fiche.State.CREATION || this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION)) {
+			System.out.println("Sauver imprimante");
+
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Imprimante imprimante = null;
+				
+				if(this.ficheImprimante.getCurrentState() == Fiche.State.CREATION) {
+					imprimante = new Imprimante(this.ficheImprimante.getSN(), this.ficheImprimante.getDesignation(),this.ficheImprimante.getResolution());
+
+					
+					//Persistance de l'ordinateur et ajout au modèle
+					imprimante.create(conn);
+					imprimantes.addItem(imprimante);
+					
+				}else if(this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION) {
+					imprimante = this.imprimantes.findBySN(this.ficheImprimante.getSN());
+				
+				
+				imprimante.setDesignation(this.ficheImprimante.getDesignation());
+				imprimante.setResolution(this.ficheImprimante.getResolution());
+				
+				for(Ordinateur ordinateur : this.ficheImprimante.getDisconnectedOrdinateurs()) {
+					ordinateur.setImprimante(null);
+					ordinateur.update(conn);
+					
+				}
+				//Persistance de l'ordinateur et ajout au modèle
+				imprimante.update(conn);
+				imprimantes.updateItem(imprimante);
+				
+				conn.close();
+				this.ficheImprimante.dispose();
+				this.ficheImprimante = null;
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	
 	}
 	
 
@@ -139,6 +186,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					//Ajout des listeners
 					this.ficheImprimante.addWindowListener(this);		
 					this.ficheImprimante.getBtnSauver().addActionListener(this);
+					this.ficheImprimante.getBtnDeconnecter().addActionListener(this.ficheImprimante);
 				}else {
 					this.ficheImprimante.toFront();
 				}

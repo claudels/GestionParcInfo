@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import javax.swing.SpinnerNumberModel;
@@ -20,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.Ordinateurs;
@@ -38,6 +42,7 @@ public class FicheImprimante extends Fiche {
 	private static final long serialVersionUID = 1L;
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9"};
 	private Ordinateurs ordinateurs;
+	private ArrayList<Ordinateur> disconnectedOrdinateurs;
 
 	//Labels statiques
 	private JLabel staticLBL_SNI, staticLBL_uniteOrdinateur, staticLBL_ordisConnectesTitle, staticLBL_title, staticLBL_nbOrdiConnectes, staticLBL_designation, staticLBL_resolution;
@@ -77,7 +82,7 @@ public class FicheImprimante extends Fiche {
 	public FicheImprimante(Fiche.State initialState,Imprimante imprimante,Ordinateurs ordinateurs,Imprimantes imprimantes) {
 		this(initialState);
 		this.ordinateurs = ordinateurs;
-		
+		this.disconnectedOrdinateurs = new ArrayList<Ordinateur>();
 		for(Ordinateur ordinateur : ordinateurs.findOrdinateursByImprimante(imprimante)) {
 			String matricule = null;
 			
@@ -95,6 +100,23 @@ public class FicheImprimante extends Fiche {
 		this.TF_designation.setText(imprimante.getDesignation());
 		this.LBL_nbOrdisConnectes.setText(Long.toString(imprimantes.countOrdinateurs(imprimante)));
 		
+	}
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		
+		if(e.getSource() == this.BTN_deconnecter) {
+			System.out.println("demande de deconnection");
+			int deletedRowsCounter = 0;
+			int columnSNSIndex = this.TABLE_ordisConnectes.convertColumnIndexToView(this.tableModel.findColumn(FicheImprimante.columnsNames[0]));
+			
+			for(int rowIndex : this.TABLE_ordisConnectes.getSelectedRows()) {
+				Ordinateur ordinateur = this.ordinateurs.findBySN((String) this.TABLE_ordisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				System.out.println(ordinateur.getSn());
+				this.disconnectedOrdinateurs.add(ordinateur);
+				this.tableModel.removeRow(rowIndex - deletedRowsCounter);
+				deletedRowsCounter++;
+			}
+		}
 	}
 	
 	@Override
@@ -115,6 +137,25 @@ public class FicheImprimante extends Fiche {
 		//Autorisé pour création
 		this.TF_SNI.setEditable(newState == Fiche.State.CREATION);
 		
+	
+		
+	}
+	public ArrayList<Ordinateur> getDisconnectedOrdinateurs(){
+		return disconnectedOrdinateurs;
+	}
+	public JButton getBtnDeconnecter() {
+		return BTN_deconnecter;
+	}
+	public String getSN() {
+		return this.TF_SNI.getText();
+	}
+	
+	public String getDesignation() {
+		return this.TF_designation.getText();
+	}
+	
+	public int getResolution() {
+		return (int)this.SPIN_resolution.getValue();
 	}
 	
 	public void initComponents() {

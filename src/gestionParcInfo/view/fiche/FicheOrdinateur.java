@@ -307,6 +307,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			this.connexionImprimanteForm.dispose();
 			this.connexionImprimanteForm = null;
 		}
+		
 		if(e.getSource() == this.btnDeconnecterImprimante) {
 			this.tableModelImprimante.setRowCount(0);
 		}
