@@ -35,10 +35,8 @@ public class FicheImprimante extends Fiche {
 	
 	private DefaultTableModel tableModel;
 	private Imprimantes imprimantes;
-	
 	private static final long serialVersionUID = 1L;
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9"};
-	private Employes employes;
 	private Ordinateurs ordinateurs;
 
 	//Labels statiques
@@ -66,13 +64,36 @@ public class FicheImprimante extends Fiche {
 	 */
 	public FicheImprimante(Fiche.State initialState) {
 		super(initialState);
+		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(FicheImprimante.columnsNames);
+		
+		
 		initComponents();
 		this.changeState(initialState);
+		
+		
 	}
 	
-	public FicheImprimante(Fiche.State initialState,Imprimante imprimante, Employes employes) {
+	public FicheImprimante(Fiche.State initialState,Imprimante imprimante,Ordinateurs ordinateurs,Imprimantes imprimantes) {
 		this(initialState);
-		employes=this.employes;
+		this.ordinateurs = ordinateurs;
+		
+		for(Ordinateur ordinateur : ordinateurs.findOrdinateursByImprimante(imprimante)) {
+			String matricule = null;
+			
+			if(ordinateur.getProprietaire() != null)
+				matricule = ordinateur.getProprietaire().getMatricule();
+			
+			Object[] rawData = new Object[FicheImprimante.columnsNames.length];
+			rawData[0] = ordinateur.getSn();
+			rawData[1] = ordinateur.getDesignation();
+			rawData[2] = matricule;
+			this.tableModel.addRow(rawData);
+		}
+		
+	this.TF_SNI.setText(imprimante.getSn());
+		this.TF_designation.setText(imprimante.getDesignation());
+		this.LBL_nbOrdisConnectes.setText(Long.toString(imprimantes.countOrdinateurs(imprimante)));
 		
 	}
 	
@@ -88,6 +109,7 @@ public class FicheImprimante extends Fiche {
 		//Interdit à la visualisation
 		this.TF_designation.setEditable(newState != Fiche.State.VISUALISATION);
 		this.SPIN_resolution.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.BTN_deconnecter.setEnabled(newState != Fiche.State.VISUALISATION);
 		
 		
 		//Autorisé pour création
@@ -167,32 +189,10 @@ public class FicheImprimante extends Fiche {
 		SCRLLPANE_ordisConnectes.setBounds(10, 170, 457, 349);
 		contentPane.add(SCRLLPANE_ordisConnectes);
 		
-		
-		/*tableOrdinateur = new JTable();
-		tableOrdinateur.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		tableOrdinateur.setFillsViewportHeight(true);
-		tableOrdinateur.setModel(this.tableModel);*/
-		
 		TABLE_ordisConnectes = new JTable();
 		TABLE_ordisConnectes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		TABLE_ordisConnectes.setModel(this.tableModel);
-		this.tableModel.setColumnIdentifiers(FicheImprimante.columnsNames);
-		
-		for(Ordinateur ordinateur : ordinateurs.getItems()) {
-			String matricule = null;
-			
-			if(ordinateur.getProprietaire() != null)
-				matricule = ordinateur.getProprietaire().getMatricule();
-			
-			Object[] rawData = new Object[FicheImprimante.columnsNames.length];
-			rawData[0] = ordinateur.getSn();
-			rawData[1] = ordinateur.getDesignation();
-			rawData[2] = matricule;
-			this.tableModel.addRow(rawData);
-		}
-		
-		this.TABLE_ordisConnectes.setModel(this.tableModel);
-		this.tableModel.fireTableDataChanged();
+		TABLE_ordisConnectes.setFillsViewportHeight(true);
 		SCRLLPANE_ordisConnectes.setViewportView(TABLE_ordisConnectes);
 		
 		

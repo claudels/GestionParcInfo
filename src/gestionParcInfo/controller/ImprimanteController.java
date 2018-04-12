@@ -17,6 +17,7 @@ import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.ImprimanteRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.view.fiche.Fiche;
@@ -29,8 +30,9 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 	private ImprimanteTab imprimanteTab;
 	private Imprimantes imprimantes;
 	private FicheImprimante ficheImprimante;
-	private Employes employes;
-	public ImprimanteController(ImprimanteTab imprimanteTab,Imprimantes imprimantes) {
+	private Ordinateurs ordinateurs;
+	public ImprimanteController(ImprimanteTab imprimanteTab,Imprimantes imprimantes,Ordinateurs ordinateurs) {
+		this.ordinateurs = ordinateurs;
 		this.imprimanteTab = imprimanteTab;
 		this.imprimantes = imprimantes;
 	}
@@ -130,8 +132,8 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				//Création du formulaire
 				if(this.ficheImprimante == null) {
 					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSNImprimanteClicked());
-					
-					this.ficheImprimante = new FicheImprimante(Fiche.State.VISUALISATION,imprimante,this.employes);
+					System.out.println(imprimante.getSn());
+					this.ficheImprimante = new FicheImprimante(Fiche.State.VISUALISATION,imprimante,this.ordinateurs,this.imprimantes);
 					ficheImprimante.setVisible(true);
 					
 					//Ajout des listeners

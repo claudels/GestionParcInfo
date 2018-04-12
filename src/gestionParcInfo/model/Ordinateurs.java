@@ -6,6 +6,7 @@ import java.util.Observer;
 import java.util.stream.Collectors;
 
 import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 
 public class Ordinateurs extends ModelList<Ordinateur> {
@@ -84,6 +85,13 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 		return this.getItems()
 				.parallelStream()
 				.filter(ordinateur -> ordinateur.getProprietaire() != null && employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
+				.collect(Collectors.toList());
+	}
+	
+	public List<Ordinateur> findOrdinateursByImprimante(Imprimante imprimante) {
+		return this.getItems()
+				.parallelStream()
+				.filter(ordinateur -> ordinateur.getImprimante() != null && imprimante.getSn().equals(ordinateur.getImprimante().getSn()))
 				.collect(Collectors.toList());
 	}
 	

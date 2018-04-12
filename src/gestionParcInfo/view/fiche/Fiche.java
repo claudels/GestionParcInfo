@@ -49,6 +49,8 @@ public class Fiche extends JFrame implements ActionListener, Observer {
 	protected void changeState(State newState) {
 		this.currentState = newState;
 		this.tglbtnMode.setText(newState.toString());
+		this.btnAnnuler.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.btnSauver.setEnabled(newState != Fiche.State.VISUALISATION);
 	}
 	
 	public JButton getBtnSauver() {
