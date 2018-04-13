@@ -70,6 +70,10 @@ public class ServeurTab extends JPanel implements Observer{
 		return btnSupprimer;
 	}
 	
+	public JTable getTblServeur() {
+		return tblServeur;
+	}
+	
 	public ArrayList<String> getSNsServeursSelected() {
 		ArrayList<String> serialNumbers = new ArrayList<>();
 		
@@ -80,13 +84,24 @@ public class ServeurTab extends JPanel implements Observer{
 		}
 		
 		return serialNumbers;
-}
+	}
+	
+	public String getSNServeurClicked() {
+		int columnIndex = this.tblServeur.convertColumnIndexToView(this.tableModel.findColumn(ServeurTab.columnsNames[0]));
+		return (String)this.tblServeur.getValueAt(this.tblServeur.getSelectedRow(), columnIndex);
+	}
 	
 	@Override
 	public void update(Observable obs, Object obj) {
 		if(obs instanceof Serveurs) {
 			Serveurs serveurs = (Serveurs)obs;
-			this.tableModel = new DefaultTableModel();
+			this.tableModel = new DefaultTableModel(){
+				 @Override
+				    public boolean isCellEditable(int row, int column) {
+				       //all cells false
+				       return false;
+				    }
+				};
 			this.tableModel.setColumnIdentifiers(ServeurTab.columnsNames);
 			
 			DecimalFormat f = new DecimalFormat("##0.00");

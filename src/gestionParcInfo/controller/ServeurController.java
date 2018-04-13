@@ -2,32 +2,40 @@ package gestionParcInfo.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Map.Entry;
 
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheImprimante;
+import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.fiche.FicheServeur;
 import gestionParcInfo.view.tab.ServeurTab;
 
-public class ServeurController implements ActionListener, WindowListener {
+public class ServeurController implements ActionListener, WindowListener, MouseListener {
 
 	private ServeurTab servTab;
 	private Serveurs serveurs;
 	private FicheServeur ficheServeur;
+	private OrdinateurServeurLinks ordinateurServeurLinks;
 	
-	public ServeurController(ServeurTab servTab, Serveurs serveurs) {
+	public ServeurController(ServeurTab servTab, Serveurs serveurs, OrdinateurServeurLinks ordinateurServeurLinks) {
 		this.servTab = servTab;
 		this.serveurs = serveurs;
+		this.ordinateurServeurLinks = ordinateurServeurLinks;
 	}
 	
 	@Override
@@ -37,11 +45,12 @@ public class ServeurController implements ActionListener, WindowListener {
 			
 			//Création du formulaire
 			if(this.ficheServeur == null) {
-				this.ficheServeur = new FicheServeur(Fiche.State.MODIFICATION);
+				this.ficheServeur = new FicheServeur(Fiche.State.CREATION);
 				ficheServeur.setVisible(true);
 				
 				//Ajout des listeners
 				this.ficheServeur.addWindowListener(this);
+				this.ficheServeur.getBtnSauver().addActionListener(this);
 			
 			}else {
 				this.ficheServeur.toFront();
@@ -68,6 +77,44 @@ public class ServeurController implements ActionListener, WindowListener {
 		} catch (SQLException | ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			}
+		}
+		else if(e.getSource() == this.ficheServeur.getBtnSauver()) {
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Serveur serveur = null;
+				
+				if(this.ficheServeur.getCurrentState() == Fiche.State.CREATION) {
+					serveur = new Serveur(this.ficheServeur.getSN(), this.ficheServeur.getDesignation(), this.ficheServeur.getMemoire());
+					
+					//Persistance du serveur et ajout au modèle
+					serveur.create(conn);
+					serveurs.addItem(serveur);
+				}else if(this.ficheServeur.getCurrentState() == Fiche.State.MODIFICATION) {
+					serveur = this.serveurs.findBySN(this.ficheServeur.getSN());
+					
+					//Suppression des liens à supprimer
+					for(OrdinateurServeurLink ordinateurServeurLink : this.ficheServeur.getLinksToDelete()) {
+						ordinateurServeurLink.remove(conn);
+						this.ordinateurServeurLinks.removeItem(ordinateurServeurLink);
+					}
+				}
+				
+				serveur.setDesignation(this.ficheServeur.getDesignation());
+				serveur.setMemoire(this.ficheServeur.getMemoire());
+				
+				//Persistance de l'ordinateur et ajout au modèle
+				serveur.update(conn);
+				serveurs.updateItem(serveur);
+				
+				
+				conn.close();
+				this.ficheServeur.dispose();
+				this.ficheServeur = null;
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
@@ -111,6 +158,52 @@ public class ServeurController implements ActionListener, WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() == this.servTab.getTblServeur()) {
+			if (e.getClickCount() == 2) {
+				System.out.println("DoubleClick on table serveur");
+				//Création du formulaire
+				if(this.ficheServeur == null) {
+					Serveur serveur = this.serveurs.findBySN(this.servTab.getSNServeurClicked());
+					
+					this.ficheServeur = new FicheServeur(Fiche.State.VISUALISATION, serveur, this.serveurs, this.ordinateurServeurLinks);
+					ficheServeur.setVisible(true);
+					
+					//Ajout des listeners
+					this.ficheServeur.addWindowListener(this);
+					this.ficheServeur.getBtnSauver().addActionListener(this);
+				}else {
+					this.ficheServeur.toFront();
+				}
+		   }
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
