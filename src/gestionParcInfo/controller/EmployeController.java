@@ -2,6 +2,8 @@ package gestionParcInfo.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -20,7 +22,7 @@ import gestionParcInfo.view.fiche.FicheEmploye;
 import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.tab.EmployeTab;
 
-public class EmployeController implements ActionListener, WindowListener {
+public class EmployeController implements ActionListener, WindowListener, MouseListener {
 	
 	private EmployeTab employeTab;
 	private Employes employes;
@@ -38,11 +40,14 @@ public class EmployeController implements ActionListener, WindowListener {
 			
 			//Création du formulaire
 			if(this.ficheEmploye == null) {
-				this.ficheEmploye = new FicheEmploye(Fiche.State.MODIFICATION);
+				this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION);
 				ficheEmploye.setVisible(true);
 				
 				//Ajout des listeners
 				this.ficheEmploye.addWindowListener(this);
+				this.ficheEmploye.getBtnSauver().addActionListener(this);
+				
+				
 			
 			}else {
 				this.ficheEmploye.toFront();
@@ -76,7 +81,46 @@ public class EmployeController implements ActionListener, WindowListener {
 				e1.printStackTrace();
 		}
 		}
+		else if(e.getSource() == this.ficheEmploye.getBtnSauver() && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
+			System.out.println("Sauver imprimante");
+
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Employe employe = null;
+				
+				if(this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
+					employe = new Employe(this.ficheEmploye.getMatricule(), this.ficheEmploye.getNom(),this.ficheEmploye.getPrenom(),this.ficheEmploye.getEmail());
+
+					
+					//Persistance de l'ordinateur et ajout au modèle
+					employe.create(conn);
+					employes.addItem(employe);
+					
+				}else if(this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION) {
+					employe = this.employes.findByMatricule(this.ficheEmploye.getMatricule());
+				
+				
+				employe.setNom(this.ficheEmploye.getNom());
+				employe.setPrenom(this.ficheEmploye.getPrenom());
+				employe.setEmail(this.ficheEmploye.getEmail());
+				
+				
+				employe.update(conn);
+				employes.updateItem(employe);
+				
+				conn.close();
+				this.ficheEmploye.dispose();
+				this.ficheEmploye = null;
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	
 	}
+	
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -117,6 +161,55 @@ public class EmployeController implements ActionListener, WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+		if(e.getSource() == this.employeTab.getTableEmploye())
+			System.out.println("Clicked");
+			if (e.getClickCount() == 2) {
+				System.out.println("DoubleClick on table Employe");
+				//Création du formulaire
+				if(this.ficheEmploye == null) {
+					Employe employe = this.employes.findByMatricule(this.employeTab.getMatriculeEmployeClicked());
+					
+					System.out.println(employe.getMatricule());
+					this.ficheEmploye = new FicheEmploye(Fiche.State.VISUALISATION);
+					ficheEmploye.setVisible(true);
+					
+					//Ajout des listeners
+					this.ficheEmploye.addWindowListener(this);
+					this.ficheEmploye.getBtnSauver().addActionListener(this);
+				
+				}else {
+					this.ficheEmploye.toFront();
+				}
+		   }
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

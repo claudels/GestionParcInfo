@@ -174,6 +174,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 	public void mouseClicked(MouseEvent e) {
 		
 		if(e.getSource() == this.imprimanteTab.getTableImprimante())
+			
 			if (e.getClickCount() == 2) {
 				System.out.println("DoubleClick on table imprimante");
 				//Création du formulaire

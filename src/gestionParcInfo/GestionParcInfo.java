@@ -110,6 +110,7 @@ public class GestionParcInfo {
 		employeTab.getBtnAjouter().addActionListener(employeController);
 		employeTab.getBtnAlerter().addActionListener(employeController);
 		employeTab.getBtnSupprimer().addActionListener(employeController);
+		employeTab.getTableEmploye().addMouseListener(employeController);
 		
 		//Add imprimante listeners
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);

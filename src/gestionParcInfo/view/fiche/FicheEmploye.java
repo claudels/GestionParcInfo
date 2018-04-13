@@ -13,6 +13,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Employes;
 import gestionParcInfo.view.fiche.Fiche.State;
 
 import javax.swing.JToggleButton;
@@ -39,6 +41,7 @@ public class FicheEmploye extends Fiche {
 	private JTable TABLE_ordinateurs;
 	/**
 	 * Create the frame.
+	 * @wbp.parser.constructor
 	 */
 	public FicheEmploye(Fiche.State initialState) {
 		super(initialState);
@@ -46,6 +49,26 @@ public class FicheEmploye extends Fiche {
 		this.changeState(initialState);
 	}
 	
+	public FicheEmploye(Fiche.State initialState,Employes employes,Ordinateur ordinateur) {
+		this(initialState);
+		
+	}
+	
+	public String getMatricule() {
+		return TF_matricule.getText();
+	}
+	
+	public String getNom() {
+		return TF_nom.getText();
+	}
+	
+	public String getPrenom() {
+		return TF_prenom.getText();
+	}
+	
+	public String getEmail() {
+		return TF_email.getText();
+	}
 	@Override
 	protected void changeState(State newState) {
 		super.changeState(newState);

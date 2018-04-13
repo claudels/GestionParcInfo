@@ -39,6 +39,7 @@ public class EmployeTab extends JPanel implements Observer{
 		return btnAjouter;
 	}
 	
+	
 	public JButton getBtnAlerter() {
 		return btnAlerter;
 	}
@@ -78,9 +79,15 @@ public class EmployeTab extends JPanel implements Observer{
 	public void update(Observable obs, Object obj) {
 		if(obs instanceof Employes) {
 			Employes employes = (Employes)obs;
-			this.tableModel = new DefaultTableModel();
+			this.tableModel = new DefaultTableModel() {
+				   public boolean isCellEditable(int row, int column) {
+				       //all cells false
+				       return false;
+				   }
+			};
 			this.tableModel.setColumnIdentifiers(EmployeTab.columnsNames);
 			
+		
 			for(Employe employe : employes.getItems()) {
 				Object rawData[] = new Object[EmployeTab.columnsNames.length];
 				
@@ -109,4 +116,12 @@ public class EmployeTab extends JPanel implements Observer{
 		
 		return Matricule;
 }
+	public String getMatriculeEmployeClicked() {
+		int columnIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+		return (String)this.tblEmploye.getValueAt(this.tblEmploye.getSelectedRow(), columnIndex);
+	}
+public JTable getTableEmploye() {
+		
+		return tblEmploye;
+	}
 }
