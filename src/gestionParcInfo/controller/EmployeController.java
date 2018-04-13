@@ -15,6 +15,7 @@ import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.EmployeRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.view.fiche.Fiche;
@@ -27,10 +28,12 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	private EmployeTab employeTab;
 	private Employes employes;
 	private FicheEmploye ficheEmploye;
+	private Ordinateurs ordinateurs;
 	
-	public EmployeController(EmployeTab employeTab, Employes employes) {
+	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs) {
 		this.employeTab = employeTab;
 		this.employes = employes;
+		this.ordinateurs = ordinateurs;
 	}
 
 	@Override
@@ -46,6 +49,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				//Ajout des listeners
 				this.ficheEmploye.addWindowListener(this);
 				this.ficheEmploye.getBtnSauver().addActionListener(this);
+				this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
 				
 				
 			
@@ -177,13 +181,13 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					Employe employe = this.employes.findByMatricule(this.employeTab.getMatriculeEmployeClicked());
 					
 					System.out.println(employe.getMatricule());
-					this.ficheEmploye = new FicheEmploye(Fiche.State.VISUALISATION);
+					this.ficheEmploye = new FicheEmploye(Fiche.State.VISUALISATION, employe, this.employes,this.ordinateurs);
 					ficheEmploye.setVisible(true);
 					
 					//Ajout des listeners
 					this.ficheEmploye.addWindowListener(this);
 					this.ficheEmploye.getBtnSauver().addActionListener(this);
-				
+					this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
 				}else {
 					this.ficheEmploye.toFront();
 				}

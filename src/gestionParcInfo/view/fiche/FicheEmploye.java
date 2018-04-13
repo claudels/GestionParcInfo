@@ -9,12 +9,23 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.view.AssignerOrdinateur;
+import gestionParcInfo.view.ConnexionImprimante;
 import gestionParcInfo.view.fiche.Fiche.State;
 
 import javax.swing.JToggleButton;
@@ -22,7 +33,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 
-public class FicheEmploye extends Fiche {
+public class FicheEmploye extends Fiche implements ActionListener, WindowListener {
 
 
 
@@ -39,6 +50,9 @@ public class FicheEmploye extends Fiche {
 	//Table ordinateurs
 	private JScrollPane SCRLLPANE_ordinateurs;
 	private JTable TABLE_ordinateurs;
+	private AssignerOrdinateur assignerOrdiForm;
+	private Ordinateurs ordinateurs;
+	private Employe employe;
 	/**
 	 * Create the frame.
 	 * @wbp.parser.constructor
@@ -49,15 +63,29 @@ public class FicheEmploye extends Fiche {
 		this.changeState(initialState);
 	}
 	
-	public FicheEmploye(Fiche.State initialState,Employes employes,Ordinateur ordinateur) {
+	public FicheEmploye(Fiche.State initialState,Employe employe,Employes employes,Ordinateurs ordinateurs) {
 		this(initialState);
 		
+this.ordinateurs = ordinateurs;
+this.employe = employe;
+		
+		this.TF_matricule.setText(employe.getMatricule());
+		this.TF_nom.setText(employe.getNom());
+		this.TF_prenom.setText(employe.getPrenom());
+		this.TF_email.setText(employe.getEmail());
+		
+		
 	}
+		
+	
 	
 	public String getMatricule() {
 		return TF_matricule.getText();
 	}
 	
+	public JButton getAssignerOrdinateur() {
+		return BTN_assignerOrdinateur;
+	}
 	public String getNom() {
 		return TF_nom.getText();
 	}
@@ -89,6 +117,39 @@ public class FicheEmploye extends Fiche {
 		//Autorisé pour création
 		this.TF_matricule.setEditable(newState == Fiche.State.CREATION);
 		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		
+		if(e.getSource() == this.BTN_assignerOrdinateur) {
+			System.out.println("Demande d'assignation");
+			if(this.assignerOrdiForm == null) {
+				//On ouvre le formulaire
+				this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this,this.employe);
+				this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
+				this.assignerOrdiForm.addWindowListener(this);
+				this.assignerOrdiForm.setVisible(true);
+			}
+			
+			this.assignerOrdiForm.toFront();
+		}
+		/*if(this.assignerOrdiForm != null && e.getSource() == this.assignerOrdiForm.getBtnAssigner()){
+			Ordinateur ordinateur = this.assignerOrdiForm.getSelectedOrdinateur();
+			
+			//On met à jour la table
+			Object[] rowData = new Object[FicheEmploye.columnsNames.length];
+			rowData[0] = ordinateur.getSn();
+			rowData[1] = ordinateur.getDesignation();
+			rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
+			this.tableModelImprimante.setRowCount(0);
+			this.tableModelImprimante.addRow(rowData);
+			this.tableModelImprimante.fireTableDataChanged();
+			
+			//Fermeture du formulaire
+			this.connexionImprimanteForm.dispose();
+			this.connexionImprimanteForm = null;
+		}*/
 	}
 	public void initComponents() {
 		
@@ -182,6 +243,48 @@ public class FicheEmploye extends Fiche {
 		TABLE_ordinateurs.getColumnModel().getColumn(3).setPreferredWidth(80);
 		TABLE_ordinateurs.getColumnModel().getColumn(4).setPreferredWidth(120);
 		SCRLLPANE_ordinateurs.setViewportView(TABLE_ordinateurs);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

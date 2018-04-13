@@ -12,6 +12,13 @@ import java.awt.Label;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.view.fiche.FicheEmploye;
+
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -19,13 +26,16 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 public class AssignerOrdinateur extends JFrame {
-
+	private static final long serialVersionUID = 1L;
+	private static final String[] columnNames = {"SN_O", "D\u00E9signation", "Ram","CPU"};
+	
 	private JPanel contentPane;
 	
 	//Tableaux
 	private JScrollPane scrllPaneAssignerOrdinateur;
 	private JTable tableAssignerOrdinateur;
-	
+	private DefaultTableModel tableModel;
+
 	//Label statique
 	private JLabel staticLblMatricule;
 	private JLabel staticLblPrenom;
@@ -43,9 +53,39 @@ public class AssignerOrdinateur extends JFrame {
 	//Boutons
 	private JButton btnAnnuler;
 	private JButton btnAssigner;
+	private Ordinateurs ordinateurs;
+	private FicheEmploye ficheEmploye;
+	private Employe employe;
 	
-	public AssignerOrdinateur() {
+	public AssignerOrdinateur(Ordinateurs ordinateurs, FicheEmploye ficheEmploye,Employe employe) {
+		this.ordinateurs = ordinateurs;
+		this.ficheEmploye = ficheEmploye;
+		this.employe = employe;
+		
+		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(AssignerOrdinateur.columnNames);
+		for(Ordinateur ordinateur : ordinateurs.findOrdinateursAvailable()) {
+			Object[] rowData = new Object[AssignerOrdinateur.columnNames.length];
+			rowData[0] = ordinateur.getSn();
+			rowData[1] = ordinateur.getDesignation();
+			rowData[2] = ordinateur.getRam();
+			rowData[3] = ordinateur.getCpu();
+			this.tableModel.addRow(rowData);
+		}
 		initComponents();
+	    System.out.println(employe.getPrenom());
+		lblMatricule.setText(this.ficheEmploye.getMatricule());
+		lblNom.setText(this.ficheEmploye.getNom());
+		lblPrenom.setText(this.ficheEmploye.getPrenom());
+		lblEmail.setText(this.ficheEmploye.getEmail());
+	}
+	public Ordinateur getSelectedOrdinateur() {
+		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
+		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();
+		return this.ordinateurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
+	}
+	public JButton getBtnAssigner() {
+		return btnAssigner;
 	}
 	
 	private void initComponents() {
@@ -132,33 +172,7 @@ public class AssignerOrdinateur extends JFrame {
 		//Configuration du tableau
 		tableAssignerOrdinateur = new JTable();
 		tableAssignerOrdinateur.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tableAssignerOrdinateur.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"SN_O", "D\u00E9signation", "RAM", "CPU"
-			}
-		));
+		tableAssignerOrdinateur.setModel(this.tableModel);
 		tableAssignerOrdinateur.getColumnModel().getColumn(1).setPreferredWidth(132);
 		tableAssignerOrdinateur.getColumnModel().getColumn(2).setPreferredWidth(70);
 		tableAssignerOrdinateur.getColumnModel().getColumn(3).setPreferredWidth(80);
