@@ -80,7 +80,7 @@ public class AssignerOrdinateur extends JFrame {
 		lblEmail.setText(this.ficheEmploye.getEmail());
 	}
 	public Ordinateur getSelectedOrdinateur() {
-		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
+		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]));
 		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();
 		return this.ordinateurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
 	}
