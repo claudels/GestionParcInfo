@@ -88,6 +88,13 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 				.collect(Collectors.toList());
 	}
 	
+	public List<Ordinateur> findOrdinateursAvailable() {
+		return this.getItems()
+				.parallelStream()
+				.filter(ordinateur -> ordinateur.getProprietaire() == null && ordinateur.getDateRestitution() == null)
+				.collect(Collectors.toList());
+	}
+	
 	public List<Ordinateur> findOrdinateursByImprimante(Imprimante imprimante) {
 		return this.getItems()
 				.parallelStream()
