@@ -88,10 +88,7 @@ public class AlerteTab extends JPanel implements Observer {
 				if (alerte.getEmploye() != null) {
 					matricule = alerte.getEmploye().getMatricule();
 				}
-<<<<<<< HEAD
-				
-=======
->>>>>>> refs/remotes/origin/master
+
 				Object[] rawData = new Object[AlerteTab.columnsNames.length];
 				rawData[0] = alerte.getId();
 				rawData[1] = alerte.getMessage();
@@ -110,13 +107,8 @@ public class AlerteTab extends JPanel implements Observer {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Retourne les Id des Alertes que l'utilisateur à séléctionnées.
-	 * @return ArrayList
-=======
-	 * liste contenant les codes des alertes.
-	 * @return
->>>>>>> refs/remotes/origin/master
+	 * @return ArrayList liste contenant les codes des alertes.
 	 */
 	public ArrayList<Integer>  getCodeAlerteSelected() {
 		ArrayList<Integer> code = new ArrayList<>();

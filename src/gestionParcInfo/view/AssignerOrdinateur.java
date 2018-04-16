@@ -90,9 +90,10 @@ public class AssignerOrdinateur extends JFrame {
 	 * @return
 	 */
 	public Ordinateur getSelectedOrdinateur() {
-		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]));
+	  int column = this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]);
+		int columnSnsIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(column);
 		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();
-		return this.ordinateurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
+		return this.ordinateurs.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSnsIndex));
 	}
 	
 	public JButton getBtnAssigner() {

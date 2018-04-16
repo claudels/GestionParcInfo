@@ -176,7 +176,7 @@ public class ConnexionImprimante extends JFrame {
 	public Imprimante getSelectedImprimante() {
 		int columnSNSIndex = this.tableConnexionImprimante.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
 		int rowIndex = this.tableConnexionImprimante.getSelectedRow();
-		return this.imprimantes.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
+		return this.imprimantes.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
 	}
 	
 

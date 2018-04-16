@@ -115,15 +115,12 @@ public class FicheImprimante extends Fiche {
 		if (e.getSource() == this.brnDeconnecter) {
 			System.out.println("demande de deconnection");
 			int deletedRowsCounter = 0;
-			int columnSNSIndex = this.tblOrdisConnectes.convertColumnIndexToView(this.tableModel.findColumn(FicheImprimante.columnsNames[0]));
+			int column = this.tableModel.findColumn(FicheImprimante.columnsNames[0]);
+			int columnSnsIndex = this.tblOrdisConnectes.convertColumnIndexToView(column);
 			
-<<<<<<< HEAD
-			for(int rowIndex : this.TABLE_ordisConnectes.getSelectedRows()) {
-				Ordinateur ordinateur = this.ordinateurs.findBySn((String) this.TABLE_ordisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
-=======
+
 			for (int rowIndex : this.tblOrdisConnectes.getSelectedRows()) {
-				Ordinateur ordinateur = this.ordinateurs.findBySN((String) this.tblOrdisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
->>>>>>> refs/remotes/origin/master
+				Ordinateur ordinateur = this.ordinateurs.findBySn((String) this.tblOrdisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSnsIndex));
 				System.out.println(ordinateur.getSn());
 				this.disconnectedOrdinateurs.add(ordinateur);
 				this.tableModel.removeRow(rowIndex - deletedRowsCounter);
