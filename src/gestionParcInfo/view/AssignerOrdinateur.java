@@ -73,12 +73,10 @@ public class AssignerOrdinateur extends JFrame {
 			rowData[2] = ordinateur.getRam();
 			rowData[3] = ordinateur.getCpu();
 			this.tableModel.addRow(rowData);
-			this.tableModel.setRowCount(0);
-			this.tableModel.addRow(rowData);
 			this.tableModel.fireTableDataChanged();
 		}
+		
 		initComponents();
-	    System.out.println(employe.getPrenom());
 		lblMatricule.setText(this.ficheEmploye.getMatricule());
 		lblNom.setText(this.ficheEmploye.getNom());
 		lblPrenom.setText(this.ficheEmploye.getPrenom());
@@ -97,7 +95,7 @@ public class AssignerOrdinateur extends JFrame {
 	private void initComponents() {
 		//Configuration fenetre
 		setTitle("Assigner ordinateur");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 558, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

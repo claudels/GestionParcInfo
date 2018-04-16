@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import gestionParcInfo.repository.ImprimanteRepository;
 
@@ -122,6 +123,19 @@ public class Ordinateur extends Entity{
 		this.ram = ram;
 	}
 	
+	public Long countJoursUtilisation() {
+		Long tempsUtilisation = null;
+		
+		if(this.getDateRestitution() != null) {
+			tempsUtilisation = TimeUnit.MILLISECONDS.toDays(this.getDateRestitution().getTime() - this.getDateAttribution().getTime());
+		}
+		if(this.getDateAttribution() != null && tempsUtilisation == null) {
+			tempsUtilisation = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.getDateAttribution().getTime());
+		}
+		
+		return tempsUtilisation;
+	}
+	
 	@Override
 	public void remove(Connection conn) throws SQLException {
 		this.pstmt = conn.prepareStatement(Ordinateur.SQL_DELETE);
@@ -183,7 +197,12 @@ public class Ordinateur extends Entity{
 			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
 		else
 			this.pstmt.setString(6,null);
-		this.pstmt.setString(7, this.proprietaire.getMatricule());
+		
+		if(this.proprietaire != null)
+			this.pstmt.setString(7, this.proprietaire.getMatricule());
+		else
+			this.pstmt.setString(7, null);
+		
 		this.pstmt.setString(8, this.sn);
 		this.pstmt.executeUpdate();
 		this.pstmt.close();

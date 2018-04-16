@@ -176,17 +176,16 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		this.tfSNO.setText(ordinateur.getSn());
 		this.tfDesignation.setText(ordinateur.getDesignation());
 		
-		String tempsUtilisation = null;
-		
 		if(ordinateur.getDateRestitution() != null) {
 			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
-			tempsUtilisation = Long.toString(TimeUnit.MILLISECONDS.toDays(ordinateur.getDateRestitution().getTime() - ordinateur.getDateAttribution().getTime()));
 		}
 		if(ordinateur.getDateAttribution() != null) {
 			this.tfDateAttribution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateAttribution()));
-			if(tempsUtilisation == null)
-				tempsUtilisation = Long.toString(TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()));
 		}
+		
+		String tempsUtilisation = "0";
+		if(ordinateur.countJoursUtilisation() != null)
+			tempsUtilisation = Long.toString(ordinateur.countJoursUtilisation());
 			
 		this.lblJoursUtilisation.setText(tempsUtilisation);
 		this.lblAChanger.setText(ordinateurs.ordinateurMustBeChanged(ordinateur) ? "OUI" : "NON");

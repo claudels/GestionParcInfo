@@ -36,6 +36,10 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 
 public class FicheEmploye extends Fiche implements ActionListener, WindowListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public Date today = Calendar.getInstance().getTime();
 	public long nbOfDays;
 	DefaultTableModel tableModel;
@@ -63,7 +67,10 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 */
 	public FicheEmploye(Fiche.State initialState) {
 		super(initialState);
+		
 		this.tableModel = new DefaultTableModel();
+		this.tableModel.setColumnIdentifiers(FicheEmploye.columnsNames);
+		
 		initComponents();
 		this.changeState(initialState);
 		
@@ -72,29 +79,29 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	public FicheEmploye(Fiche.State initialState,Employe employe,Employes employes,Ordinateurs ordinateurs) {
 		this(initialState);
 		
-this.ordinateurs = ordinateurs;
-this.employe = employe;
-this.assignedOrdinateurs = new ArrayList<Ordinateur>();
+		this.ordinateurs = ordinateurs;
+		this.employe = employe;
+		this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		this.TF_matricule.setText(employe.getMatricule());
 		this.TF_nom.setText(employe.getNom());
 		this.TF_prenom.setText(employe.getPrenom());
 		this.TF_email.setText(employe.getEmail());
 	
-		for(Ordinateur ordinateur : ordinateurs.getItems()) {
-		Object[] rowData = new Object[FicheEmploye.columnsNames.length];
-		rowData[0] = ordinateur.getSn();
-		rowData[1] = ordinateur.getDesignation();
-		rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
-		rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
-
-		if(ordinateur.getDateAttribution()!=null) {
+		for(Ordinateur ordinateur : ordinateurs.findOrdinateursByEmploye(employe)) {
+			Object[] rowData = new Object[FicheEmploye.columnsNames.length];
+			rowData[0] = ordinateur.getSn();
+			rowData[1] = ordinateur.getDesignation();
+			rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
+			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
 			
-		nbOfDays = this.today.getTime() - ordinateur.getDateAttribution().getTime();
-		nbOfDays = (nbOfDays/(1000*60*60*24));
-			rowData[4] = nbOfDays;
+			String tempsUtilisation = "0";
+			if(ordinateur.countJoursUtilisation() != null)
+				tempsUtilisation = Long.toString(ordinateur.countJoursUtilisation());
+			
+			rowData[4] = tempsUtilisation;
+			
+			this.tableModel.addRow(rowData);
 		}
-		
-	}
 	}
 		
 
@@ -170,13 +177,7 @@ this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
 			rowData[3] = ordinateurs.ordinateurMustBeChanged(ordinateur);
 			rowData[4] = ordinateurs.ordinateurMustBeReturned(ordinateur);
-			/*if(ordinateur.getDateAttribution()!=null) {
-				
-			nbOfDays = this.today.getTime() - ordinateur.getDateAttribution().getTime();
-			nbOfDays = (nbOfDays/(1000*60*60*24));
-				rowData[5] = nbOfDays;
-				
-			}*/
+			
 			
 			this.assignedOrdinateurs.add(ordinateur);
 			this.tableModel.addRow(rowData);
@@ -269,43 +270,43 @@ this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 	}
 
 	@Override
-	public void windowActivated(WindowEvent arg0) {
+	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
+	public void windowClosed(WindowEvent e) {
+		if(e.getSource() == this.assignerOrdiForm) {
+			this.assignerOrdiForm = null;
+		}
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void windowClosing(WindowEvent arg0) {
+	public void windowDeiconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void windowDeactivated(WindowEvent arg0) {
+	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
+	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
