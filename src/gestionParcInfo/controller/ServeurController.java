@@ -78,7 +78,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			}
-		} else if (e.getSource() == this.ficheServeur.getBtnSauver()) {
+		} else if (this.ficheServeur != null && e.getSource() == this.ficheServeur.getBtnSauver()) {
 			Connection conn;
 			try {
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
