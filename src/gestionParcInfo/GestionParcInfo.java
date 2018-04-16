@@ -38,7 +38,7 @@ import java.sql.SQLException;
 
 public class GestionParcInfo {
 	public static final String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
-	public static final String dbUsername = "Florian";
+	public static final String dbUsername = "parcinfo";
 	public static final String dbPassword = "network";
 	
 	public static void main(String[] args) {

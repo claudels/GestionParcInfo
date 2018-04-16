@@ -435,7 +435,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		staticLblCpu.setBounds(346, 114, 63, 14);
 		contentPane.add(staticLblCpu);
 		
-		staticLblAssignedTo = new JLabel("Assign\u00E9 \u00E0 : ");
+		staticLblAssignedTo = new JLabel("Assigné : ");
 		staticLblAssignedTo.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblAssignedTo.setBounds(328, 54, 81, 22);
 		contentPane.add(staticLblAssignedTo);
@@ -449,7 +449,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		staticLblTempsUtilisation.setBounds(406, 151, 147, 20);
 		contentPane.add(staticLblTempsUtilisation);
 		
-		staticLblImprimanteTitle = new JLabel("Imprimante connect\u00E9e :");
+		staticLblImprimanteTitle = new JLabel("Imprimante connectée :");
 		staticLblImprimanteTitle.setBounds(10, 248, 169, 22);
 		contentPane.add(staticLblImprimanteTitle);
 		
