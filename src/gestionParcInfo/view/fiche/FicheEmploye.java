@@ -134,16 +134,15 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		//Interdit à la création
 		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
 		
-		
-		
+
 		//Interdit à la visualisation
 		this.TF_matricule.setEditable(newState != Fiche.State.VISUALISATION);
 		this.TF_nom.setEditable(newState != Fiche.State.VISUALISATION);
 		this.TF_prenom.setEditable(newState != Fiche.State.VISUALISATION);
 		this.TF_email.setEditable(newState != Fiche.State.VISUALISATION);
+		this.BTN_assignerOrdinateur.setEnabled(newState != Fiche.State.VISUALISATION);
 		
-		
-		
+
 		//Autorisé pour création
 		this.TF_matricule.setEditable(newState == Fiche.State.CREATION);
 		

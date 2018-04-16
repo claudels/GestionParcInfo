@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Employe;
@@ -98,31 +99,30 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				if(this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
 					employe = new Employe(this.ficheEmploye.getMatricule(), this.ficheEmploye.getNom(),this.ficheEmploye.getPrenom(),this.ficheEmploye.getEmail());
 
-					
 					//Persistance de l'ordinateur et ajout au modèle
 					employe.create(conn);
 					employes.addItem(employe);
 					
 				}else if(this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION) {
 					employe = this.employes.findByMatricule(this.ficheEmploye.getMatricule());
-				
-				
-				employe.setNom(this.ficheEmploye.getNom());
-				employe.setPrenom(this.ficheEmploye.getPrenom());
-				employe.setEmail(this.ficheEmploye.getEmail());
-				
-				for(Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
-					ordinateur.setProprietaire(employe);
-					System.out.println("Demande d'assignation");
-					ordinateur.update(conn);	
-				}
-				
-				employe.update(conn);
-				employes.updateItem(employe);
-				
-				conn.close();
-				this.ficheEmploye.dispose();
-				this.ficheEmploye = null;
+					employe.setNom(this.ficheEmploye.getNom());
+					employe.setPrenom(this.ficheEmploye.getPrenom());
+					employe.setEmail(this.ficheEmploye.getEmail());
+					
+					for(Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
+						ordinateur.setProprietaire(employe);
+						ordinateur.setDateAttribution(new Date());
+						System.out.println("Demande d'assignation");
+						ordinateur.update(conn);
+						ordinateurs.updateItem(ordinateur);
+					}
+					
+					employe.update(conn);
+					employes.updateItem(employe);
+					
+					conn.close();
+					this.ficheEmploye.dispose();
+					this.ficheEmploye = null;
 				}
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
