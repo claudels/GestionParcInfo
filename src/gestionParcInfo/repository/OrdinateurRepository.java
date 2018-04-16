@@ -1,5 +1,9 @@
 package gestionParcInfo.repository;
 
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,25 +11,26 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;;
+
 
 public class OrdinateurRepository extends Repository<Ordinateur> {
 	private static final String SQL_FIND_SN = "SELECT * FROM Ordinateur WHERE sn_o=?";
-	private static final String SQL_GET_ALL ="SELECT * FROM Ordinateur";
+	private static final String SQL_GET_ALL = "SELECT * FROM Ordinateur";
 
 	public OrdinateurRepository(Connection conn) {
 		super(conn);
 	}
 	
 	/**
-	 * Récuperer un Ordinateur dans la base
+	 * Récuperer un Ordinateur dans la base.
 	 * @param sn Numéro de série de l'ordinateur
+	 * 
 	 * @return L'objet Ordinateur correspondant
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
-	public Ordinateur findBySN(String sn) throws SQLException{
+	public Ordinateur findBySn(String sn) throws SQLException {
 		ResultSet rs = null;
 		Ordinateur ordinateur = null;
 		
@@ -33,10 +38,10 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 		this.pstmt.setString(1, sn);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			//Récupération de l'imprimante associé (si il y en a une)
 			ImprimanteRepository imprimanteRepo = new ImprimanteRepository(conn);
-			Imprimante imprimante = imprimanteRepo.findBySN(rs.getString(5));
+			Imprimante imprimante = imprimanteRepo.findBySn(rs.getString(5));
 			
 			//Récupération de l'employé associé (si il y en a un)
 			EmployeRepository employeRepo = new EmployeRepository(conn);
@@ -45,20 +50,23 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			//Récupération des dates
 			Date dateAttribution = null;
 			Date dateRestitution = null;
-			if(rs.getString(6) != null)
+			if (rs.getString(6) != null) {
 				try {
 					dateAttribution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(6));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			if(rs.getString(7) != null)
+			}
+			
+			if (rs.getString(7) != null) {
 				try {
 					dateRestitution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(7));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}
 			
 				ordinateur = new Ordinateur(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getDouble(4), imprimante, associatedEmploye, dateAttribution,dateRestitution);
 		}
@@ -77,10 +85,10 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 		this.pstmt = this.conn.prepareStatement(OrdinateurRepository.SQL_GET_ALL);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			//Récupération de l'imprimante associé (si il y en a une)
 			ImprimanteRepository imprimanteRepo = new ImprimanteRepository(conn);
-			Imprimante imprimante = imprimanteRepo.findBySN(rs.getString(5));
+			Imprimante imprimante = imprimanteRepo.findBySn(rs.getString(5));
 			
 			//Récupération de l'employé associé (si il y en a un)
 			EmployeRepository employeRepo = new EmployeRepository(conn);
@@ -89,7 +97,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 			Date dateAttribution = null;
 			Date dateRestitution = null;
 			
-			if(rs.getString(6) != null) {
+			if (rs.getString(6) != null) {
 				try {
 					dateAttribution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(6));
 					
@@ -97,7 +105,7 @@ public class OrdinateurRepository extends Repository<Ordinateur> {
 					e1.printStackTrace();
 				}
 			}
-			if(rs.getString(7) != null) {
+			if (rs.getString(7) != null) {
 				try {
 					dateRestitution = Ordinateur.dateFormatterOracleToJava.parse(rs.getString(7));
 				} catch (ParseException e1) {

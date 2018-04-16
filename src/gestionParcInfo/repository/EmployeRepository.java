@@ -18,10 +18,13 @@ public class EmployeRepository extends Repository<Employe> {
 	}
 	
 	/**
-	 * Compte le nombre d'employés où leurs matricule contient un pattern passé en paramètre 
+	 * Compte le nombre d'employés où leurs matricule contient un pattern passé en paramètre .
 	 * @param matriculePattern Le pattern à chercher dans les matricule
+	 * 
 	 * @return Le nombre d'employé correspondant au pattern
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
 	public int countEmployeByMatriculePattern(String matriculePattern) throws SQLException {
 		int counter = 0;
@@ -35,8 +38,9 @@ public class EmployeRepository extends Repository<Employe> {
 		rs = this.pstmt.executeQuery();
 		
 		//On compte le nombre de lignes de résultats
-		while(rs.next())
+		while (rs.next()) {
 			counter++;
+		}
 		
 		pstmt.close();
 		rs.close();
@@ -45,10 +49,13 @@ public class EmployeRepository extends Repository<Employe> {
 	}
 	
 	/**
-	 * Récupérer un Employe dans la base
+	 * Récupérer un Employe dans la base.
 	 * @param matricule Matricule de l'Employe à récupérer
+	 * 
 	 * @return L'objet Employe correspondant
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
 	public Employe findByMatricule(String matricule) throws SQLException {
 		ResultSet rs = null;
@@ -61,7 +68,7 @@ public class EmployeRepository extends Repository<Employe> {
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
-		while(rs.next()) {
+		while (rs.next()) {
 			employe = new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
 		}
 		
@@ -82,7 +89,7 @@ public class EmployeRepository extends Repository<Employe> {
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
-		while(rs.next()) {
+		while (rs.next()) {
 			employes.add(new Employe(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
 		}
 		

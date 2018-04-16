@@ -19,7 +19,7 @@ public class TUPersistanceOrdinateur {
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
-		Imprimante impr = imprrepo.findBySN("1");
+		Imprimante impr = imprrepo.findBySn("1");
 		Employe employe = employerepo.findByMatricule("DUPOMA");
 		
 		
@@ -42,7 +42,7 @@ public class TUPersistanceOrdinateur {
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
-		Imprimante impr = imprrepo.findBySN("1");
+		Imprimante impr = imprrepo.findBySn("1");
 		Employe employe = employerepo.findByMatricule("DUPOMA");
 		
 		
@@ -66,7 +66,7 @@ public class TUPersistanceOrdinateur {
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		ImprimanteRepository imprrepo = new ImprimanteRepository(conn);
 		
-		Imprimante impr = imprrepo.findBySN("1");
+		Imprimante impr = imprrepo.findBySn("1");
 		Employe employe = employerepo.findByMatricule("DUPOMA");
 		
 		

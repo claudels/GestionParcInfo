@@ -1,11 +1,14 @@
 package gestionParcInfo.repository;
+
+import gestionParcInfo.entity.Alerte;
+import gestionParcInfo.entity.Employe;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Employe;
+
 
 public class AlerteRepository extends Repository<Alerte> {
 	
@@ -18,20 +21,28 @@ public class AlerteRepository extends Repository<Alerte> {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Récupération de l'id max.
+	 * @return
+	 * 
+	 * @throws SQLException
+	 * 
+	 */
 	public int getMaxId() throws SQLException {
-		int id = -1;
+		
 		ResultSet rs = null;
 		
 		//On prépare la requete pour récupérer toutes les lignes de la table
 		this.pstmt = this.conn.prepareStatement(AlerteRepository.SQL_GET_MAXID);
 		
+		int id = -1;
 		//Execution de la requete
 		rs = this.pstmt.executeQuery();
 		
 		//On recupere l'id qui sera attribué à la nouvelle adresse
-		if(rs.next());
+		if (rs.next()) {
 			id = rs.getInt(1);
-		
+		}
 		pstmt.close();
 		rs.close();
 		
@@ -40,12 +51,15 @@ public class AlerteRepository extends Repository<Alerte> {
 	}
 	
 	/**
-	 * Récupérer une Alerte dans la base
+	 * Récupérer une Alerte dans la base.
 	 * @param id Identifiant de l'Alerte
+	 * 
 	 * @return L'objet Alerte
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
-	public Alerte findById(int id) throws SQLException{
+	public Alerte findById(int id) throws SQLException {
 		ResultSet rs = null;
 		Alerte alerte = null;
 		
@@ -57,7 +71,7 @@ public class AlerteRepository extends Repository<Alerte> {
 		rs = this.pstmt.executeQuery();
 		
 		//On compte le nombre de lignes de résultats
-		while(rs.next()) {
+		while (rs.next()) {
 			//On récupère l'employé associé à l'Alerte
 			EmployeRepository employeRepo = new EmployeRepository(conn);
 			Employe employeAssociated = employeRepo.findByMatricule(rs.getString(3));
@@ -83,7 +97,7 @@ public class AlerteRepository extends Repository<Alerte> {
 		rs = this.pstmt.executeQuery();
 		
 		//On compte le nombre de lignes de résultats
-		while(rs.next()) {
+		while (rs.next()) {
 			//On récupère l'employé associé à l'Alerte
 			EmployeRepository employeRepo = new EmployeRepository(conn);
 			Employe employeAssociated = employeRepo.findByMatricule(rs.getString(3));
@@ -95,6 +109,7 @@ public class AlerteRepository extends Repository<Alerte> {
 		rs.close();
 		
 		return alertes;
-	};
+	}
+	
 }
 

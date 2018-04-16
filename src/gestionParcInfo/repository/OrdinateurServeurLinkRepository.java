@@ -1,13 +1,14 @@
 package gestionParcInfo.repository;
 
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.OrdinateurServeurLink;
-import gestionParcInfo.entity.Serveur;
 
 public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeurLink> {
 	private static final String SQL_FIND_ORDI_SERVEUR = "SELECT * FROM Reseau WHERE SN_O=? AND SN_S=?";
@@ -18,22 +19,26 @@ public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeu
 	}
 	
 	/**
-	 * Récupérer un Lien dans la base
+	 * Récupérer un Lien dans la base.
 	 * @param ordinateur Ordinateur correspondant au lien
+	 * 
 	 * @param serveur Serveur correspondant au lien
+	 * 
 	 * @return L'objet OrdinateruServeurLink correspondant
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
-	public OrdinateurServeurLink findByOrdinateurAndServeur(Ordinateur ordinateur, Serveur serveur) throws SQLException{
-		ResultSet rs = null;
+	public OrdinateurServeurLink findByOrdinateurAndServeur(Ordinateur ordinateur, Serveur serveur) throws SQLException {
 		OrdinateurServeurLink ordinateurServeurLink = null;
-		
 		this.pstmt = this.conn.prepareStatement(OrdinateurServeurLinkRepository.SQL_FIND_ORDI_SERVEUR);
 		this.pstmt.setString(1, ordinateur.getSn());
 		this.pstmt.setString(2, serveur.getSn());
+		
+		ResultSet rs = null;
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			ordinateurServeurLink = new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(1));
 		}
 		
@@ -51,14 +56,14 @@ public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeu
 		this.pstmt = this.conn.prepareStatement(OrdinateurServeurLinkRepository.SQL_GET_ALL);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			//Récupération de l'ordinateur
 			OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
-			Ordinateur ordinateur = ordiRepo.findBySN(rs.getString(2));
+			Ordinateur ordinateur = ordiRepo.findBySn(rs.getString(2));
 			
 			//Récupération du serveur
 			ServeurRepository serveurRepo = new ServeurRepository(conn);
-			Serveur serveur = serveurRepo.findBySN(rs.getString(3));
+			Serveur serveur = serveurRepo.findBySn(rs.getString(3));
 			
 			ordinateurServeurLinks.add(new OrdinateurServeurLink(ordinateur, serveur, rs.getInt(1)));
 		}

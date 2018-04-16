@@ -1,4 +1,10 @@
 package gestionParcInfo.view;
+
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.view.fiche.FicheEmploye;
+
 import java.awt.Font;
 
 import javax.swing.JButton;
@@ -12,14 +18,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.view.fiche.FicheEmploye;
+
 
 public class AssignerOrdinateur extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private static final String[] columnNames = {"SN_O", "D\u00E9signation", "Ram","CPU"};
+	private static final String[] columnNames = {"SN_O", "Désignation", "Ram","CPU"};
 	
 	private JPanel contentPane;
 	
@@ -49,6 +52,15 @@ public class AssignerOrdinateur extends JFrame {
 	private FicheEmploye ficheEmploye;
 	private Employe employe;
 	
+	/**
+	 * Constructeur de la fiche d'assignation d'un ordinateur.
+	 * @param ordinateurs
+	 * 
+	 * @param ficheEmploye
+	 * 
+	 * @param employe
+	 * 
+	 */
 	public AssignerOrdinateur(Ordinateurs ordinateurs, FicheEmploye ficheEmploye,Employe employe) {
 		this.ordinateurs = ordinateurs;
 		this.ficheEmploye = ficheEmploye;
@@ -56,7 +68,7 @@ public class AssignerOrdinateur extends JFrame {
 		
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(AssignerOrdinateur.columnNames);
-		for(Ordinateur ordinateur : ordinateurs.findOrdinateursAvailable()) {
+		for (Ordinateur ordinateur : ordinateurs.findOrdinateursAvailable()) {
 			Object[] rowData = new Object[AssignerOrdinateur.columnNames.length];
 			rowData[0] = ordinateur.getSn();
 			rowData[1] = ordinateur.getDesignation();
@@ -73,11 +85,16 @@ public class AssignerOrdinateur extends JFrame {
 		lblEmail.setText(this.ficheEmploye.getEmail());
 	}
 	
+	/**
+	 * Retourne les ordinateur sélectionné.
+	 * @return
+	 */
 	public Ordinateur getSelectedOrdinateur() {
 		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]));
 		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();
 		return this.ordinateurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
 	}
+	
 	public JButton getBtnAssigner() {
 		return btnAssigner;
 	}
@@ -98,7 +115,7 @@ public class AssignerOrdinateur extends JFrame {
 		staticLblMatricule.setBounds(10, 62, 75, 14);
 		contentPane.add(staticLblMatricule);
 		
-		staticLblPrenom = new JLabel("Pr\u00E9nom : ");
+		staticLblPrenom = new JLabel("Prénom : ");
 		staticLblPrenom.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblPrenom.setBounds(305, 89, 75, 14);
 		contentPane.add(staticLblPrenom);
@@ -108,7 +125,7 @@ public class AssignerOrdinateur extends JFrame {
 		staticLblEmail.setBounds(10, 90, 75, 14);
 		contentPane.add(staticLblEmail);
 		
-		staticLblSubtitle = new JLabel("S\u00E9l\u00E9ctionnez un ordinateur et cliquez sur le bouton \"Assigner\" : ");
+		staticLblSubtitle = new JLabel("Séctionnez un ordinateur et cliquez sur le bouton \"Assigner\" : ");
 		staticLblSubtitle.setBounds(10, 128, 377, 22);
 		contentPane.add(staticLblSubtitle);
 		

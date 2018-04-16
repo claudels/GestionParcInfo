@@ -453,7 +453,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		staticLblImprimanteTitle.setBounds(10, 248, 169, 22);
 		contentPane.add(staticLblImprimanteTitle);
 		
-		staticLblServeursTitle = new JLabel("Serveurs connect\u00E9s :");
+		staticLblServeursTitle = new JLabel("Serveurs connectés :");
 		staticLblServeursTitle.setBounds(10, 346, 169, 22);
 		contentPane.add(staticLblServeursTitle);
 		
@@ -559,7 +559,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		btnConnecterImprimante.setBounds(466, 276, 111, 25);
 		contentPane.add(btnConnecterImprimante);
 		
-		btnDeconnecterImprimante = new JButton("D\u00E9connecter");
+		btnDeconnecterImprimante = new JButton("Déconnecter");
 		btnDeconnecterImprimante.setBounds(466, 302, 111, 25);
 		contentPane.add(btnDeconnecterImprimante);
 		
@@ -567,7 +567,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		btnConnecterServeurs.setBounds(10, 564, 111, 25);
 		contentPane.add(btnConnecterServeurs);
 		
-		btnDeconnecterServeurs = new JButton("D\u00E9connecter");
+		btnDeconnecterServeurs = new JButton("Déconnecter");
 		btnDeconnecterServeurs.setBounds(127, 564, 111, 25);
 		contentPane.add(btnDeconnecterServeurs);
 	}
@@ -580,10 +580,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if(e.getSource() == this.connexionImprimanteForm) {
+		if (e.getSource() == this.connexionImprimanteForm) {
 			this.connexionImprimanteForm = null;
 		}
-		if(e.getSource() == this.connexionServeurForm) {
+		if (e.getSource() == this.connexionServeurForm) {
 			this.connexionServeurForm = null;
 		}
 	}

@@ -1,17 +1,13 @@
 package gestionParcInfo.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import gestionParcInfo.entity.Imprimante;
 
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
 
 public class AlerterEmploye extends JFrame {
 
@@ -34,11 +30,12 @@ public class AlerterEmploye extends JFrame {
 	initComponents();
 	
 	}
+	
 	public JButton getBtnAlerter() {
 	return btnAlerter;
 	}
 	
-	public JTextField getTfMessageDalerte(){
+	public JTextField getTfMessageDalerte() {
 		return tfMessageDalerte;
 	}
 	
@@ -46,8 +43,10 @@ public class AlerterEmploye extends JFrame {
 		return tfMessageDalerte.getText();
 	}
 
-	
-	public void initComponents(){
+	/**
+	 * Initialisation des objects qui composent la fenetre.
+	 */
+	public void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 423, 279);
 		contentPane = new JPanel();

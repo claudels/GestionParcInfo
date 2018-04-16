@@ -1,4 +1,9 @@
 package gestionParcInfo.view;
+
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.view.fiche.FicheOrdinateur;
+
 import java.awt.Font;
 import java.text.DecimalFormat;
 
@@ -13,17 +18,16 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.model.Imprimantes;
-import gestionParcInfo.view.fiche.FicheOrdinateur;
 
-public class ConnexionImprimante extends JFrame{
+
+public class ConnexionImprimante extends JFrame {
+	
 	/**
-	 * 
+	 *serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] columnNames = {"SN_I", "D\u00E9signation", "Resolution"};
+	private static final String[] columnNames = {"SN_I", "Désignation", "Resolution"};
 	
 	//Fenetre principale
 	private JPanel contentPane;
@@ -50,13 +54,20 @@ public class ConnexionImprimante extends JFrame{
 	private Imprimantes imprimantes;
 	
 	FicheOrdinateur ficheOrdinateur;
-	private JLabel staticLblSNO;
+	private JLabel staticLblSno;
 	private JLabel staticLblDesignation;
 	private JLabel staticLblProprietaire;
-	private JLabel lblSNO;
+	private JLabel lblSno;
 	private JLabel lblProprietaire;
 	private JLabel lblDesignation;
 	
+	/**
+	 * Constructeur de la connexion à une imprimante.
+	 * @param imprimantes
+	 * 
+	 * @param ficheOrdinateur
+	 * 
+	 */
 	public ConnexionImprimante(Imprimantes imprimantes, FicheOrdinateur ficheOrdinateur) {
 		this.imprimantes = imprimantes;
 		this.ficheOrdinateur = ficheOrdinateur;
@@ -67,7 +78,7 @@ public class ConnexionImprimante extends JFrame{
 		//Remplissage table
 		DecimalFormat f = new DecimalFormat("##0.00");
 		
-		for(Imprimante imprimante : imprimantes.getItems()) {
+		for (Imprimante imprimante : imprimantes.getItems()) {
 			Object[] rowData = new Object[ConnexionImprimante.columnNames.length];
 			rowData[0] = imprimante.getSn();
 			rowData[1] = imprimante.getDesignation();
@@ -77,17 +88,19 @@ public class ConnexionImprimante extends JFrame{
 		
 		this.initComponents();
 		
-		this.lblSNO.setText(this.ficheOrdinateur.getSn());
+		this.lblSno.setText(this.ficheOrdinateur.getSn());
 		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
-		if(this.ficheOrdinateur.getProprietaire() != null)
+		if (this.ficheOrdinateur.getProprietaire() != null) {
 			this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
+		}
 	}	
+	
 	public JButton getBtnSauvegarder() {
 		return btnSauvegarder;
 	}
 	
 	private void initComponents() {
-		setTitle("Employ\u00E9");
+		setTitle("Employé");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 664, 577);
 		contentPane = new JPanel();
@@ -101,31 +114,31 @@ public class ConnexionImprimante extends JFrame{
 		staticLblTitle.setBounds(127, 0, 359, 32);
 		contentPane.add(staticLblTitle);
 		
-		staticLblSubtitle = new JLabel("S\u00E9l\u00E9ctionnez une ou plusieurs imprimante(s) puis cliquez sur le bouton \"Connecter\" : ");
+		staticLblSubtitle = new JLabel("Séctionnez une ou plusieurs imprimante(s) puis cliquez sur le bouton \"Connecter\" : ");
 		staticLblSubtitle.setBounds(10, 171, 487, 22);
 		contentPane.add(staticLblSubtitle);
 		
-		staticLblSNO = new JLabel("SN_O : ");
-		staticLblSNO.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLblSNO.setBounds(226, 62, 75, 14);
-		contentPane.add(staticLblSNO);
+		staticLblSno = new JLabel("SN_O : ");
+		staticLblSno.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblSno.setBounds(226, 62, 75, 14);
+		contentPane.add(staticLblSno);
 		
-		staticLblDesignation = new JLabel("D\u00E9signation : ");
+		staticLblDesignation = new JLabel("Désignation : ");
 		staticLblDesignation.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblDesignation.setBounds(198, 90, 103, 14);
 		contentPane.add(staticLblDesignation);
 		
-		staticLblProprietaire = new JLabel("Propri\u00E9taire : ");
+		staticLblProprietaire = new JLabel("Propriétaire : ");
 		staticLblProprietaire.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblProprietaire.setBounds(212, 120, 89, 14);
 		contentPane.add(staticLblProprietaire);
 		
 		//Configuration labels dynamiques
-		lblSNO = new JLabel();
-		lblSNO.setText((String) null);
-		lblSNO.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSNO.setBounds(307, 61, 115, 16);
-		contentPane.add(lblSNO);
+		lblSno = new JLabel();
+		lblSno.setText((String) null);
+		lblSno.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblSno.setBounds(307, 61, 115, 16);
+		contentPane.add(lblSno);
 		
 		lblProprietaire = new JLabel();
 		lblProprietaire.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -156,6 +169,10 @@ public class ConnexionImprimante extends JFrame{
 
 	}
 	
+	/**
+	 * Retourne les imprmantes selecionnés.
+	 * @return
+	 */
 	public Imprimante getSelectedImprimante() {
 		int columnSNSIndex = this.tableConnexionImprimante.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
 		int rowIndex = this.tableConnexionImprimante.getSelectedRow();

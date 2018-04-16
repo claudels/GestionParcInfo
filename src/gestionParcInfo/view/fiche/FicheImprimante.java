@@ -1,4 +1,10 @@
 package gestionParcInfo.view.fiche;
+
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.model.Ordinateurs;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -14,38 +20,40 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.model.Imprimantes;
-import gestionParcInfo.model.Ordinateurs;
-
 public class FicheImprimante extends Fiche {
 	
 	private DefaultTableModel tableModel;
 	private Imprimantes imprimantes;
 	private static final long serialVersionUID = 1L;
-	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9"};
+	private static final String[] columnsNames = {"SN_O", "Designation", "Employé"};
 	private Ordinateurs ordinateurs;
 	private ArrayList<Ordinateur> disconnectedOrdinateurs;
 
 	//Labels statiques
-	private JLabel staticLBL_SNI, staticLBL_uniteOrdinateur, staticLBL_ordisConnectesTitle, staticLBL_title, staticLBL_nbOrdiConnectes, staticLBL_designation, staticLBL_resolution;
+	private JLabel staticLblSni;
+	private JLabel staticLblUniteOrdinateur;
+	private JLabel staticLblOrdisConnectesTitle;
+	private JLabel staticLblTitle;
+	private JLabel staticLblNbOrdiConnectes; 
+	private JLabel staticLblDesignation; 
+	private JLabel staticLblResolution;
 
 	//Labels dynamique
-	private JLabel LBL_nbOrdisConnectes;
+	private JLabel lblNbOrdisConnectes;
 	
 	//TextFields
-	private JTextField TF_designation, TF_SNI;
+	private JTextField tfDesignation;
+	private JTextField tfSni;
 	
 	//Spinner
-	private JSpinner SPIN_resolution;
+	private JSpinner spinnerResolution;
 	
 	//Tableau ordinateur
-	private JScrollPane SCRLLPANE_ordisConnectes;
-	private JTable TABLE_ordisConnectes;
+	private JScrollPane scrlOrdisConnectes;
+	private JTable tblOrdisConnectes;
 	
 	//Boutons
-	JButton BTN_deconnecter;
+	JButton brnDeconnecter;
 	
 	
 	/**
@@ -62,16 +70,28 @@ public class FicheImprimante extends Fiche {
 		
 		
 	}
+	/**
+	 * Constructeur de l'imprimante pour modification, donc imprimante existante.
+	 * @param initialState
+	 * 
+	 * @param imprimante
+	 * 
+	 * @param ordinateurs
+	 * 
+	 * @param imprimantes
+	 * 
+	 */
 	
 	public FicheImprimante(Fiche.State initialState,Imprimante imprimante,Ordinateurs ordinateurs,Imprimantes imprimantes) {
 		this(initialState);
 		this.ordinateurs = ordinateurs;
 		this.disconnectedOrdinateurs = new ArrayList<Ordinateur>();
-		for(Ordinateur ordinateur : ordinateurs.findOrdinateursByImprimante(imprimante)) {
+		for (Ordinateur ordinateur : ordinateurs.findOrdinateursByImprimante(imprimante)) {
 			String matricule = null;
 			
-			if(ordinateur.getProprietaire() != null)
+			if (ordinateur.getProprietaire() != null) {
 				matricule = ordinateur.getProprietaire().getMatricule();
+			}
 			
 			Object[] rawData = new Object[FicheImprimante.columnsNames.length];
 			rawData[0] = ordinateur.getSn();
@@ -80,21 +100,25 @@ public class FicheImprimante extends Fiche {
 			this.tableModel.addRow(rawData);
 		}
 		
-	this.TF_SNI.setText(imprimante.getSn());
-		this.TF_designation.setText(imprimante.getDesignation());
-		this.LBL_nbOrdisConnectes.setText(Long.toString(imprimantes.countOrdinateurs(imprimante)));
+	this.tfSni.setText(imprimante.getSn());
+		this.tfDesignation.setText(imprimante.getDesignation());
+		this.lblNbOrdisConnectes.setText(Long.toString(imprimantes.countOrdinateurs(imprimante)));
 		
 	}
+	/**
+	 * Liste des actions à faire en fonction des boutons appuyé.
+	 */
+	
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		
-		if(e.getSource() == this.BTN_deconnecter) {
+		if (e.getSource() == this.brnDeconnecter) {
 			System.out.println("demande de deconnection");
 			int deletedRowsCounter = 0;
-			int columnSNSIndex = this.TABLE_ordisConnectes.convertColumnIndexToView(this.tableModel.findColumn(FicheImprimante.columnsNames[0]));
+			int columnSNSIndex = this.tblOrdisConnectes.convertColumnIndexToView(this.tableModel.findColumn(FicheImprimante.columnsNames[0]));
 			
-			for(int rowIndex : this.TABLE_ordisConnectes.getSelectedRows()) {
-				Ordinateur ordinateur = this.ordinateurs.findBySN((String) this.TABLE_ordisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+			for (int rowIndex : this.tblOrdisConnectes.getSelectedRows()) {
+				Ordinateur ordinateur = this.ordinateurs.findBySN((String) this.tblOrdisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
 				System.out.println(ordinateur.getSn());
 				this.disconnectedOrdinateurs.add(ordinateur);
 				this.tableModel.removeRow(rowIndex - deletedRowsCounter);
@@ -109,39 +133,45 @@ public class FicheImprimante extends Fiche {
 		
 		//Interdit à la création
 		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
-		this.BTN_deconnecter.setVisible(newState != Fiche.State.CREATION);
+		this.brnDeconnecter.setVisible(newState != Fiche.State.CREATION);
 		
 		
 		//Interdit à la visualisation
-		this.TF_designation.setEditable(newState != Fiche.State.VISUALISATION);
-		this.SPIN_resolution.setEnabled(newState != Fiche.State.VISUALISATION);
-		this.BTN_deconnecter.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
+		this.spinnerResolution.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.brnDeconnecter.setEnabled(newState != Fiche.State.VISUALISATION);
 		
 		
 		//Autorisé pour création
-		this.TF_SNI.setEditable(newState == Fiche.State.CREATION);
+		this.tfSni.setEditable(newState == Fiche.State.CREATION);
 		
 	
 		
 	}
+	
 	public ArrayList<Ordinateur> getDisconnectedOrdinateurs(){
 		return disconnectedOrdinateurs;
 	}
+	
 	public JButton getBtnDeconnecter() {
-		return BTN_deconnecter;
+		return brnDeconnecter;
 	}
-	public String getSN() {
-		return this.TF_SNI.getText();
+	
+	public String getSn() {
+		return this.tfSni.getText();
 	}
 	
 	public String getDesignation() {
-		return this.TF_designation.getText();
+		return this.tfDesignation.getText();
 	}
 	
 	public int getResolution() {
-		return (int)this.SPIN_resolution.getValue();
+		return (int)this.spinnerResolution.getValue();
 	}
 	
+	/**
+	 * Initialisation des composants qui forment la fenetres.
+	 */
 	public void initComponents() {
 		//Configuration fenetre
 		setTitle("Imprimante");
@@ -149,76 +179,76 @@ public class FicheImprimante extends Fiche {
 		
 		
 		//Configuration labels statiques
-		staticLBL_SNI = new JLabel("SN_I : ");
-		staticLBL_SNI.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_SNI.setBounds(22, 62, 63, 14);
-		contentPane.add(staticLBL_SNI);
+		staticLblSni = new JLabel("SN_I : ");
+		staticLblSni.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblSni.setBounds(22, 62, 63, 14);
+		contentPane.add(staticLblSni);
 		
-		staticLBL_uniteOrdinateur = new JLabel("Ordinateurs");
-		staticLBL_uniteOrdinateur.setHorizontalAlignment(SwingConstants.LEFT);
-		staticLBL_uniteOrdinateur.setFont(new Font("Tahoma", Font.BOLD, 18));
-		staticLBL_uniteOrdinateur.setBounds(340, 84, 124, 20);
-		contentPane.add(staticLBL_uniteOrdinateur);
+		staticLblUniteOrdinateur = new JLabel("Ordinateurs");
+		staticLblUniteOrdinateur.setHorizontalAlignment(SwingConstants.LEFT);
+		staticLblUniteOrdinateur.setFont(new Font("Tahoma", Font.BOLD, 18));
+		staticLblUniteOrdinateur.setBounds(340, 84, 124, 20);
+		contentPane.add(staticLblUniteOrdinateur);
 		
-		staticLBL_ordisConnectesTitle = new JLabel("Ordinateurs connect\u00E9s : ");
-		staticLBL_ordisConnectesTitle.setBounds(10, 142, 173, 22);
-		contentPane.add(staticLBL_ordisConnectesTitle);
+		staticLblOrdisConnectesTitle = new JLabel("Ordinateurs connectés : ");
+		staticLblOrdisConnectesTitle.setBounds(10, 142, 173, 22);
+		contentPane.add(staticLblOrdisConnectesTitle);
 		
-		staticLBL_title = new JLabel("Imprimante");
-		staticLBL_title.setFont(new Font("Tahoma", Font.BOLD, 26));
-		staticLBL_title.setBounds(163, 13, 185, 32);
-		contentPane.add(staticLBL_title);
+		staticLblTitle = new JLabel("Imprimante");
+		staticLblTitle.setFont(new Font("Tahoma", Font.BOLD, 26));
+		staticLblTitle.setBounds(163, 13, 185, 32);
+		contentPane.add(staticLblTitle);
 		
-		staticLBL_nbOrdiConnectes = new JLabel("Nombre de PCs connect\u00E9s : ");
-		staticLBL_nbOrdiConnectes.setBounds(260, 56, 173, 22);
-		contentPane.add(staticLBL_nbOrdiConnectes);
+		staticLblNbOrdiConnectes = new JLabel("Nombre de PCs connectés : ");
+		staticLblNbOrdiConnectes.setBounds(260, 56, 173, 22);
+		contentPane.add(staticLblNbOrdiConnectes);
 		
-		staticLBL_designation = new JLabel("D\u00E9signation : ");
-		staticLBL_designation.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLBL_designation.setBounds(-15, 83, 100, 22);
-		contentPane.add(staticLBL_designation);
+		staticLblDesignation = new JLabel("Désignation : ");
+		staticLblDesignation.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblDesignation.setBounds(-15, 83, 100, 22);
+		contentPane.add(staticLblDesignation);
 		
-		staticLBL_resolution = new JLabel("R\u00E9solution : ");
-		staticLBL_resolution.setBounds(15, 108, 76, 22);
-		contentPane.add(staticLBL_resolution);
+		staticLblResolution = new JLabel("Résolution : ");
+		staticLblResolution.setBounds(15, 108, 76, 22);
+		contentPane.add(staticLblResolution);
 		
 		//Configuration des labels dynamiques
-		LBL_nbOrdisConnectes = new JLabel("#####");
-		LBL_nbOrdisConnectes.setHorizontalAlignment(SwingConstants.RIGHT);
-		LBL_nbOrdisConnectes.setFont(new Font("Tahoma", Font.BOLD, 18));
-		LBL_nbOrdisConnectes.setBounds(210, 84, 124, 20);
-		contentPane.add(LBL_nbOrdisConnectes);
+		lblNbOrdisConnectes = new JLabel("#####");
+		lblNbOrdisConnectes.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNbOrdisConnectes.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNbOrdisConnectes.setBounds(210, 84, 124, 20);
+		contentPane.add(lblNbOrdisConnectes);
 		
 		//Configuration des TextFields
-		TF_SNI = new JTextField();
-		TF_SNI.setEditable(false);
-		TF_SNI.setColumns(10);
-		TF_SNI.setBounds(97, 59, 143, 20);
-		contentPane.add(TF_SNI);
+		tfSni = new JTextField();
+		tfSni.setEditable(false);
+		tfSni.setColumns(10);
+		tfSni.setBounds(97, 59, 143, 20);
+		contentPane.add(tfSni);
 		
-		TF_designation = new JTextField();
-		TF_designation.setEditable(false);
-		TF_designation.setColumns(10);
-		TF_designation.setBounds(97, 84, 143, 20);
-		contentPane.add(TF_designation);
+		tfDesignation = new JTextField();
+		tfDesignation.setEditable(false);
+		tfDesignation.setColumns(10);
+		tfDesignation.setBounds(97, 84, 143, 20);
+		contentPane.add(tfDesignation);
 		
 		//Configuration spinner
-		SPIN_resolution = new JSpinner();
-		SPIN_resolution.setEnabled(false);
-		SPIN_resolution.setModel(new SpinnerNumberModel(150, 150, 300, 150));
-		SPIN_resolution.setBounds(97, 110, 86, 20);
-		contentPane.add(SPIN_resolution);
+		spinnerResolution = new JSpinner();
+		spinnerResolution.setEnabled(false);
+		spinnerResolution.setModel(new SpinnerNumberModel(150, 150, 300, 150));
+		spinnerResolution.setBounds(97, 110, 86, 20);
+		contentPane.add(spinnerResolution);
 		
 		//Configuration tableau ordinateurs
-		SCRLLPANE_ordisConnectes = new JScrollPane();
-		SCRLLPANE_ordisConnectes.setBounds(10, 170, 457, 349);
-		contentPane.add(SCRLLPANE_ordisConnectes);
+		scrlOrdisConnectes = new JScrollPane();
+		scrlOrdisConnectes.setBounds(10, 170, 457, 349);
+		contentPane.add(scrlOrdisConnectes);
 		
-		TABLE_ordisConnectes = new JTable();
-		TABLE_ordisConnectes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		TABLE_ordisConnectes.setModel(this.tableModel);
-		TABLE_ordisConnectes.setFillsViewportHeight(true);
-		SCRLLPANE_ordisConnectes.setViewportView(TABLE_ordisConnectes);
+		tblOrdisConnectes = new JTable();
+		tblOrdisConnectes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		tblOrdisConnectes.setModel(this.tableModel);
+		tblOrdisConnectes.setFillsViewportHeight(true);
+		scrlOrdisConnectes.setViewportView(tblOrdisConnectes);
 		
 		
 		btnAnnuler.setBounds(139, 566, this.btnAnnuler.getWidth(), this.btnAnnuler.getHeight());
@@ -226,10 +256,10 @@ public class FicheImprimante extends Fiche {
 		btnSauver.setBounds(369, 566, this.btnSauver.getWidth(), this.btnSauver.getHeight());
 		
 		
-		BTN_deconnecter = new JButton("D\u00E9connecter");
-		BTN_deconnecter.setEnabled(true);
-		BTN_deconnecter.setBounds(10, 524, 111, 25);
-		contentPane.add(BTN_deconnecter);
+		brnDeconnecter = new JButton("Déconnecter");
+		brnDeconnecter.setEnabled(true);
+		brnDeconnecter.setBounds(10, 524, 111, 25);
+		contentPane.add(brnDeconnecter);
 		
 		
 	}

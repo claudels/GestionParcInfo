@@ -87,7 +87,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				Imprimante imprimante = null;
 				
 				if (this.ficheImprimante.getCurrentState() == Fiche.State.CREATION) {
-					imprimante = new Imprimante(this.ficheImprimante.getSN(), this.ficheImprimante.getDesignation(),this.ficheImprimante.getResolution());
+					imprimante = new Imprimante(this.ficheImprimante.getSn(), this.ficheImprimante.getDesignation(),this.ficheImprimante.getResolution());
 
 					
 					//Persistance de l'ordinateur et ajout au modèle
@@ -95,7 +95,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					imprimantes.addItem(imprimante);
 					
 				}else if (this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION) {
-					imprimante = this.imprimantes.findBySN(this.ficheImprimante.getSN());
+					imprimante = this.imprimantes.findBySN(this.ficheImprimante.getSn());
 				
 				
 				imprimante.setDesignation(this.ficheImprimante.getDesignation());
@@ -173,7 +173,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				System.out.println("DoubleClick on table imprimante");
 				//Création du formulaire
 				if (this.ficheImprimante == null) {
-					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSNImprimanteClicked());
+					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSnImprimanteClicked());
 					System.out.println(imprimante.getSn());
 					this.ficheImprimante = new FicheImprimante(Fiche.State.VISUALISATION,imprimante,this.ordinateurs,this.imprimantes);
 					ficheImprimante.setVisible(true);

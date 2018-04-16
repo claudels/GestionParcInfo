@@ -17,20 +17,24 @@ import gestionParcInfo.model.Imprimantes;
 
 public class ImprimanteTab extends JPanel implements Observer {
 	/**
-	 * 
+	 * serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] columnsNames = {"SN_I", "Designation", "Ordinateurs connect\u00E9s"};
+	private static final String[] columnsNames = {"SN_I", "Designation", "Ordinateurs connectés"};
 	
 	//Boutons
-	JButton btnAjouter, btnSupprimer;
+	private JButton btnAjouter;
+	private JButton btnSupprimer;
 	
 	//Tableau
 	private JTable tblImprimante;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrllpaneImprimante;
 	
+	/**
+	 * Constructeur de l'onglet imprimante.
+	 */
 	public ImprimanteTab() {
 		super();
 		
@@ -48,18 +52,26 @@ public class ImprimanteTab extends JPanel implements Observer {
 		return btnSupprimer;
 	}
 	
+	/**
+	 * Retourne les numéros de séries des imprimantes selectionnées.
+	 * @return ArrayList Liste des uméros de série
+	 */
 	public ArrayList<String> getSNsImprimanteSelected() {
 		ArrayList<String> serialNumbers = new ArrayList<>();
 		
-		int columnIndex = this.tblImprimante.convertColumnIndexToView(this.tableModel.findColumn(ImprimanteTab.columnsNames[0]));
+		int column = this.tableModel.findColumn(ImprimanteTab.columnsNames[0]);
+		int columnIndex = this.tblImprimante.convertColumnIndexToView(column);
 		
-		for(int index : this.tblImprimante.getSelectedRows()) {
+		for (int index : this.tblImprimante.getSelectedRows()) {
 			serialNumbers.add((String)this.tblImprimante.getValueAt(index, columnIndex));
 		}
 		
 		return serialNumbers;
-}
+	}
 	
+	/**
+	 * Initialisation des objects composant la fenètre.
+	 */
 	public void initComponents() {
 		//Panel
 		this.setLayout(null);
@@ -92,7 +104,7 @@ public class ImprimanteTab extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if(obs instanceof Imprimantes) {
+		if (obs instanceof Imprimantes) {
 			Imprimantes imprimantes = (Imprimantes)obs;
 			this.tableModel = new DefaultTableModel() {
 				   public boolean isCellEditable(int row, int column) {
@@ -102,7 +114,7 @@ public class ImprimanteTab extends JPanel implements Observer {
 			};
 			this.tableModel.setColumnIdentifiers(ImprimanteTab.columnsNames);
 			
-			for(Imprimante imprimante : imprimantes.getItems()) {
+			for (Imprimante imprimante : imprimantes.getItems()) {
 				Object[] rawData = new Object[ImprimanteTab.columnsNames.length];
 				rawData[0] = imprimante.getSn();
 				rawData[1] = imprimante.getDesignation();
@@ -121,7 +133,7 @@ public class ImprimanteTab extends JPanel implements Observer {
 		return tblImprimante;
 	}
 
-	public String getSNImprimanteClicked() {
+	public String getSnImprimanteClicked() {
 		int columnIndex = this.tblImprimante.convertColumnIndexToView(this.tableModel.findColumn(ImprimanteTab.columnsNames[0]));
 		return (String)this.tblImprimante.getValueAt(this.tblImprimante.getSelectedRow(), columnIndex);
 	}
