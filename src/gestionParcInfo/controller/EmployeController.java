@@ -1,11 +1,14 @@
 package gestionParcInfo.controller;
 
 import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Alerte;
 import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Alertes;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.EmployeRepository;
+import gestionParcInfo.view.AlerterEmploye;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheEmploye;
 import gestionParcInfo.view.tab.EmployeTab;
@@ -27,6 +30,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	private Employes employes;
 	private FicheEmploye ficheEmploye;
 	private Ordinateurs ordinateurs;
+	private AlerterEmploye alerterEmployeForm;
+	private Alertes alertes;
 	
 	/**
 	 * Constructeur du controleur des employés.
@@ -34,10 +39,12 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	 * @param employes Modèle des employés
 	 * @param ordinateurs Modèle des ordinateurs
 	 */
-	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs) {
+
+	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs,Alertes alertes) {
 		this.employeTab = employeTab;
 		this.employes = employes;
 		this.ordinateurs = ordinateurs;
+		this.alertes = alertes;
 	}
 
 	@Override
@@ -128,9 +135,35 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		} else if (e.getSource() == this.alerterEmployeForm.getBtnAlerter()) {
+			System.out.println("Alerter Employe");
+			this.alerterEmployeForm.addWindowListener(this);
+			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Alerte alerte;
+
+					for (Employe employe : this.employeTab.getSelectedEmploye()) {
+						alerte = new Alerte(alerterEmployeForm.getMessage(),employe);
+						alerte.create(conn);
+						alertes.addItem(alerte);
+					}
+								
+					conn.close();
+					this.ficheEmploye.dispose();
+					this.ficheEmploye = null;
+				
+		
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-	
 	}
+		
+	
+	
 	
 
 	@Override
@@ -195,8 +228,10 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					this.ficheEmploye.addWindowListener(this);
 					this.ficheEmploye.getBtnSauver().addActionListener(this);
 					this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
+					this.alerterEmployeForm.addWindowListener(this);
+					this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 					
-				}else {
+				} else {
 					this.ficheEmploye.toFront();
 				}
 			}

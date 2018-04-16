@@ -1,9 +1,5 @@
 package gestionParcInfo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import gestionParcInfo.controller.AlerteController;
 import gestionParcInfo.controller.EmployeController;
 import gestionParcInfo.controller.ImprimanteController;
@@ -34,9 +30,15 @@ import gestionParcInfo.view.tab.ImprimanteTab;
 import gestionParcInfo.view.tab.OrdinateurTab;
 import gestionParcInfo.view.tab.ServeurTab;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+
 public class GestionParcInfo {
 	public static final String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";
-	public static final String dbUsername = "parcinfo";
+	public static final String dbUsername = "Florian";
 	public static final String dbPassword = "network";
 	
 	public static void main(String[] args) {
@@ -55,7 +57,7 @@ public class GestionParcInfo {
 		OrdinateurTab ordiTab = new OrdinateurTab();
 		ServeurTab serveurTab = new ServeurTab();
 		AlerteTab alerteTab = new AlerteTab();
-		EmployeTab employeTab = new EmployeTab();
+		EmployeTab employeTab = new EmployeTab(employes);
 		ImprimanteTab imprimanteTab = new ImprimanteTab();
 		
 		try {
@@ -91,7 +93,7 @@ public class GestionParcInfo {
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs, serveurs, employes, ordinateurServeurLinks, imprimantes);
 
 		ServeurController servController = new ServeurController(serveurTab,serveurs, ordinateurServeurLinks);
-		EmployeController employeController = new EmployeController(employeTab,employes,ordinateurs);
+		EmployeController employeController = new EmployeController(employeTab,employes,ordinateurs,alertes);
 		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab,imprimantes,ordinateurs);
 		AlerteController alerteController = new AlerteController(alerteTab,alertes);
 		
@@ -111,6 +113,7 @@ public class GestionParcInfo {
 		employeTab.getBtnAlerter().addActionListener(employeController);
 		employeTab.getBtnSupprimer().addActionListener(employeController);
 		employeTab.getTableEmploye().addMouseListener(employeController);
+		employeTab.getBtnAlerter().addActionListener(employeController);
 		
 		//Add imprimante listeners
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
