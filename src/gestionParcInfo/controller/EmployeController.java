@@ -18,6 +18,7 @@ import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.EmployeRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
+import gestionParcInfo.view.AssignerOrdinateur;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheEmploye;
 import gestionParcInfo.view.fiche.FicheImprimante;
@@ -29,6 +30,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	private Employes employes;
 	private FicheEmploye ficheEmploye;
 	private Ordinateurs ordinateurs;
+	
 	
 	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs) {
 		this.employeTab = employeTab;
@@ -50,7 +52,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				this.ficheEmploye.addWindowListener(this);
 				this.ficheEmploye.getBtnSauver().addActionListener(this);
 				this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
-				
+			
 				
 			
 			}else {
@@ -86,7 +88,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 		}
 		}
 		else if(e.getSource() == this.ficheEmploye.getBtnSauver() && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
-			System.out.println("Sauver imprimante");
+			System.out.println("Sauver Employe");
 
 			Connection conn;
 			try {
@@ -109,6 +111,11 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				employe.setPrenom(this.ficheEmploye.getPrenom());
 				employe.setEmail(this.ficheEmploye.getEmail());
 				
+				for(Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
+					ordinateur.setProprietaire(employe);
+					System.out.println("Demande d'assignation");
+					ordinateur.update(conn);	
+				}
 				
 				employe.update(conn);
 				employes.updateItem(employe);
@@ -188,6 +195,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					this.ficheEmploye.addWindowListener(this);
 					this.ficheEmploye.getBtnSauver().addActionListener(this);
 					this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
+					
 				}else {
 					this.ficheEmploye.toFront();
 				}

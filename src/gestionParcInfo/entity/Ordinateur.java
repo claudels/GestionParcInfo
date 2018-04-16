@@ -174,8 +174,11 @@ public class Ordinateur extends Entity{
 			this.pstmt.setString(4, this.imprimante.getSn());
 		else
 			this.pstmt.setString(4, null);
-			
-		this.pstmt.setString(5, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
+		if (dateAttribution != null)
+			this.pstmt.setString(5, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
+		else
+			this.pstmt.setString(5,null);
+		
 		if (dateRestitution != null)
 			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
 		else

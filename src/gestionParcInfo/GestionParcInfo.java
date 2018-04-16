@@ -91,7 +91,8 @@ public class GestionParcInfo {
 		
 		//Controleurs
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs, serveurs, employes, ordinateurServeurLinks, imprimantes);
-		ServeurController servController = new ServeurController(serveurTab,serveurs);
+
+		ServeurController servController = new ServeurController(serveurTab,serveurs, ordinateurServeurLinks);
 		EmployeController employeController = new EmployeController(employeTab,employes,ordinateurs);
 		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab,imprimantes,ordinateurs);
 		AlerteController alerteController = new AlerteController(alerteTab,alertes);
@@ -105,6 +106,7 @@ public class GestionParcInfo {
 		//Add serveurs listeners
 		serveurTab.getBtnAJouter().addActionListener(servController);
 		serveurTab.getBtnSupprimer().addActionListener(servController);
+		serveurTab.getTblServeur().addMouseListener(servController);
 		
 		//Add employe listeners
 		employeTab.getBtnAjouter().addActionListener(employeController);

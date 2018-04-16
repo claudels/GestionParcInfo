@@ -14,9 +14,9 @@ public class Serveur extends Entity {
 	
 	private String sn;
 	private String designation;
-	private int memoire;
+	private long memoire;
 	
-	public Serveur(String sn, String designation, int memoire) {
+	public Serveur(String sn, String designation, long memoire) {
 		this.sn = sn;
 		this.designation = designation;
 		this.memoire = memoire;
@@ -26,7 +26,7 @@ public class Serveur extends Entity {
 		return designation;
 	}
 	
-	public int getMemoire() {
+	public long getMemoire() {
 		return memoire;
 	}
 	
@@ -38,12 +38,10 @@ public class Serveur extends Entity {
 		this.designation = designation;
 	}
 	
-	public void setMemoire(int memoire) {
+	public void setMemoire(long memoire) {
 		this.memoire = memoire;
 	}
 	
-
-
 	@Override
 	public void remove(Connection conn) throws SQLException {
 		this.pstmt = conn.prepareStatement(Serveur.SQL_DELETE);
@@ -58,7 +56,7 @@ public class Serveur extends Entity {
 		this.pstmt = conn.prepareStatement(Serveur.SQL_INSERT);
 		this.pstmt.setString(1, this.sn);
 		this.pstmt.setString(2, this.designation);
-		this.pstmt.setInt(3, this.memoire);
+		this.pstmt.setLong(3, this.memoire);
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
 	}
@@ -68,7 +66,7 @@ public class Serveur extends Entity {
 		//Prépare la requete et l'éxécute
 		this.pstmt = conn.prepareStatement(Serveur.SQL_UPDATE);	
 		this.pstmt.setString(1, this.designation);
-		this.pstmt.setInt(2, this.memoire);
+		this.pstmt.setLong(2, this.memoire);
 		this.pstmt.setString(3, this.sn);
 		this.pstmt.executeUpdate();
 		this.pstmt.close();

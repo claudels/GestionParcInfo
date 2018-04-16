@@ -102,12 +102,11 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	 * @param ordinateurServeurLinks
 	 * @param serveurs
 	 */
-	public FicheOrdinateur(Fiche.State initialState, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Imprimantes imprimantes) {
+	public FicheOrdinateur(Fiche.State initialState, Employes employes, Serveurs serveurs, Imprimantes imprimantes) {
 		super(initialState);
 		
 		//Modèles
 		this.employes = employes;
-		this.ordinateurServeurLinks = ordinateurServeurLinks;
 		this.serveurs = serveurs;
 		this.imprimantes = imprimantes;
 		
@@ -142,7 +141,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	 * @param serveurs
 	 */
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
-		this(initialState, employes, ordinateurServeurLinks, serveurs, imprimantes);
+		this(initialState, employes, serveurs, imprimantes);
+		
+		//Modèles
+		this.ordinateurServeurLinks = ordinateurServeurLinks;
 		
 		//Selection du matricule de l'employé associé"
 		for(Employe employe : employes.getItems()) {

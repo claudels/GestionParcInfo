@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -34,9 +36,11 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 
 public class FicheEmploye extends Fiche implements ActionListener, WindowListener {
-
-
-
+	public Date today = Calendar.getInstance().getTime();
+	public long nbOfDays;
+	DefaultTableModel tableModel;
+	private static final String[] columnsNames = {"SN_O", "D\u00E9signation", "A changer", "A retourner", "Temps d'utilisation"};
+	private ArrayList<Ordinateur> assignedOrdinateurs;
 	//labels statiques
 	private JLabel staticLBL_matricule, staticLBL_nom,staticLBL_prenom, staticLBL_email, staticLBL_title, staticLBL_ordinateurs;
 
@@ -59,8 +63,10 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 */
 	public FicheEmploye(Fiche.State initialState) {
 		super(initialState);
+		this.tableModel = new DefaultTableModel();
 		initComponents();
 		this.changeState(initialState);
+		
 	}
 	
 	public FicheEmploye(Fiche.State initialState,Employe employe,Employes employes,Ordinateurs ordinateurs) {
@@ -68,16 +74,30 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		
 this.ordinateurs = ordinateurs;
 this.employe = employe;
-		
+this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		this.TF_matricule.setText(employe.getMatricule());
 		this.TF_nom.setText(employe.getNom());
 		this.TF_prenom.setText(employe.getPrenom());
 		this.TF_email.setText(employe.getEmail());
-		
+	
+		for(Ordinateur ordinateur : ordinateurs.getItems()) {
+		Object[] rowData = new Object[FicheEmploye.columnsNames.length];
+		rowData[0] = ordinateur.getSn();
+		rowData[1] = ordinateur.getDesignation();
+		rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
+		rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
+
+		if(ordinateur.getDateAttribution()!=null) {
+			
+		nbOfDays = this.today.getTime() - ordinateur.getDateAttribution().getTime();
+		nbOfDays = (nbOfDays/(1000*60*60*24));
+			rowData[4] = nbOfDays;
+		}
 		
 	}
+	}
 		
-	
+
 	
 	public String getMatricule() {
 		return TF_matricule.getText();
@@ -90,6 +110,9 @@ this.employe = employe;
 		return TF_nom.getText();
 	}
 	
+	public ArrayList<Ordinateur> getAssignedOrdinateurs(){
+		return assignedOrdinateurs;
+	}
 	public String getPrenom() {
 		return TF_prenom.getText();
 	}
@@ -123,7 +146,7 @@ this.employe = employe;
 		super.actionPerformed(e);
 		
 		if(e.getSource() == this.BTN_assignerOrdinateur) {
-			System.out.println("Demande d'assignation");
+			
 			if(this.assignerOrdiForm == null) {
 				//On ouvre le formulaire
 				this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this,this.employe);
@@ -134,7 +157,8 @@ this.employe = employe;
 			
 			this.assignerOrdiForm.toFront();
 		}
-		/*if(this.assignerOrdiForm != null && e.getSource() == this.assignerOrdiForm.getBtnAssigner()){
+		if(this.assignerOrdiForm != null && e.getSource() == this.assignerOrdiForm.getBtnAssigner()){
+			System.out.println("test");
 			Ordinateur ordinateur = this.assignerOrdiForm.getSelectedOrdinateur();
 			
 			//On met à jour la table
@@ -142,14 +166,24 @@ this.employe = employe;
 			rowData[0] = ordinateur.getSn();
 			rowData[1] = ordinateur.getDesignation();
 			rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
-			this.tableModelImprimante.setRowCount(0);
-			this.tableModelImprimante.addRow(rowData);
-			this.tableModelImprimante.fireTableDataChanged();
-			
+			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
+			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
+			rowData[3] = ordinateurs.ordinateurMustBeChanged(ordinateur);
+			rowData[4] = ordinateurs.ordinateurMustBeReturned(ordinateur);
+			/*if(ordinateur.getDateAttribution()!=null) {
+				
+			nbOfDays = this.today.getTime() - ordinateur.getDateAttribution().getTime();
+			nbOfDays = (nbOfDays/(1000*60*60*24));
+				rowData[5] = nbOfDays;
+				
+			}*/
+			this.assignedOrdinateurs.add(ordinateur);
+				
+			this.tableModel.addRow(rowData);
 			//Fermeture du formulaire
-			this.connexionImprimanteForm.dispose();
-			this.connexionImprimanteForm = null;
-		}*/
+			this.assignerOrdiForm.dispose();
+			this.assignerOrdiForm = null;
+		}
 	}
 	public void initComponents() {
 		
@@ -229,19 +263,8 @@ this.employe = employe;
 		contentPane.add(SCRLLPANE_ordinateurs);
 		
 		TABLE_ordinateurs = new JTable();
-		TABLE_ordinateurs.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"SN_O", "D\u00E9signation", "A changer", "A retourner", "Temps d'utilisation"
-			}
-		));
-		TABLE_ordinateurs.getColumnModel().getColumn(1).setPreferredWidth(132);
-		TABLE_ordinateurs.getColumnModel().getColumn(2).setPreferredWidth(70);
-		TABLE_ordinateurs.getColumnModel().getColumn(3).setPreferredWidth(80);
-		TABLE_ordinateurs.getColumnModel().getColumn(4).setPreferredWidth(120);
+		TABLE_ordinateurs.setFillsViewportHeight(true);
+		TABLE_ordinateurs.setModel(this.tableModel);
 		SCRLLPANE_ordinateurs.setViewportView(TABLE_ordinateurs);
 	}
 

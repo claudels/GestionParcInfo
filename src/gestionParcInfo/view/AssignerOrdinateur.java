@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -71,6 +73,9 @@ public class AssignerOrdinateur extends JFrame {
 			rowData[2] = ordinateur.getRam();
 			rowData[3] = ordinateur.getCpu();
 			this.tableModel.addRow(rowData);
+			this.tableModel.setRowCount(0);
+			this.tableModel.addRow(rowData);
+			this.tableModel.fireTableDataChanged();
 		}
 		initComponents();
 	    System.out.println(employe.getPrenom());
@@ -79,6 +84,7 @@ public class AssignerOrdinateur extends JFrame {
 		lblPrenom.setText(this.ficheEmploye.getPrenom());
 		lblEmail.setText(this.ficheEmploye.getEmail());
 	}
+	
 	public Ordinateur getSelectedOrdinateur() {
 		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]));
 		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();

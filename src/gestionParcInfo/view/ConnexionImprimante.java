@@ -97,7 +97,8 @@ public class ConnexionImprimante extends JFrame{
 		
 		this.lblSNO.setText(this.ficheOrdinateur.getSN());
 		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
-		this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
+		if(this.ficheOrdinateur.getProprietaire() != null)
+			this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
 	}	
 	public JButton getBtnSauvegarder() {
 		return btnSauvegarder;

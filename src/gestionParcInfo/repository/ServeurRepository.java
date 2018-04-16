@@ -31,7 +31,7 @@ public class ServeurRepository extends Repository<Serveur> {
 		rs = this.pstmt.executeQuery();
 		 
 		while(rs.next()) {
-			serveur = new Serveur(rs.getString(1), rs.getString(2), rs.getInt(3));
+			serveur = new Serveur(rs.getString(1), rs.getString(2), rs.getLong(3));
 		}
 		
 		pstmt.close();
@@ -49,7 +49,7 @@ public class ServeurRepository extends Repository<Serveur> {
 		rs = this.pstmt.executeQuery();
 		 
 		while(rs.next()) {
-			serveurs.add(new Serveur(rs.getString(1), rs.getString(2), rs.getInt(3)));
+			serveurs.add(new Serveur(rs.getString(1), rs.getString(2), rs.getLong(3)));
 		}
 		
 		pstmt.close();
