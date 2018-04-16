@@ -177,8 +177,8 @@ this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 				rowData[5] = nbOfDays;
 				
 			}*/
+			
 			this.assignedOrdinateurs.add(ordinateur);
-				
 			this.tableModel.addRow(rowData);
 			//Fermeture du formulaire
 			this.assignerOrdiForm.dispose();
