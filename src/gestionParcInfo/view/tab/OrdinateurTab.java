@@ -1,9 +1,11 @@
 package gestionParcInfo.view.tab;
 
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Ordinateurs;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,11 +14,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.model.Ordinateurs;
 
-public class OrdinateurTab extends JPanel implements Observer{
-	private static final String[] columnsNames = {"SN_O", "Designation", "Employ\u00E9", "A changer", "A retourner"};
+
+public class OrdinateurTab extends JPanel implements Observer {
+
+  private static final long serialVersionUID = 1L;
+
+  private static final String[] columnsNames = {"SN_O", "Designation", "Employé", "A changer", "A retourner"};
 	
 	//Modèle table
 	DefaultTableModel tableModel;
@@ -30,6 +34,9 @@ public class OrdinateurTab extends JPanel implements Observer{
 	private JScrollPane scrllpaneOrdinateur;
 	private JTable tableOrdinateur;
 	
+	/**
+	 * Création de l'onglet des ordinateurs.
+	 */
 	public OrdinateurTab() {
 		super();
 		this.tableModel = new DefaultTableModel();
@@ -39,6 +46,9 @@ public class OrdinateurTab extends JPanel implements Observer{
 		
 	}
 	
+	/**
+	 * Initialisation des composants.
+	 */
 	private void initComponents() {
 		this.setLayout(null);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,26 +98,36 @@ public class OrdinateurTab extends JPanel implements Observer{
 		return btnSupprimer;
 	}
 	
+	/**
+	 * Récupérer les numéros de séries des ordinateurs séléctionnés par l'utilisateur dans la table.
+	 * @return ArrayList Liste des numéros de série
+	 */
 	public ArrayList<String> getSNsOrdinateursSelected() {
 		ArrayList<String> serialNumbers = new ArrayList<>();
 		
-		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(OrdinateurTab.columnsNames[0]));
+		int column = this.tableModel.findColumn(OrdinateurTab.columnsNames[0]);
+		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(column);
 		
-		for(int index : this.tableOrdinateur.getSelectedRows()) {
+		for (int index : this.tableOrdinateur.getSelectedRows()) {
 			serialNumbers.add((String)this.tableOrdinateur.getValueAt(index, columnIndex));
 		}
 		
 		return serialNumbers;
 	}
 	
-	public String getSNOrdinateurClicked() {
-		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(OrdinateurTab.columnsNames[0]));
+	/**
+	 * Récupérer le numéro de série de l'ordinateur séléctionné par l'utilisateur dans la table.
+	 * @return Numéro de série de l'ordinateur
+	 */
+	public String getSnOrdinateurClicked() {
+	  int column = this.tableModel.findColumn(OrdinateurTab.columnsNames[0]);
+		int columnIndex = this.tableOrdinateur.convertColumnIndexToView(column);
 		return (String)this.tableOrdinateur.getValueAt(this.tableOrdinateur.getSelectedRow(), columnIndex);
 	}
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if(obs instanceof Ordinateurs) {
+		if (obs instanceof Ordinateurs) {
 			Ordinateurs ordinateurs = (Ordinateurs)obs;
 			this.tableModel = new DefaultTableModel(){
 				 @Override
@@ -118,11 +138,12 @@ public class OrdinateurTab extends JPanel implements Observer{
 				};
 			this.tableModel.setColumnIdentifiers(OrdinateurTab.columnsNames);
 			
-			for(Ordinateur ordinateur : ordinateurs.getItems()) {
+			for (Ordinateur ordinateur : ordinateurs.getItems()) {
 				String matricule = null;
 				
-				if(ordinateur.getProprietaire() != null)
+				if (ordinateur.getProprietaire() != null) {
 					matricule = ordinateur.getProprietaire().getMatricule();
+				}
 				
 				Object[] rawData = new Object[OrdinateurTab.columnsNames.length];
 				rawData[0] = ordinateur.getSn();

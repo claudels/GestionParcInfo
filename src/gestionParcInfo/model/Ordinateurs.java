@@ -1,13 +1,13 @@
 package gestionParcInfo.model;
 
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.stream.Collectors;
-
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
 
 public class Ordinateurs extends ModelList<Ordinateur> {
 	
@@ -18,21 +18,26 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	private static final int tempsChangementOrdinateurJours = 0;
 	
 	/**
-	 * Temps de restituion d'un ancien ordinateur
+	 * Temps de restituion d'un ancien ordinateur.
 	 */
 	private static final int tempsRestitutionOrdinateurJours = 14;
 	
 	/**
-	 * Temps changement ordinateur converti en millisecondes
+	 * Temps changement ordinateur converti en millisecondes.
 	 */
 	private static final long timeInMsBeforeChange = Ordinateurs.tempsChangementOrdinateurAnnees * (31536000000L)
 			+ Ordinateurs.tempsChangementOrdinateurJours * (86400000L);
 	
 	/**
-	 * Temps restitution ordinateur converti en millisecondes
+	 * Temps restitution ordinateur converti en millisecondes.
 	 */
 	private static final long timeInMsBeforeReturn =  Ordinateurs.tempsRestitutionOrdinateurJours * (86400000L);
 	
+	/**
+	 * Création du modèle des ordinateurs.
+	 * @param ordinateurs Ordinateur déjà existants à ajouter au modèle
+	 * @param obs Observateur du modèle
+	 */
 	public Ordinateurs(ArrayList<Ordinateur> ordinateurs, Observer obs) {
 		super(ordinateurs, obs);
 		
@@ -41,34 +46,35 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	}
 	
 	/**
-	 * Renvoie un ordinateur selon son numéro de série
+	 * Renvoie un ordinateur selon son numéro de série.
 	 * @param sno Numéro de série
 	 * @return Ordinateur
 	 */
-	public Ordinateur findBySN(String sno){
+	public Ordinateur findBySn(String sno) {
 		Ordinateur result = null;
 		
-		for(Ordinateur ordi : this.getItems()) {
-			if(ordi.getSn().equals(sno))
+		for (Ordinateur ordi : this.getItems()) {
+			if (ordi.getSn().equals(sno)) {
 				result = ordi;
+			}
 		}
 		
 		return result;
 	}
 	
 	/**
-	 * Vérifier si un ordinateur doit être changé
+	 * Vérifier si un ordinateur doit être changé.
 	 * @param ordinateur Ordinateur sur lequel effectuer la vérification
 	 * @return true si l'ordinateur doit être changé, false sinon
 	 */
 	public boolean ordinateurMustBeChanged(Ordinateur ordinateur) {
 		boolean result = false;
 		
-		if(ordinateur.getProprietaire() != null && ordinateur.getDateAttribution() != null) {
-			if(ordinateur.getDateAttribution() != null && 
-					ordinateur.getDateRestitution() != null && 
-					this.findOrdinateursByEmploye(ordinateur.getProprietaire()).size() == 1 &&
-					(System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
+		if (ordinateur.getProprietaire() != null && ordinateur.getDateAttribution() != null) {
+			if (ordinateur.getDateAttribution() != null 
+			    && ordinateur.getDateRestitution() != null 
+					&& this.findOrdinateursByEmploye(ordinateur.getProprietaire()).size() == 1 
+					&& (System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
 				result = true;
 			}
 		}
@@ -77,35 +83,47 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 	}
 	
 	/**
-	 * Cherche les d'ordinateurs assignés à un Employé
-	 * @param employe
+	 * Cherche les d'ordinateurs assignés à un Employé.
+	 * @param employe Employe pour lequel recherche les ordinateurs
 	 * @return La liste des ordinateurs
 	 */
 	public List<Ordinateur> findOrdinateursByEmploye(Employe employe) {
 		return this.getItems()
 				.parallelStream()
-				.filter(ordinateur -> ordinateur.getProprietaire() != null && employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
+				.filter(ordinateur -> ordinateur.getProprietaire() != null 
+				&& employe.getMatricule().equals(ordinateur.getProprietaire().getMatricule()))
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Liste les ordinateurs pouvant être asignés.
+	 * @return Ordinateur
+	 */
 	public List<Ordinateur> findOrdinateursAvailable() {
 		return this.getItems()
 				.parallelStream()
-				.filter(ordinateur -> ordinateur.getProprietaire() == null && ordinateur.getDateRestitution() == null)
+				.filter(ordinateur -> ordinateur.getProprietaire() == null 
+				&& ordinateur.getDateRestitution() == null)
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Cherche les ordinateurs à partir de l'imprimante connectée à ceux-ci.
+	 * @param imprimante Imprimante
+	 * @return List Liste des ordinateurs
+	 */
 	public List<Ordinateur> findOrdinateursByImprimante(Imprimante imprimante) {
 		return this.getItems()
 				.parallelStream()
-				.filter(ordinateur -> ordinateur.getImprimante() != null && imprimante.getSn().equals(ordinateur.getImprimante().getSn()))
+				.filter(ordinateur -> ordinateur.getImprimante() != null 
+				&& imprimante.getSn().equals(ordinateur.getImprimante().getSn()))
 				.collect(Collectors.toList());
 	}
 	
 
 	/**
 	 * Détermine si un ordinateur doit être rendu. Un employé à 15 jours pour rendre un pc après l'attribution d'un nouveau
-	 * @param ordinateur
+	 * @param ordinateur Ordinateur 
 	 * @return true si l'ordinateur doit être rendu, false sinon
 	 */
 	public boolean ordinateurMustBeReturned(Ordinateur ordinateur) {
@@ -115,13 +133,14 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 		
 		//On cherche si l'employé à un PC qui est valide (ne devant pas être changé) et si ca fait plus de 15 jours qu'il l'a
 		//et que l'ordinateur passé en paramètre n'est pas restitué; alors l'ordinateur en paramètre doit ête restitué
-		if(employe != null && ordinateur.getDateAttribution() != null && (System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
-			for(Ordinateur ordinateurEmploye : findOrdinateursByEmploye(employe)) {
-				if(!ordinateur.equals(ordinateurEmploye) &&
-						!this.ordinateurMustBeChanged(ordinateurEmploye) &&
-						ordinateur.getDateRestitution() == null &&
-						ordinateurEmploye.getDateAttribution() != null &&
-						(System.currentTimeMillis() - ordinateurEmploye.getDateAttribution().getTime()) >= timeInMsBeforeReturn) {
+		if (employe != null && ordinateur.getDateAttribution() != null 
+		    && (System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
+			for (Ordinateur ordinateurEmploye : findOrdinateursByEmploye(employe)) {
+				if (!ordinateur.equals(ordinateurEmploye) 
+				    && !this.ordinateurMustBeChanged(ordinateurEmploye) 
+						&& ordinateur.getDateRestitution() == null 
+						&& ordinateurEmploye.getDateAttribution() != null 
+						&& (System.currentTimeMillis() - ordinateurEmploye.getDateAttribution().getTime()) >= timeInMsBeforeReturn) {
 					result = true;
 				}
 			}

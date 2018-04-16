@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class Ordinateur extends Entity{
+public class Ordinateur extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?,?,?,?,?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
@@ -25,11 +25,11 @@ public class Ordinateur extends Entity{
 	private Date dateRestitution;
 	
 	/**
-	 * Création d'un nouvel ordinateur sans propriétaire
-	 * @param sn
-	 * @param designation
-	 * @param ram
-	 * @param cpu
+	 * Création d'un nouvel ordinateur sans propriétaire.
+	 * @param sn Numéro de série de l'ordinateur
+	 * @param designation Désignation de l'ordinateur
+	 * @param ram RAM de l'ordinateur (Mo)
+	 * @param cpu CPU de l'ordinateur (GHz)
 	 */
 	public Ordinateur(String sn, String designation, int ram, double cpu) {
 		this.sn = sn;
@@ -39,15 +39,15 @@ public class Ordinateur extends Entity{
 	}
 	
 	/**
-	 * Création d'un ordinateur par recopie 
-	 * @param sn
-	 * @param designation
-	 * @param ram
-	 * @param cpu
-	 * @param imprimante
-	 * @param proprietaire
-	 * @param dateAttribution
-	 * @param dateRestitution
+	 * Création d'un ordinateur par recopie.
+	 * @param sn Numéro de série de l'ordinateur
+	 * @param designation Désignation de l'ordinateur
+	 * @param ram RAM de l'ordinateur
+	 * @param cpu CPU de l'ordinateur
+	 * @param imprimante Imprimante connectée
+	 * @param proprietaire Propriétaire de l'ordinateur
+	 * @param dateAttribution Date d'attribution de l'ordinateur
+	 * @param dateRestitution  Date de restitution de l'ordinateur
 	 */
 	public Ordinateur(String sn, String designation, int ram, double cpu, Imprimante imprimante, Employe proprietaire, Date dateAttribution, Date dateRestitution) {
 		this.sn = sn;
@@ -120,13 +120,17 @@ public class Ordinateur extends Entity{
 		this.ram = ram;
 	}
 	
+	/**
+	 * Compte le nombre de jours d'utilisation de l'ordinateur.
+	 * @return int nombre de jours d'utilisations, null si l'ordinateur n'a jamais été utilisé
+	 */
 	public Long countJoursUtilisation() {
 		Long tempsUtilisation = null;
 		
-		if(this.getDateRestitution() != null) {
+		if (this.getDateRestitution() != null) {
 			tempsUtilisation = TimeUnit.MILLISECONDS.toDays(this.getDateRestitution().getTime() - this.getDateAttribution().getTime());
 		}
-		if(this.getDateAttribution() != null && tempsUtilisation == null) {
+		if (this.getDateAttribution() != null && tempsUtilisation == null) {
 			tempsUtilisation = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.getDateAttribution().getTime());
 		}
 		
@@ -150,25 +154,29 @@ public class Ordinateur extends Entity{
 		this.pstmt.setInt(3, this.ram);
 		this.pstmt.setDouble(4, this.cpu);
 		
-		if(this.imprimante != null)
+		if (this.imprimante != null) {
 			this.pstmt.setString(5, this.imprimante.getSn());
-		else
+		} else {
 			this.pstmt.setString(5, null);
+		}
 		
-		if (this.dateAttribution != null)
+		if (this.dateAttribution != null) {
 			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
-		else
+		} else {
 			this.pstmt.setString(6, null);
+			}
 		
-		if (this.dateRestitution != null)
+		if (this.dateRestitution != null) {
 			this.pstmt.setString(7, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
-		else
+		} else {
 			this.pstmt.setString(7, null);
+		}
 		
-		if(this.proprietaire != null)
+		if (this.proprietaire != null) {
 			this.pstmt.setString(8, this.proprietaire.getMatricule());
-		else
+		} else {
 			this.pstmt.setString(8, null);
+		}
 		
 		this.pstmt.executeUpdate();
 		this.pstmt.close();
@@ -181,24 +189,28 @@ public class Ordinateur extends Entity{
 		this.pstmt.setInt(2, this.ram);
 		this.pstmt.setDouble(3, this.cpu);
 		
-		if(this.imprimante != null)
+		if (this.imprimante != null) {
 			this.pstmt.setString(4, this.imprimante.getSn());
-		else
+		} else {
 			this.pstmt.setString(4, null);
-		if (dateAttribution != null)
+		}
+		if (dateAttribution != null) {
 			this.pstmt.setString(5, Ordinateur.dateFormatterJavaToOracle.format(this.dateAttribution));
-		else
+		} else {
 			this.pstmt.setString(5,null);
+		}
 		
-		if (dateRestitution != null)
+		if (dateRestitution != null) {
 			this.pstmt.setString(6, Ordinateur.dateFormatterJavaToOracle.format(this.dateRestitution));
-		else
+		} else {
 			this.pstmt.setString(6,null);
+		}
 		
-		if(this.proprietaire != null)
+		if (this.proprietaire != null) {
 			this.pstmt.setString(7, this.proprietaire.getMatricule());
-		else
+		} else {
 			this.pstmt.setString(7, null);
+		}
 		
 		this.pstmt.setString(8, this.sn);
 		this.pstmt.executeUpdate();

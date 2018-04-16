@@ -13,6 +13,12 @@ public class OrdinateurServeurLink extends Entity {
 	private Serveur serveur;
 	private int quota = -1;
 	
+	/**
+	 * Constructeur d'un lien entre un ordinateur et un serveur.
+	 * @param ordinateur Ordinateur à connecter au serveur
+	 * @param serveur Serveur à connecter à l'ordinateur
+	 * @param quota Quota en Mo alloué à l'ordinateur
+	 */
 	public OrdinateurServeurLink(Ordinateur ordinateur, Serveur serveur, int quota) {
 		this.ordinateur = ordinateur;
 		this.serveur = serveur;

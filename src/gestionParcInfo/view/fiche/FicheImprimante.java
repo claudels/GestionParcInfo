@@ -94,7 +94,7 @@ public class FicheImprimante extends Fiche {
 			int columnSNSIndex = this.TABLE_ordisConnectes.convertColumnIndexToView(this.tableModel.findColumn(FicheImprimante.columnsNames[0]));
 			
 			for(int rowIndex : this.TABLE_ordisConnectes.getSelectedRows()) {
-				Ordinateur ordinateur = this.ordinateurs.findBySN((String) this.TABLE_ordisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				Ordinateur ordinateur = this.ordinateurs.findBySn((String) this.TABLE_ordisConnectes.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
 				System.out.println(ordinateur.getSn());
 				this.disconnectedOrdinateurs.add(ordinateur);
 				this.tableModel.removeRow(rowIndex - deletedRowsCounter);

@@ -174,7 +174,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		//Ajout des liens existants
 		Object[] rowDataLink = new Object[FicheOrdinateur.columnsTableServeurs.length];
 		
-		for (OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNO(ordinateur.getSn())) {
+		for (OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySno(ordinateur.getSn())) {
 			rowDataLink[0] = ordinateurServeurLink.getServeur().getSn();
 			rowDataLink[1] = ordinateurServeurLink.getServeur().getDesignation();
 			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur()) / 1024;
@@ -294,7 +294,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		
 		if (this.tableModelImprimante.getRowCount() > 0) {
 			int columnSNIIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelImprimante.findColumn(FicheOrdinateur.columnsTableImprimante[0]));
-			imprimante = this.imprimantes.findBySN((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
+			imprimante = this.imprimantes.findBySn((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
 		}
 		
 		return imprimante;
@@ -341,7 +341,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 				
 				int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 				for (int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
-					Serveur serveur = this.serveurs.findBySN((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
+					Serveur serveur = this.serveurs.findBySn((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
 					if (serveursDisponibles.contains(serveur)) {
 						serveursDisponibles.remove(serveur);
 					}
@@ -380,7 +380,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 			
 			for (int rowIndex : this.tableServeurs.getSelectedRows()) {
-				Serveur serveur = this.serveurs.findBySN((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				Serveur serveur = this.serveurs.findBySn((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
 				if (this.addedLinks.containsKey(serveur)) {
 					this.addedLinks.remove(serveur);
 				} else {

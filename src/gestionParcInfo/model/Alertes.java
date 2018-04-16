@@ -1,39 +1,53 @@
 package gestionParcInfo.model;
 
+import gestionParcInfo.entity.Alerte;
+import gestionParcInfo.entity.Employe;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
-import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Employe;
-
-
-
 public class Alertes extends ModelList<Alerte> {
 
-	public Alertes(ArrayList<Alerte> alertes, Observer obs) {
-		super(alertes, obs);
-
-		this.setChanged();
-		this.notifyObservers();
-	}
+  /**
+   * Constructeur du modèle des alertes.
+   * @param alertes Liste des alertes déjà existantes
+   * @param obs Observateur du modèle
+   */
+  public Alertes(ArrayList<Alerte> alertes, Observer obs) {
+  	super(alertes, obs);
+  
+  	this.setChanged();
+  	this.notifyObservers();
+  }
 	
-	public List<Alerte> findAlerteByEmploye(Employe employe) {
-		return this.getItems()
-				.parallelStream()
-				.filter(Alerte -> employe.getMatricule().equals(Alerte.getEmploye().getMatricule()))
-				.collect(Collectors.toList());
-	}
+  /**
+   * Chercher les alertes d'un employé.
+   * @param employe Employe pour lequel chercher
+   * @return ArrayList des Alerte
+   */
+  public List<Alerte> findAlerteByEmploye(Employe employe) {
+  	return this.getItems()
+  			.parallelStream()
+  			.filter(Alerte -> employe.getMatricule().equals(Alerte.getEmploye().getMatricule()))
+  			.collect(Collectors.toList());
+  }
 	
-	public Alerte findByCode(int code){
-		Alerte result = null;
-		
-		for(Alerte alerte : this.getItems()) {
-			if(alerte.getId() == (code))
-				result = alerte;
-		}
-		
-		return result;
-	}
+  /**
+   * Chercher une Alerte avec son Id.
+   * @param code Id de l'Alerte
+   * @return Alerte
+   */
+  public Alerte findByCode(int code){
+  	Alerte result = null;
+  	
+  	for (Alerte alerte : this.getItems()) {
+  		if (alerte.getId() == (code)) {
+  			result = alerte;
+  		}
+  	}
+  	
+  	return result;
+  }
 }

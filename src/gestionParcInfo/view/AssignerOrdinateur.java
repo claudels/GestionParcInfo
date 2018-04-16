@@ -76,7 +76,7 @@ public class AssignerOrdinateur extends JFrame {
 	public Ordinateur getSelectedOrdinateur() {
 		int columnSNSIndex = this.tableAssignerOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(AssignerOrdinateur.columnNames[0]));
 		int rowIndex = this.tableAssignerOrdinateur.getSelectedRow();
-		return this.ordinateurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
+		return this.ordinateurs.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
 	}
 	public JButton getBtnAssigner() {
 		return btnAssigner;

@@ -1,11 +1,13 @@
 package gestionParcInfo.repository;
+
+import gestionParcInfo.entity.Alerte;
+import gestionParcInfo.entity.Employe;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Employe;
 
 public class AlerteRepository extends Repository<Alerte> {
 	
@@ -15,8 +17,7 @@ public class AlerteRepository extends Repository<Alerte> {
 	
 	public AlerteRepository(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
-	}
+	  }
 	
 	public int getMaxId() throws SQLException {
 		int id = -1;

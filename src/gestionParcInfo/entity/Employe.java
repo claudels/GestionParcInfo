@@ -1,12 +1,12 @@
 package gestionParcInfo.entity;
 
+import gestionParcInfo.repository.EmployeRepository;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import gestionParcInfo.repository.EmployeRepository;
-
-public class Employe extends Entity{
+public class Employe extends Entity {
 	private static final String SQL_INSERT = "INSERT INTO Employe VALUES (?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Employe SET nom=?, prenom=?, email=? WHERE matricule=?";
 	private static final String SQL_DELETE = "DELETE FROM Employe WHERE matricule=?";
@@ -18,7 +18,7 @@ public class Employe extends Entity{
 	private String email;
 	
 	/**
-	 * Création d'un nouvel Employe non présent en base
+	 * Création d'un nouvel Employe non présent en base.
 	 * @param nom Nom de l'employe
 	 * @param prenom Prenom de l'employe
 	 * @param email Email de l'employe
@@ -30,7 +30,7 @@ public class Employe extends Entity{
 	}
 	
 	/**
-	 * Constructeur d'un Employe déjà présent en base
+	 * Constructeur d'un Employe déjà présent en base.
 	 * @param matricule Matricule de l'employe dans la base
 	 * @param nom Nom de l'employe
 	 * @param prenom Prenom de l'employe
@@ -71,9 +71,6 @@ public class Employe extends Entity{
 		this.prenom = prenom;
 	}
 
-	
-
-
 	@Override
 	public void remove(Connection conn) throws SQLException {
 		this.pstmt = conn.prepareStatement(Employe.SQL_DELETE);
@@ -82,7 +79,6 @@ public class Employe extends Entity{
 		this.pstmt.close();
 	}
 
-	
 	@Override
 	public void create(Connection conn) throws SQLException {
 		//On définit le matricule comme la concaténation du nom et du prénom
@@ -92,10 +88,11 @@ public class Employe extends Entity{
 		int matriculeCounter = employeRepo.countEmployeByMatriculePattern(concatenedMatricule);
 		
 		//On ajoute un nombre au matricule si le matricule existe déjà en base
-		if(matriculeCounter == 0)
+		if (matriculeCounter == 0) {
 			this.matricule = concatenedMatricule;
-		else
+		} else {
 			this.matricule = concatenedMatricule + matriculeCounter;
+		}
 		
 		//Prépare la requête et l'éxécute
 		this.pstmt = conn.prepareStatement(Employe.SQL_INSERT);

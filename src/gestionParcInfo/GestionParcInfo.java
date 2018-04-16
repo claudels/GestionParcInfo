@@ -41,6 +41,10 @@ public class GestionParcInfo {
 	public static final String dbUsername = "parcinfo";
 	public static final String dbPassword = "network";
 	
+	/**
+	 * Méthode principale du programme.
+	 * @param args Arguments du programme
+	 */
 	public static void main(String[] args) {
 		
 		executeTests();
@@ -113,7 +117,6 @@ public class GestionParcInfo {
 		employeTab.getBtnAlerter().addActionListener(employeController);
 		employeTab.getBtnSupprimer().addActionListener(employeController);
 		employeTab.getTableEmploye().addMouseListener(employeController);
-		employeTab.getBtnAlerter().addActionListener(employeController);
 		
 		//Add imprimante listeners
 		imprimanteTab.getBtnAjouter().addActionListener(imprimanteController);
@@ -123,8 +126,8 @@ public class GestionParcInfo {
 		alerteTab.getBtnSupprimer().addActionListener(alerteController);
 		
 		//Affichage de l'IHM principale
-		GestionParc gestionParcIHM = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
-		gestionParcIHM.setVisible(true);
+		GestionParc gestionParcIhm = new GestionParc(ordiTab, imprimanteTab, serveurTab, employeTab, alerteTab);
+		gestionParcIhm.setVisible(true);
 		
 		//Execution des tests de persistence
 		
@@ -133,47 +136,45 @@ public class GestionParcInfo {
 	private static void executeTests() {
 		Connection conn = null;
 		
-		TUPersistenceEmploye tu_persistemploye = new TUPersistenceEmploye();
-		TUPersistanceOrdinateur tu_persistordi = new TUPersistanceOrdinateur();
-		TUPersistanceImprimante tu_persistimpr = new TUPersistanceImprimante();
-		TUPersistanceAlerte tu_persistalerte = new TUPersistanceAlerte();
-		TUPersistanceServeur tu_persistserv = new TUPersistanceServeur();
-		TUPersistanceOrdinateurServeurLink tu_persistordiserv = new TUPersistanceOrdinateurServeurLink();
+		TUPersistenceEmploye tuPersistemploye = new TUPersistenceEmploye();
+		TUPersistanceOrdinateur tuPersistordi = new TUPersistanceOrdinateur();
+		TUPersistanceImprimante tuPersistimpr = new TUPersistanceImprimante();
+		TUPersistanceAlerte tuPersistalerte = new TUPersistanceAlerte();
+		TUPersistanceServeur tuPersistserv = new TUPersistanceServeur();
+		TUPersistanceOrdinateurServeurLink tuPersistordiserv = new TUPersistanceOrdinateurServeurLink();
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 			
-			tu_persistemploye.TU_Create_Employe(conn);
-			tu_persistemploye.TU_Update_Employe(conn);
-			tu_persistemploye.TU_Remove_Employe(conn);
+			tuPersistemploye.TU_Create_Employe(conn);
+			tuPersistemploye.TU_Update_Employe(conn);
+			tuPersistemploye.TU_Remove_Employe(conn);
 			
-			tu_persistordi.TU_Create_Ordinateur(conn);
-			tu_persistordi.TU_Update_Ordinateur(conn); 
-			tu_persistordi.TU_Remove_Ordinateur(conn);
+			tuPersistordi.TU_Create_Ordinateur(conn);
+			tuPersistordi.TU_Update_Ordinateur(conn); 
+			tuPersistordi.TU_Remove_Ordinateur(conn);
 			
-			tu_persistimpr.TU_Create_Imprimante(conn);  
-			tu_persistimpr.TU_Update_Imprimante(conn);
-			tu_persistimpr.TU_Remove_Imprimante(conn);
+			tuPersistimpr.TU_Create_Imprimante(conn);  
+			tuPersistimpr.TU_Update_Imprimante(conn);
+			tuPersistimpr.TU_Remove_Imprimante(conn);
 			
-			tu_persistalerte.TU_Create_Alerte(conn); 
-			tu_persistalerte.TU_Update_Alerte(conn); 
-			tu_persistalerte.TU_Remove_Alerte(conn); 
+			tuPersistalerte.TU_Create_Alerte(conn); 
+			tuPersistalerte.TU_Update_Alerte(conn); 
+			tuPersistalerte.TU_Remove_Alerte(conn); 
 			
-			tu_persistserv.TU_Create_Serveur(conn); 
-			tu_persistserv.TU_Update_Serveur(conn); 
-			tu_persistserv.TU_Remove_Serveur(conn); 
+			tuPersistserv.TU_Create_Serveur(conn); 
+			tuPersistserv.TU_Update_Serveur(conn); 
+			tuPersistserv.TU_Remove_Serveur(conn); 
 			
-			tu_persistordiserv.TU_Create_OrdinateurServeurLink(conn); 
-			tu_persistordiserv.TU_Update_OrdinateurServeurLink(conn);
-			tu_persistordiserv.TU_Remove_OrdinateurServeurLink(conn); 
+			tuPersistordiserv.TU_Create_OrdinateurServeurLink(conn); 
+			tuPersistordiserv.TU_Update_OrdinateurServeurLink(conn);
+			tuPersistordiserv.TU_Remove_OrdinateurServeurLink(conn); 
 			
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

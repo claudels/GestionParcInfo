@@ -13,6 +13,12 @@ public class Serveur extends Entity {
 	private String designation;
 	private long memoire;
 	
+	/**
+	 * Constructeur d'un nouveau serveur.
+	 * @param sn Numéro de série du serveur
+	 * @param designation Désignation du serveur
+	 * @param memoire Mémoire du serveur en Go
+	 */
 	public Serveur(String sn, String designation, long memoire) {
 		this.sn = sn;
 		this.designation = designation;

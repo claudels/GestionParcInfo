@@ -64,7 +64,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 				for (String sns : this.servTab.getSNsServeursSelected()) {
 					System.out.println("Suppression : " + sns);
 					//Récupération de l'ordinateur dans la base
-					Serveur currentServeur = serveurs.findBySN(sns);
+					Serveur currentServeur = serveurs.findBySn(sns);
 					
 					//Mise à jour de l'ordinateur et persistance dans la base	
 					currentServeur.remove(conn);
@@ -91,7 +91,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 					serveur.create(conn);
 					serveurs.addItem(serveur);
 				} else if (this.ficheServeur.getCurrentState() == Fiche.State.MODIFICATION) {
-					serveur = this.serveurs.findBySN(this.ficheServeur.getSN());
+					serveur = this.serveurs.findBySn(this.ficheServeur.getSN());
 					
 					//Suppression des liens à supprimer
 					for (OrdinateurServeurLink ordinateurServeurLink : this.ficheServeur.getLinksToDelete()) {
@@ -126,9 +126,9 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if (e.getSource() == this.ficheServeur)
+		if (e.getSource() == this.ficheServeur) {
 			this.ficheServeur = null;
-		
+		}
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 				System.out.println("DoubleClick on table serveur");
 				//Création du formulaire
 				if (this.ficheServeur == null) {
-					Serveur serveur = this.serveurs.findBySN(this.servTab.getSNServeurClicked());
+					Serveur serveur = this.serveurs.findBySn(this.servTab.getSnServeurClicked());
 					
 					this.ficheServeur = new FicheServeur(Fiche.State.VISUALISATION, serveur, this.serveurs, this.ordinateurServeurLinks);
 					ficheServeur.setVisible(true);
@@ -176,7 +176,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 					//Ajout des listeners
 					this.ficheServeur.addWindowListener(this);
 					this.ficheServeur.getBtnSauver().addActionListener(this);
-				}else {
+				} else {
 					this.ficheServeur.toFront();
 				}
 		   }

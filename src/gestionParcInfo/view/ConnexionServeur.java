@@ -211,7 +211,7 @@ public class ConnexionServeur extends JFrame {
 		int columnSnsIndex = this.tableConnexionServeur.convertColumnIndexToView(columnIndex);
 
 		for (int rowIndex : this.tableConnexionServeur.getSelectedRows()) {
-			result.add(this.serveurs.findBySN((String)this.tableModel.getValueAt(rowIndex, columnSnsIndex)));
+			result.add(this.serveurs.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSnsIndex)));
 		}
 		
 		return result;

@@ -7,7 +7,6 @@ import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Alertes;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.repository.EmployeRepository;
 import gestionParcInfo.view.AlerterEmploye;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheEmploye;
@@ -23,6 +22,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 public class EmployeController implements ActionListener, WindowListener, MouseListener {
 	
@@ -59,21 +60,26 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
   			
   			//Ajout des listeners
   			this.ficheEmploye.addWindowListener(this);
-  			this.ficheEmploye.getBtnSauver().addActionListener(this);
-  			this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
-  		
-  			
+  			this.alerterEmployeForm.addWindowListener(this);
+        this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
   		
   		} else {
   			this.ficheEmploye.toFront();
   		}
   	} else if (e.getSource() == employeTab.getBtnAlerter()) {
-			System.out.println("Alerter employé");
+  	  if (this.employeTab.getMatriculeEmployeSelected().size() > 0) {
+  			this.alerterEmployeForm = new AlerterEmploye();
+  			this.alerterEmployeForm.setVisible(true);
+  			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
+  			this.alerterEmployeForm.addWindowListener(this);
+  	  } else {
+  	    JOptionPane.showMessageDialog(null, "Vous devez séléctionnez les employés avant de pouvoir leurs envoyer une Alerte.", "Attention", JOptionPane.WARNING_MESSAGE);
+  	  }
+			
 		} else if (e.getSource() == employeTab.getBtnSupprimer()) {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-				EmployeRepository employeRepo = new EmployeRepository(conn);
 				System.out.println("Supprimer employe");
 				
 				for (String matricule : this.employeTab.getMatriculeEmployeSelected()) {
@@ -93,7 +99,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 		}
-		} else if (e.getSource() == this.ficheEmploye.getBtnSauver() 
+		} else if (this.ficheEmploye != null 
+		    && e.getSource() == this.ficheEmploye.getBtnSauver()
 		    && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION 
 		    || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver Employe");
@@ -135,24 +142,22 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (e.getSource() == this.alerterEmployeForm.getBtnAlerter()) {
-			System.out.println("Alerter Employe");
-			this.alerterEmployeForm.addWindowListener(this);
+		} else if (this.alerterEmployeForm != null && e.getSource() == this.alerterEmployeForm.getBtnAlerter()) {
 			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 			Connection conn;
 			try {
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				Alerte alerte;
 
-					for (Employe employe : this.employeTab.getSelectedEmploye()) {
-						alerte = new Alerte(alerterEmployeForm.getMessage(),employe);
+					for (String matricule : this.employeTab.getMatriculeEmployeSelected()) {
+						alerte = new Alerte(alerterEmployeForm.getMessage(),employes.findByMatricule(matricule));
 						alerte.create(conn);
 						alertes.addItem(alerte);
 					}
 								
 					conn.close();
-					this.ficheEmploye.dispose();
-					this.ficheEmploye = null;
+					this.alerterEmployeForm.dispose();
+					this.alerterEmployeForm = null;
 				
 		
 			} catch (SQLException e1) {
@@ -161,10 +166,6 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 			}
 		}
 	}
-		
-	
-	
-	
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -173,9 +174,11 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
-		if (arg0.getSource() == this.ficheEmploye) {
+	public void windowClosed(WindowEvent e) {
+		if (e.getSource() == this.ficheEmploye) {
 			this.ficheEmploye = null;
+		} else if (e.getSource() == this.alerterEmployeForm) {
+		  this.alerterEmployeForm = null;
 		}
 	}
 

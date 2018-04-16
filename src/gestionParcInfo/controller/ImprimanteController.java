@@ -1,15 +1,5 @@
 package gestionParcInfo.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
@@ -20,13 +10,29 @@ import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.tab.ImprimanteTab;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class ImprimanteController implements ActionListener, WindowListener, MouseListener {
 
 	private ImprimanteTab imprimanteTab;
 	private Imprimantes imprimantes;
 	private FicheImprimante ficheImprimante;
 	private Ordinateurs ordinateurs;
-	private Imprimante imprimante;
+	
+	/**
+	 * Création du controlleur des imprimantes.
+	 * @param imprimanteTab Onglet des imprimantes
+	 * @param imprimantes Imprimantes déjà existantes à insérer dans le modèle
+	 * @param ordinateurs Modèle des ordinateurs
+	 */
 	public ImprimanteController(ImprimanteTab imprimanteTab,Imprimantes imprimantes,Ordinateurs ordinateurs) {
 		this.ordinateurs = ordinateurs;
 		this.imprimanteTab = imprimanteTab;
@@ -63,7 +69,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					
 					//Récupération de l'ordinateur dans la base
 					System.out.println("Suppression : " + sni);
-					Imprimante currentImprimante = imprimantes.findBySN(sni);
+					Imprimante currentImprimante = imprimantes.findBySn(sni);
 					//Suppression de l'ordinateur et persistance dans la base
 					currentImprimante.remove(conn);
 					
@@ -94,8 +100,8 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					imprimante.create(conn);
 					imprimantes.addItem(imprimante);
 					
-				}else if (this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION) {
-					imprimante = this.imprimantes.findBySN(this.ficheImprimante.getSN());
+				} else if (this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION) {
+					imprimante = this.imprimantes.findBySn(this.ficheImprimante.getSN());
 				
 				
 				imprimante.setDesignation(this.ficheImprimante.getDesignation());
@@ -173,7 +179,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				System.out.println("DoubleClick on table imprimante");
 				//Création du formulaire
 				if (this.ficheImprimante == null) {
-					Imprimante imprimante = this.imprimantes.findBySN(this.imprimanteTab.getSNImprimanteClicked());
+					Imprimante imprimante = this.imprimantes.findBySn(this.imprimanteTab.getSNImprimanteClicked());
 					System.out.println(imprimante.getSn());
 					this.ficheImprimante = new FicheImprimante(Fiche.State.VISUALISATION,imprimante,this.ordinateurs,this.imprimantes);
 					ficheImprimante.setVisible(true);

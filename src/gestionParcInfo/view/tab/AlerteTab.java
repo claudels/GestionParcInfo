@@ -69,19 +69,20 @@ public class AlerteTab extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if(obs instanceof Alertes) {
+		if (obs instanceof Alertes) {
 			Alertes alertes = (Alertes)obs;
 			
 			this.tableModel = new DefaultTableModel();
 			this.tableModel.setColumnIdentifiers(AlerteTab.columnsNames);
 			
-			for(Alerte alerte : alertes.getItems()) {
+			for (Alerte alerte : alertes.getItems()) {
 				String matricule = null;
 				
-				if(alerte.getEmploye() != null)
+				if (alerte.getEmploye() != null) {
 					matricule = alerte.getEmploye().getMatricule();
+				}
 				
-				Object rawData[] = new Object[AlerteTab.columnsNames.length];
+				Object[] rawData = new Object[AlerteTab.columnsNames.length];
 				rawData[0] = alerte.getId();
 				rawData[1] = alerte.getMessage();
 				rawData[2] = matricule;
@@ -97,15 +98,20 @@ public class AlerteTab extends JPanel implements Observer {
 	
 	
 	}
+	
+	/**
+	 * Retourne les Id des Alertes que l'utilisateur à séléctionnées.
+	 * @return ArrayList
+	 */
 	public ArrayList<Integer>  getCodeAlerteSelected() {
-		ArrayList<Integer> Code = new ArrayList<>();
+		ArrayList<Integer> code = new ArrayList<>();
 		
 		int columnIndex = this.tblAlerte.convertColumnIndexToView(this.tableModel.findColumn(AlerteTab.columnsNames[0]));
 		
-		for(int index : this.tblAlerte.getSelectedRows()) {
-			Code.add((Integer)this.tblAlerte.getValueAt(index, columnIndex));
+		for (int index : this.tblAlerte.getSelectedRows()) {
+			code.add((Integer)this.tblAlerte.getValueAt(index, columnIndex));
 		}
 		
-		return Code;
+		return code;
 	}
 }

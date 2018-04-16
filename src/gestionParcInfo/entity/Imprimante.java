@@ -3,7 +3,7 @@ package gestionParcInfo.entity;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class Imprimante extends Entity{
+public class Imprimante extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Imprimante SET designation=?,resolution=? WHERE sn_i=?";
@@ -15,7 +15,7 @@ public class Imprimante extends Entity{
 	private Employe proprietaire;
 	
 	/**
-	 * Creation d'une imprimante (Déjà présente en base ou pas)
+	 * Creation d'une imprimante (Déjà présente en base ou pas).
 	 * @param sn Numéro de série de l'imprimante
 	 * @param designation Désignation de l'imprimante
 	 * @param resolution Résolution de l'imprimante (Entre 150 et 300)

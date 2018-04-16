@@ -12,6 +12,12 @@ public class Imprimantes extends ModelList<Imprimante> {
 	
 	private Ordinateurs ordinateurs;
 	
+	/**
+	 * Création du modèle des imprimantes.
+	 * @param imprimantes Imprimantes existantes
+	 * @param ordinateurs Modèle des ordinateurs
+	 * @param obs Observateur du modèle
+	 */
 	public Imprimantes(ArrayList<Imprimante> imprimantes, Ordinateurs ordinateurs, Observer obs) {
 		super(imprimantes, obs);
 		
@@ -21,26 +27,31 @@ public class Imprimantes extends ModelList<Imprimante> {
 		this.notifyObservers();
 	}
 
+	/**
+	 * Compte le nombre d'ordinateurs connectés à l'imprimante.
+	 * @param imprimante Imprimante pour laquelle compter
+	 * @return int nombre d'ordinateurs connectés
+	 */
 	public long countOrdinateurs(Imprimante imprimante) {
 		return ordinateurs.getItems()
 				.parallelStream()
-				.filter(ordinateur -> ordinateur.getImprimante() != null && ordinateur.getImprimante().getSn().equals(imprimante.getSn()))
+				.filter(ordinateur -> ordinateur.getImprimante() != null 
+				&& ordinateur.getImprimante().getSn().equals(imprimante.getSn()))
 				.count();
 	}
 	
-	public List<Imprimante> findEmployeByImprimante(Employe employe) {
-		return this.getItems()
-				.parallelStream()
-				.filter(imprimante -> imprimante.getProprietaire() != null && employe.getMatricule().equals(imprimante.getProprietaire().getMatricule()))
-				.collect(Collectors.toList());
-	}
-	
-	public Imprimante findBySN(String sni){
+	/**
+	 * Cherche une imprimante par numéro de série.
+	 * @param sni Numéro de série de l'imprimante
+	 * @return Imprimante
+	 */
+	public Imprimante findBySn(String sni) {
 		Imprimante result = null;
 		
-		for(Imprimante impr : this.getItems()) {
-			if(impr.getSn().equals(sni))
+		for (Imprimante impr : this.getItems()) {
+			if (impr.getSn().equals(sni)) {
 				result = impr;
+			}
 		}
 		
 		return result;

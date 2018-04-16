@@ -81,10 +81,10 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
 				
-				for(String sno : this.ordiTab.getSNsOrdinateursSelected()) {
+				for (String sno : this.ordiTab.getSNsOrdinateursSelected()) {
 					System.out.println("Retour : " + sno);
 					//Récupération de l'ordinateur dans la base
-					Ordinateur currentOrdinateur = ordinateurs.findBySN(sno);
+					Ordinateur currentOrdinateur = ordinateurs.findBySn(sno);
 					
 					//Mise à jour de l'ordinateur et persistance dans la base
 					currentOrdinateur.setDateRestitution(new Date());
@@ -100,18 +100,18 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				e1.printStackTrace();
 			}
 			
-		}else if(e.getSource() == this.ordiTab.getBtnSupprimer()){
+		} else if (e.getSource() == this.ordiTab.getBtnSupprimer()) {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
 				System.out.println("Supprimer ordinateur");
 				
-				for(String sno : this.ordiTab.getSNsOrdinateursSelected()) {
+				for (String sno : this.ordiTab.getSNsOrdinateursSelected()) {
 					
 					//Récupération de l'ordinateur dans la base
 					System.out.println("Suppression : " + sno);
-					Ordinateur currentOrdinateur = ordinateurs.findBySN(sno);
+					Ordinateur currentOrdinateur = ordinateurs.findBySn(sno);
 					
 					//Suppression de l'ordinateur et persistance dans la base
 					currentOrdinateur.remove(conn);
@@ -146,7 +146,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					ordinateur.create(conn);
 					ordinateurs.addItem(ordinateur);
 				} else if (this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
-					ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSn());
+					ordinateur = this.ordinateurs.findBySn(this.ficheOrdinateur.getSn());
 					
 					if (!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
@@ -154,7 +154,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					
 					//Suppression des liens à supprimer
 					for (Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
-						OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySNOAndSNS(ordinateur.getSn(), serveur.getSn());
+						OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySnoAndSns(ordinateur.getSn(), serveur.getSn());
 						linkToDelete.remove(conn);
 						this.ordinateurServeurLinks.removeItem(linkToDelete);
 					}
@@ -194,9 +194,10 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 	}
 
 	@Override
-	public void windowClosed(WindowEvent arg0) {
-		if(arg0.getSource() == this.ficheOrdinateur)
+	public void windowClosed(WindowEvent e) {
+		if (e.getSource() == this.ficheOrdinateur) {
 			this.ficheOrdinateur = null;
+		}
 	}
 
 	@Override
@@ -231,12 +232,12 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == this.ordiTab.getTableOrdinateur())
+		if (e.getSource() == this.ordiTab.getTableOrdinateur()) {
 			if (e.getClickCount() == 2) {
 				System.out.println("DoubleClick on table ordinateur");
 				//Création du formulaire
-				if(this.ficheOrdinateur == null) {
-					Ordinateur ordinateur = this.ordinateurs.findBySN(this.ordiTab.getSNOrdinateurClicked());
+				if (this.ficheOrdinateur == null) {
+					Ordinateur ordinateur = this.ordinateurs.findBySn(this.ordiTab.getSnOrdinateurClicked());
 					
 					this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.VISUALISATION, ordinateur, this.employes, this.ordinateurServeurLinks, this.serveurs, this.ordinateurs, this.imprimantes);
 					ficheOrdinateur.setVisible(true);
@@ -248,10 +249,11 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
 					this.ficheOrdinateur.getBtnSauver().addActionListener(this);
-				}else {
+				} else {
 					this.ficheOrdinateur.toFront();
 				}
 		   }
+		}
 	}
 
 	@Override
