@@ -129,7 +129,7 @@ public class OrdinateurTab extends JPanel implements Observer {
 	public void update(Observable obs, Object obj) {
 		if (obs instanceof Ordinateurs) {
 			Ordinateurs ordinateurs = (Ordinateurs)obs;
-			this.tableModel = new DefaultTableModel(){
+			this.tableModel = new DefaultTableModel() { 
 				 @Override
 				    public boolean isCellEditable(int row, int column) {
 				       //all cells false

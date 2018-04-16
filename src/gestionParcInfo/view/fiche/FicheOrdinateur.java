@@ -91,7 +91,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	
 	//Modèles
 	private Employes employes;
-	private OrdinateurServeurLinks ordinateurServeurLinks;
+	
 	private Serveurs serveurs;
 	private Imprimantes imprimantes;
 	
@@ -161,8 +161,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
 		this(initialState, employes, serveurs, imprimantes);
 		
-		//Modèles
-		this.ordinateurServeurLinks = ordinateurServeurLinks;
+	
 		
 		//Selection du matricule de l'employé associé"
 		for (Employe employe : employes.getItems()) {
@@ -379,10 +378,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		}
 		if (e.getSource() == this.btnDeconnecterServeurs) {
 			int deletedRowsCounter = 0;
-			int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
+			int columnSnsIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 			
 			for (int rowIndex : this.tableServeurs.getSelectedRows()) {
-				Serveur serveur = this.serveurs.findBySn((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				Serveur serveur = this.serveurs.findBySn((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSnsIndex));
 				if (this.addedLinks.containsKey(serveur)) {
 					this.addedLinks.remove(serveur);
 				} else {

@@ -5,7 +5,6 @@ import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.repository.ImprimanteRepository;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.tab.ImprimanteTab;
@@ -62,7 +61,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 		  try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-				ImprimanteRepository ordiRepo = new ImprimanteRepository(conn);
+				
 				System.out.println("Supprimer Imprimante");
 				
 				for (String sni : this.imprimanteTab.getSNsImprimanteSelected()) {
@@ -81,8 +80,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		else if (e.getSource() == this.ficheImprimante.getBtnSauver() 
+		} else if (e.getSource() == this.ficheImprimante.getBtnSauver() 
 		    && (this.ficheImprimante.getCurrentState() == Fiche.State.CREATION 
 		    || this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver imprimante");
@@ -188,7 +186,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					this.ficheImprimante.addWindowListener(this);		
 					this.ficheImprimante.getBtnSauver().addActionListener(this);
 					this.ficheImprimante.getBtnDeconnecter().addActionListener(this.ficheImprimante);
-				}else {
+				} else {
 					this.ficheImprimante.toFront();
 				}
 			}

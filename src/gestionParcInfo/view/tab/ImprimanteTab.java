@@ -1,5 +1,8 @@
 package gestionParcInfo.view.tab;
 
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.model.Imprimantes;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,8 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.model.Imprimantes;
+
 
 public class ImprimanteTab extends JPanel implements Observer {
 	/**

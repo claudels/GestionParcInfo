@@ -9,7 +9,7 @@ import gestionParcInfo.view.tab.ServeurTab;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
+
 import javax.swing.border.EmptyBorder;
 
 

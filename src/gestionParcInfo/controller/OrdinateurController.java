@@ -1,5 +1,18 @@
 package gestionParcInfo.controller;
 
+import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.fiche.Fiche;
+import gestionParcInfo.view.fiche.FicheOrdinateur;
+import gestionParcInfo.view.tab.OrdinateurTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -12,21 +25,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map.Entry;
 
-import gestionParcInfo.GestionParcInfo;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.OrdinateurServeurLink;
-import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.model.Employes;
-import gestionParcInfo.model.Imprimantes;
-import gestionParcInfo.model.OrdinateurServeurLinks;
-import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.model.Serveurs;
-import gestionParcInfo.repository.OrdinateurRepository;
-import gestionParcInfo.view.fiche.Fiche;
-import gestionParcInfo.view.fiche.FicheOrdinateur;
-import gestionParcInfo.view.tab.OrdinateurTab;
-
-public class OrdinateurController implements ActionListener, WindowListener, MouseListener{
+public class OrdinateurController implements ActionListener, WindowListener, MouseListener {
 	
 	private OrdinateurTab ordiTab;
 	private Ordinateurs ordinateurs;

@@ -55,7 +55,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 			} else {
 				this.ficheServeur.toFront();
 			}
-		} else if (e.getSource() == this.servTab.getBtnSupprimer()){
+		} else if (e.getSource() == this.servTab.getBtnSupprimer()) {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);

@@ -50,7 +50,7 @@ public class AssignerOrdinateur extends JFrame {
 	private JButton btnAssigner;
 	private Ordinateurs ordinateurs;
 	private FicheEmploye ficheEmploye;
-	private Employe employe;
+	
 	
 	/**
 	 * Constructeur de la fiche d'assignation d'un ordinateur.
@@ -64,7 +64,7 @@ public class AssignerOrdinateur extends JFrame {
 	public AssignerOrdinateur(Ordinateurs ordinateurs, FicheEmploye ficheEmploye,Employe employe) {
 		this.ordinateurs = ordinateurs;
 		this.ficheEmploye = ficheEmploye;
-		this.employe = employe;
+	
 		
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(AssignerOrdinateur.columnNames);

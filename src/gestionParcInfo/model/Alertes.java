@@ -39,7 +39,7 @@ public class Alertes extends ModelList<Alerte> {
    * @param code Id de l'Alerte
    * @return Alerte
    */
-  public Alerte findByCode(int code){
+  public Alerte findByCode(int code) {
   	Alerte result = null;
   	
   	for (Alerte alerte : this.getItems()) {

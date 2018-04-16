@@ -16,7 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class ServeurTab extends JPanel implements Observer{
+public class ServeurTab extends JPanel implements Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public class ServeurTab extends JPanel implements Observer{
 	public void update(Observable obs, Object obj) {
 		if (obs instanceof Serveurs) {
 			Serveurs serveurs = (Serveurs)obs;
-			this.tableModel = new DefaultTableModel(){
+			this.tableModel = new DefaultTableModel() {
 				 @Override
 				    public boolean isCellEditable(int row, int column) {
 				       //all cells false

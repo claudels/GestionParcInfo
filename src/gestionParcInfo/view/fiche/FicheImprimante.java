@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
 public class FicheImprimante extends Fiche {
 	
 	private DefaultTableModel tableModel;
-	private Imprimantes imprimantes;
 	private static final long serialVersionUID = 1L;
 	private static final String[] columnsNames = {"SN_O", "Designation", "Employé"};
 	private Ordinateurs ordinateurs;
@@ -151,7 +150,7 @@ public class FicheImprimante extends Fiche {
 		
 	}
 	
-	public ArrayList<Ordinateur> getDisconnectedOrdinateurs(){
+	public ArrayList<Ordinateur> getDisconnectedOrdinateurs() {
 		return disconnectedOrdinateurs;
 	}
 	

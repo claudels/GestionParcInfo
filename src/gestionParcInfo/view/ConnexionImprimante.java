@@ -5,7 +5,6 @@ import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 
 import java.awt.Font;
-import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -76,7 +75,7 @@ public class ConnexionImprimante extends JFrame {
 		this.tableModel.setColumnIdentifiers(ConnexionImprimante.columnNames);
 		
 		//Remplissage table
-		DecimalFormat f = new DecimalFormat("##0.00");
+		
 		
 		for (Imprimante imprimante : imprimantes.getItems()) {
 			Object[] rowData = new Object[ConnexionImprimante.columnNames.length];
@@ -174,9 +173,9 @@ public class ConnexionImprimante extends JFrame {
 	 * @return
 	 */
 	public Imprimante getSelectedImprimante() {
-		int columnSNSIndex = this.tableConnexionImprimante.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
+		int columnSnsIndex = this.tableConnexionImprimante.convertColumnIndexToView(this.tableModel.findColumn(ConnexionImprimante.columnNames[0]));
 		int rowIndex = this.tableConnexionImprimante.getSelectedRow();
-		return this.imprimantes.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex));
+		return this.imprimantes.findBySn((String)this.tableModel.getValueAt(rowIndex, columnSnsIndex));
 	}
 	
 

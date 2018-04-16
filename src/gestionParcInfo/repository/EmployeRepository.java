@@ -1,11 +1,13 @@
 package gestionParcInfo.repository;
 
+import gestionParcInfo.entity.Employe;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import gestionParcInfo.entity.Employe;
+
 
 public class EmployeRepository extends Repository<Employe> {
 	

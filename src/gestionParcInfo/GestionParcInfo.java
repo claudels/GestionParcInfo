@@ -18,11 +18,13 @@ import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.repository.OrdinateurServeurLinkRepository;
 import gestionParcInfo.repository.ServeurRepository;
 import gestionParcInfo.test.TUPersistanceAlerte;
-import gestionParcInfo.test.TUPersistanceImprimante;
 import gestionParcInfo.test.TUPersistanceOrdinateur;
 import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
-import gestionParcInfo.test.TUPersistanceServeur;
-import gestionParcInfo.test.TUPersistenceEmploye;
+
+import gestionParcInfo.test.TuPersistanceImprimante;
+
+import gestionParcInfo.test.TuPersistanceServeur;
+import gestionParcInfo.test.TuPersistenceEmploye;
 import gestionParcInfo.view.GestionParc;
 import gestionParcInfo.view.tab.AlerteTab;
 import gestionParcInfo.view.tab.EmployeTab;
@@ -67,21 +69,25 @@ public class GestionParcInfo {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-			
-			//Instanciation des repo
-			OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
-			OrdinateurServeurLinkRepository oslRepo = new OrdinateurServeurLinkRepository(conn);
-			ServeurRepository serveurRepository = new ServeurRepository(conn);
-			EmployeRepository employeRepository = new EmployeRepository(conn);
-			ImprimanteRepository imprimanteRepository = new ImprimanteRepository(conn);
-			AlerteRepository alerteRepository = new AlerteRepository(conn);
+				
 			
 			//Instanciation des modèles
+			OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
 			ordinateurs = new Ordinateurs(ordiRepo.getAll(), ordiTab);
+			
+			OrdinateurServeurLinkRepository oslRepo = new OrdinateurServeurLinkRepository(conn);
 			ordinateurServeurLinks = new OrdinateurServeurLinks(oslRepo.getAll());
+			
+			ServeurRepository serveurRepository = new ServeurRepository(conn);
 			serveurs = new Serveurs(serveurRepository.getAll(), ordinateurServeurLinks, serveurTab);
+			
+			EmployeRepository employeRepository = new EmployeRepository(conn);
 			employes = new Employes(employeRepository.getAll(), ordinateurs, employeTab);
+			
+			ImprimanteRepository imprimanteRepository = new ImprimanteRepository(conn);
 			imprimantes = new Imprimantes(imprimanteRepository.getAll(), ordinateurs, imprimanteTab);
+			
+			AlerteRepository alerteRepository = new AlerteRepository(conn);
 			alertes = new Alertes(alerteRepository.getAll(), alerteTab);
 			
 			conn.close();
@@ -136,36 +142,36 @@ public class GestionParcInfo {
 	private static void executeTests() {
 		Connection conn = null;
 		
-		TUPersistenceEmploye tuPersistemploye = new TUPersistenceEmploye();
+		TuPersistenceEmploye tuPersistemploye = new TuPersistenceEmploye();
 		TUPersistanceOrdinateur tuPersistordi = new TUPersistanceOrdinateur();
-		TUPersistanceImprimante tuPersistimpr = new TUPersistanceImprimante();
+		TuPersistanceImprimante tuPersistimpr = new TuPersistanceImprimante();
 		TUPersistanceAlerte tuPersistalerte = new TUPersistanceAlerte();
-		TUPersistanceServeur tuPersistserv = new TUPersistanceServeur();
+		TuPersistanceServeur tuPersistserv = new TuPersistanceServeur();
 		TUPersistanceOrdinateurServeurLink tuPersistordiserv = new TUPersistanceOrdinateurServeurLink();
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 			
-			tuPersistemploye.TU_Create_Employe(conn);
-			tuPersistemploye.TU_Update_Employe(conn);
-			tuPersistemploye.TU_Remove_Employe(conn);
+			tuPersistemploye.tuCreateEmploye(conn);
+			tuPersistemploye.tuUpdateEmploye(conn);
+			tuPersistemploye.tuRemoveEmploy(conn);
 			
 			tuPersistordi.TU_Create_Ordinateur(conn);
 			tuPersistordi.TU_Update_Ordinateur(conn); 
 			tuPersistordi.TU_Remove_Ordinateur(conn);
 			
-			tuPersistimpr.TU_Create_Imprimante(conn);  
-			tuPersistimpr.TU_Update_Imprimante(conn);
-			tuPersistimpr.TU_Remove_Imprimante(conn);
+			tuPersistimpr.tuCreateImprimante(conn);  
+			tuPersistimpr.tuUpdateImprimante(conn);
+			tuPersistimpr.tuRemoveImprima(conn);
 			
 			tuPersistalerte.TU_Create_Alerte(conn); 
 			tuPersistalerte.TU_Update_Alerte(conn); 
 			tuPersistalerte.TU_Remove_Alerte(conn); 
 			
-			tuPersistserv.TU_Create_Serveur(conn); 
-			tuPersistserv.TU_Update_Serveur(conn); 
-			tuPersistserv.TU_Remove_Serveur(conn); 
+			tuPersistserv.tuCreateServeur(conn); 
+			tuPersistserv.tuUpdateServeur(conn); 
+			tuPersistserv.tuRemoveServeur(conn); 
 			
 			tuPersistordiserv.TU_Create_OrdinateurServeurLink(conn); 
 			tuPersistordiserv.TU_Update_OrdinateurServeurLink(conn);
