@@ -1,7 +1,6 @@
 package gestionParcInfo.controller;
 
 import java.awt.event.ActionEvent;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,10 +12,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map.Entry;
 
-import javax.swing.JButton;
-
 import gestionParcInfo.GestionParcInfo;
-import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
@@ -26,9 +22,7 @@ import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.repository.OrdinateurRepository;
-import gestionParcInfo.view.ConnexionServeur;
 import gestionParcInfo.view.fiche.Fiche;
-import gestionParcInfo.view.fiche.FicheImprimante;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
 import gestionParcInfo.view.tab.OrdinateurTab;
 
@@ -42,6 +36,15 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 	private OrdinateurServeurLinks ordinateurServeurLinks;
 	private Imprimantes imprimantes;
 	
+	/**
+	 * Constructeur du controleur des ordinateurs.
+	 * @param ordiTab Onglet des ordinateurs
+	 * @param ordinateurs Modèle des ordinateurs
+	 * @param serveurs Modèle des serveurs
+	 * @param employes Modèle des employés
+	 * @param ordinateurServeurLinks Modèle des liens
+	 * @param imprimantes Modèle des imprimantes
+	 */
 	public OrdinateurController(OrdinateurTab ordiTab, Ordinateurs ordinateurs, Serveurs serveurs, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Imprimantes imprimantes) {
 		this.ordiTab = ordiTab;
 		this.ordinateurs = ordinateurs;
@@ -53,11 +56,11 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		if(e.getSource() == this.ordiTab.getBtnAjouter()) {
+		if (e.getSource() == this.ordiTab.getBtnAjouter()) {
 			System.out.println("Ajouter ordinateur");
 			
 			//Création du formulaire
-			if(this.ficheOrdinateur == null) {
+			if (this.ficheOrdinateur == null) {
 				this.ficheOrdinateur = new FicheOrdinateur(Fiche.State.CREATION, this.employes, this.serveurs, this.imprimantes);
 				ficheOrdinateur.setVisible(true);
 				
@@ -68,11 +71,11 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				this.ficheOrdinateur.getBtnDeconnecterImprimante().addActionListener(this.ficheOrdinateur);
 				this.ficheOrdinateur.getBtnDeconnecterServeurs().addActionListener(this.ficheOrdinateur);
 				this.ficheOrdinateur.getBtnSauver().addActionListener(this);
-			}else {
+			} else {
 				this.ficheOrdinateur.toFront();
 			}
 					
-		}else if(e.getSource() == this.ordiTab.getBtnRetourner()){			
+		} else if (e.getSource() == this.ordiTab.getBtnRetourner()) {			
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
@@ -117,12 +120,13 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					this.ordinateurs.removeItem(currentOrdinateur);
 				}
 				conn.close();
-			}catch (SQLException | ClassNotFoundException e1) {
+			} catch (SQLException | ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		else if(e.getSource() == this.ficheOrdinateur.getBtnSauver() && (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION || this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION)) {
+		} else if (e.getSource() == this.ficheOrdinateur.getBtnSauver() 
+		    && (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION 
+		    || this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver ordinateur");
 
 			Connection conn;
@@ -130,10 +134,10 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				Ordinateur ordinateur = null;
 				
-				if(this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION) {
+				if (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION) {
 					ordinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
 					
-					if(this.ficheOrdinateur.getProprietaire() != null) {
+					if (this.ficheOrdinateur.getProprietaire() != null) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
 						ordinateur.setDateAttribution(new Date());
 					}
@@ -141,15 +145,15 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					//Persistance de l'ordinateur et ajout au modèle
 					ordinateur.create(conn);
 					ordinateurs.addItem(ordinateur);
-				}else if(this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
+				} else if (this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
 					ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSN());
 					
-					if(!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
+					if (!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
 					}
 					
 					//Suppression des liens à supprimer
-					for(Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
+					for (Serveur serveur : this.ficheOrdinateur.getDeletedLinks()) {
 						OrdinateurServeurLink linkToDelete = this.ordinateurServeurLinks.findBySNOAndSNS(ordinateur.getSn(), serveur.getSn());
 						linkToDelete.remove(conn);
 						this.ordinateurServeurLinks.removeItem(linkToDelete);
@@ -166,11 +170,11 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				ordinateurs.updateItem(ordinateur);
 				
 				//Persistance des liens et ajouts au modèle
-				for(Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
+				for (Entry<Serveur, Integer> entry : this.ficheOrdinateur.getAddedLinks().entrySet()) {
 					OrdinateurServeurLink newLink = new OrdinateurServeurLink(ordinateur, entry.getKey(), entry.getValue());
 					newLink.create(conn);
 					this.ordinateurServeurLinks.addItem(newLink);
-					
+					this.serveurs.updateItem(entry.getKey());
 				}
 				
 				conn.close();

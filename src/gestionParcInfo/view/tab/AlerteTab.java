@@ -1,6 +1,5 @@
 package gestionParcInfo.view.tab;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,9 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.model.Alertes;
-import gestionParcInfo.model.Employes;
 
 public class AlerteTab extends JPanel implements Observer {
 
@@ -35,8 +32,6 @@ public class AlerteTab extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 	
 	
-	//TODO: FLO : Remanier tous le pour qu'il soit propre et rendre la vue Observatrice du modèle
-	//TODO: FLO : Ne pas oublier de rendre accessible les bouton pour que le controleur récupère les événement (voir les autres vue)
 	public AlerteTab() {
 		super();
 		this.tableModel = new DefaultTableModel();
@@ -64,7 +59,7 @@ public class AlerteTab extends JPanel implements Observer {
 		scrllpaneAlertes.setViewportView(tblAlerte);
 		
 		btnSupprimer = new JButton("Supprimer");
-		btnSupprimer.setBounds(603, 13, 93, 23);
+		btnSupprimer.setBounds(603, 13, 100, 23);
 		this.add(btnSupprimer);
 	}
 

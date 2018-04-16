@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
 
 public class Imprimantes extends ModelList<Imprimante> {
 	

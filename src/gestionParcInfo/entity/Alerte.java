@@ -1,7 +1,6 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import gestionParcInfo.repository.AlerteRepository;

@@ -1,5 +1,8 @@
 package gestionParcInfo.view.tab;
 
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.model.Employes;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,20 +15,29 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.model.Employes;
+/**
+ * Onglet de gestion des employés.
+ * @author seb
+ *
+ */
+public class EmployeTab extends JPanel implements Observer {
 
-public class EmployeTab extends JPanel implements Observer{
-	private static final String[] columnsNames = {"Matricule", "Nom", "Pr\u00E9nom", "Nombre de PCs", "PCs \u00E0 retourner"};
+  private static final long serialVersionUID = 1L;
+
+  private static final String[] columnsNames = {"Matricule", "Nom", "Prénom", "Nombre de PCs", "PCs à retourner"};
 
 	//Boutons
-	JButton btnAjouter, btnSupprimer, btnAlerter;
-	
+	JButton btnAjouter;
+	JButton btnSupprimer;
+	JButton btnAlerter;
 	//Tableau
 	private JTable tblEmploye;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrllpaneEmployes;
 	
+	/**
+	 * Création de l'onglet.
+	 */
 	public EmployeTab() {
 		super();
 		
@@ -77,7 +89,7 @@ public class EmployeTab extends JPanel implements Observer{
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		if(obs instanceof Employes) {
+		if (obs instanceof Employes) {
 			Employes employes = (Employes)obs;
 			this.tableModel = new DefaultTableModel() {
 				   public boolean isCellEditable(int row, int column) {
@@ -88,8 +100,8 @@ public class EmployeTab extends JPanel implements Observer{
 			this.tableModel.setColumnIdentifiers(EmployeTab.columnsNames);
 			
 		
-			for(Employe employe : employes.getItems()) {
-				Object rawData[] = new Object[EmployeTab.columnsNames.length];
+			for (Employe employe : employes.getItems()) {
+				Object[] rawData = new Object[EmployeTab.columnsNames.length];
 				
 				rawData[0] = employe.getMatricule();
 				rawData[1] = employe.getNom();
@@ -105,23 +117,34 @@ public class EmployeTab extends JPanel implements Observer{
 		}
 	}
 	
-	public ArrayList<String> getMatEmployeSelected() {
-		ArrayList<String> Matricule = new ArrayList<>();
+	/**
+	 * Retourne les matricules des lignes séléctionnées dans la table.
+	 * @return ArrayList
+	 */
+	public ArrayList<String> getMatriculeEmployeSelected() {
+		ArrayList<String> matricule = new ArrayList<>();
 		
-		int columnIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+		int column = this.tableModel.findColumn(EmployeTab.columnsNames[0]);
+		int columnIndex = this.tblEmploye.convertColumnIndexToView(column);
 		
-		for(int index : this.tblEmploye.getSelectedRows()) {
-			Matricule.add((String)this.tblEmploye.getValueAt(index, columnIndex));
+		for (int index : this.tblEmploye.getSelectedRows()) {
+			matricule.add((String)this.tblEmploye.getValueAt(index, columnIndex));
 		}
 		
-		return Matricule;
-}
+		return matricule;
+	}
+	
+	/**
+	 * Retourne le matricule de la ligne que l'employé à séléctionnée.
+	 * @return String
+	 */
 	public String getMatriculeEmployeClicked() {
-		int columnIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+	  int column = this.tableModel.findColumn(EmployeTab.columnsNames[0]);
+		int columnIndex = this.tblEmploye.convertColumnIndexToView(column);
 		return (String)this.tblEmploye.getValueAt(this.tblEmploye.getSelectedRow(), columnIndex);
 	}
-public JTable getTableEmploye() {
-		
+	
+	public JTable getTableEmploye() {
 		return tblEmploye;
 	}
 }

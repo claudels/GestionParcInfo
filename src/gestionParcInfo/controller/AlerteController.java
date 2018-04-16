@@ -8,12 +8,9 @@ import java.sql.SQLException;
 
 import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Alertes;
 import gestionParcInfo.repository.AlerteRepository;
-import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.view.tab.AlerteTab;
-import gestionParcInfo.view.tab.EmployeTab;
 
 public class AlerteController implements ActionListener {
 	

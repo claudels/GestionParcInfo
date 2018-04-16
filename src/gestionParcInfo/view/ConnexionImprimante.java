@@ -1,39 +1,21 @@
 package gestionParcInfo.view;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
-import javax.swing.JSpinner;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Imprimantes;
-import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.view.fiche.FicheOrdinateur;
-import gestionParcInfo.view.tab.OrdinateurTab;
-
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.ListSelectionModel;
 
 public class ConnexionImprimante extends JFrame{
 	/**

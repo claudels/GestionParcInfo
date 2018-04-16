@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 
 import gestionParcInfo.entity.Alerte;
 import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Ordinateur;
+
+
 
 public class Alertes extends ModelList<Alerte> {
 

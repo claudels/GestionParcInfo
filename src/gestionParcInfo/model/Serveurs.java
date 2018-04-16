@@ -1,14 +1,8 @@
 package gestionParcInfo.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
 
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 
 public class Serveurs extends ModelList<Serveur> {

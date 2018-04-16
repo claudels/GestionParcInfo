@@ -1,15 +1,9 @@
 package gestionParcInfo.test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.ParseException;
 
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.repository.EmployeRepository;
-import gestionParcInfo.repository.ImprimanteRepository;
 
 public class TUPersistanceImprimante {
 

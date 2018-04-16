@@ -1,5 +1,15 @@
 package gestionParcInfo.controller;
 
+import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.repository.EmployeRepository;
+import gestionParcInfo.view.fiche.Fiche;
+import gestionParcInfo.view.fiche.FicheEmploye;
+import gestionParcInfo.view.tab.EmployeTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -11,20 +21,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 
-import gestionParcInfo.GestionParcInfo;
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.model.Employes;
-import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.repository.EmployeRepository;
-import gestionParcInfo.repository.OrdinateurRepository;
-import gestionParcInfo.view.AssignerOrdinateur;
-import gestionParcInfo.view.fiche.Fiche;
-import gestionParcInfo.view.fiche.FicheEmploye;
-import gestionParcInfo.view.fiche.FicheImprimante;
-import gestionParcInfo.view.tab.EmployeTab;
-
 public class EmployeController implements ActionListener, WindowListener, MouseListener {
 	
 	private EmployeTab employeTab;
@@ -32,7 +28,12 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	private FicheEmploye ficheEmploye;
 	private Ordinateurs ordinateurs;
 	
-	
+	/**
+	 * Constructeur du controleur des employés.
+	 * @param employeTab Onglet des employés
+	 * @param employes Modèle des employés
+	 * @param ordinateurs Modèle des ordinateurs
+	 */
 	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs) {
 		this.employeTab = employeTab;
 		this.employes = employes;
@@ -41,36 +42,34 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == employeTab.getBtnAjouter()) {
-			System.out.println("Ajouter Employe");
-			
-			//Création du formulaire
-			if(this.ficheEmploye == null) {
-				this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION);
-				ficheEmploye.setVisible(true);
-				
-				//Ajout des listeners
-				this.ficheEmploye.addWindowListener(this);
-				this.ficheEmploye.getBtnSauver().addActionListener(this);
-				this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
-			
-				
-			
-			}else {
-				this.ficheEmploye.toFront();
-			}
-		}
-		else if(e.getSource() == employeTab.getBtnAlerter()) {
+  	if (e.getSource() == employeTab.getBtnAjouter()) {
+  		System.out.println("Ajouter Employe");
+  		
+  		//Création du formulaire
+  		if (this.ficheEmploye == null) {
+  			this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION);
+  			ficheEmploye.setVisible(true);
+  			
+  			//Ajout des listeners
+  			this.ficheEmploye.addWindowListener(this);
+  			this.ficheEmploye.getBtnSauver().addActionListener(this);
+  			this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
+  		
+  			
+  		
+  		} else {
+  			this.ficheEmploye.toFront();
+  		}
+  	} else if (e.getSource() == employeTab.getBtnAlerter()) {
 			System.out.println("Alerter employé");
-		}
-		else if(e.getSource() == employeTab.getBtnSupprimer()) {
+		} else if (e.getSource() == employeTab.getBtnSupprimer()) {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				EmployeRepository employeRepo = new EmployeRepository(conn);
 				System.out.println("Supprimer employe");
 				
-				for(String matricule : this.employeTab.getMatEmployeSelected()) {
+				for (String matricule : this.employeTab.getMatriculeEmployeSelected()) {
 					
 					//Récupération de l'employe dans la base
 					System.out.println("Suppression : " + matricule);
@@ -83,12 +82,13 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					this.employes.removeItem(currentEmploye);
 				}
 				conn.close();
-			}catch (SQLException | ClassNotFoundException e1) {
+			} catch (SQLException | ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 		}
-		}
-		else if(e.getSource() == this.ficheEmploye.getBtnSauver() && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
+		} else if (e.getSource() == this.ficheEmploye.getBtnSauver() 
+		    && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION 
+		    || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver Employe");
 
 			Connection conn;
@@ -96,20 +96,20 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				Employe employe = null;
 				
-				if(this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
+				if (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
 					employe = new Employe(this.ficheEmploye.getMatricule(), this.ficheEmploye.getNom(),this.ficheEmploye.getPrenom(),this.ficheEmploye.getEmail());
 
 					//Persistance de l'ordinateur et ajout au modèle
 					employe.create(conn);
 					employes.addItem(employe);
 					
-				}else if(this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION) {
+				} else if (this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION) {
 					employe = this.employes.findByMatricule(this.ficheEmploye.getMatricule());
 					employe.setNom(this.ficheEmploye.getNom());
 					employe.setPrenom(this.ficheEmploye.getPrenom());
 					employe.setEmail(this.ficheEmploye.getEmail());
 					
-					for(Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
+					for (Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
 						ordinateur.setProprietaire(employe);
 						ordinateur.setDateAttribution(new Date());
 						System.out.println("Demande d'assignation");
@@ -141,9 +141,9 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 
 	@Override
 	public void windowClosed(WindowEvent arg0) {
-		if(arg0.getSource() == this.ficheEmploye)
+		if (arg0.getSource() == this.ficheEmploye) {
 			this.ficheEmploye = null;
-		
+		}
 	}
 
 	@Override
@@ -179,12 +179,12 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if(e.getSource() == this.employeTab.getTableEmploye())
+		if (e.getSource() == this.employeTab.getTableEmploye()) {
 			System.out.println("Clicked");
 			if (e.getClickCount() == 2) {
 				System.out.println("DoubleClick on table Employe");
 				//Création du formulaire
-				if(this.ficheEmploye == null) {
+				if (this.ficheEmploye == null) {
 					Employe employe = this.employes.findByMatricule(this.employeTab.getMatriculeEmployeClicked());
 					
 					System.out.println(employe.getMatricule());
@@ -199,7 +199,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				}else {
 					this.ficheEmploye.toFront();
 				}
-		   }
+			}
+		}
 	}
 
 	@Override

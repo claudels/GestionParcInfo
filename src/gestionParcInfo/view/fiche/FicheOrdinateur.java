@@ -1,33 +1,22 @@
 package gestionParcInfo.view.fiche;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.JToggleButton;
-import java.awt.Label;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
-import javax.swing.JSplitPane;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Employe;
@@ -42,9 +31,6 @@ import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.view.ConnexionImprimante;
 import gestionParcInfo.view.ConnexionServeur;
-
-import javax.swing.SwingConstants;
-import java.awt.Font;
 
 public class FicheOrdinateur extends Fiche implements ActionListener, WindowListener {
 	private static final String[] columnsTableServeurs = {"SN_S", "D\u00E9signation", "Mémoire restante (Go)"};

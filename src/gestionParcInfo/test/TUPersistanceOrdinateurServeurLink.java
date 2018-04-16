@@ -1,18 +1,12 @@
 package gestionParcInfo.test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.repository.EmployeRepository;
-import gestionParcInfo.repository.OrdinateurRepository;
 import gestionParcInfo.repository.OrdinateurServeurLinkRepository;
-import gestionParcInfo.repository.ServeurRepository;
 
 public class TUPersistanceOrdinateurServeurLink {
 	

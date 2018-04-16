@@ -1,14 +1,5 @@
 package gestionParcInfo.view.fiche;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Label;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -17,23 +8,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.JSpinner;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.view.AssignerOrdinateur;
-import gestionParcInfo.view.ConnexionImprimante;
-import gestionParcInfo.view.fiche.Fiche.State;
-
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JScrollPane;
 
 public class FicheEmploye extends Fiche implements ActionListener, WindowListener {
 	/**

@@ -1,39 +1,23 @@
 package gestionParcInfo.view.fiche;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Label;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javax.swing.JSpinner;
-import javax.swing.JComboBox;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Imprimantes;
 import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.view.fiche.Fiche.State;
-import gestionParcInfo.view.tab.OrdinateurTab;
-
-import javax.swing.JToggleButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
 
 public class FicheImprimante extends Fiche {
 	

@@ -1,13 +1,10 @@
 package gestionParcInfo.entity;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import gestionParcInfo.repository.ImprimanteRepository;
 
 public class Ordinateur extends Entity{
 	

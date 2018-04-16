@@ -1,17 +1,9 @@
 package gestionParcInfo.test;
 
-import java.awt.EventQueue;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.view.GestionParc;
-import gestionParcInfo.repository.OrdinateurRepository;
-import gestionParcInfo.repository.EmployeRepository;
-import gestionParcInfo.repository.ImprimanteRepository;
-import gestionParcInfo.repository.Repository;
 
 public class TUPersistenceEmploye {
 	

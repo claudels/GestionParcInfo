@@ -1,17 +1,5 @@
 package gestionParcInfo;
 
-import gestionParcInfo.test.TUPersistanceOrdinateur;
-
-import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
-import gestionParcInfo.test.TUPersistanceServeur;
-import gestionParcInfo.test.TUPersistenceEmploye;
-import gestionParcInfo.view.GestionParc;
-import gestionParcInfo.view.tab.AlerteTab;
-import gestionParcInfo.view.tab.EmployeTab;
-import gestionParcInfo.view.tab.ImprimanteTab;
-import gestionParcInfo.view.tab.OrdinateurTab;
-import gestionParcInfo.view.tab.ServeurTab;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,6 +23,16 @@ import gestionParcInfo.repository.OrdinateurServeurLinkRepository;
 import gestionParcInfo.repository.ServeurRepository;
 import gestionParcInfo.test.TUPersistanceAlerte;
 import gestionParcInfo.test.TUPersistanceImprimante;
+import gestionParcInfo.test.TUPersistanceOrdinateur;
+import gestionParcInfo.test.TUPersistanceOrdinateurServeurLink;
+import gestionParcInfo.test.TUPersistanceServeur;
+import gestionParcInfo.test.TUPersistenceEmploye;
+import gestionParcInfo.view.GestionParc;
+import gestionParcInfo.view.tab.AlerteTab;
+import gestionParcInfo.view.tab.EmployeTab;
+import gestionParcInfo.view.tab.ImprimanteTab;
+import gestionParcInfo.view.tab.OrdinateurTab;
+import gestionParcInfo.view.tab.ServeurTab;
 
 public class GestionParcInfo {
 	public static final String dbUrl = "jdbc:oracle:thin:@localhost:1521:xe";

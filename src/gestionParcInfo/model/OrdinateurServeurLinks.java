@@ -1,7 +1,6 @@
 package gestionParcInfo.model;
 
 import java.util.ArrayList;
-import java.util.Observer;
 import java.util.stream.Collectors;
 
 import gestionParcInfo.entity.OrdinateurServeurLink;

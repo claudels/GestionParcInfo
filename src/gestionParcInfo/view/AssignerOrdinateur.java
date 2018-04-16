@@ -1,31 +1,21 @@
 package gestionParcInfo.view;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Font;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JSpinner;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.view.fiche.FicheEmploye;
-
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 public class AssignerOrdinateur extends JFrame {
 	private static final long serialVersionUID = 1L;

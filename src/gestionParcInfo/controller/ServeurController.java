@@ -1,5 +1,14 @@
 package gestionParcInfo.controller;
 
+import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.fiche.Fiche;
+import gestionParcInfo.view.fiche.FicheServeur;
+import gestionParcInfo.view.tab.ServeurTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,21 +18,6 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Map.Entry;
-
-import gestionParcInfo.GestionParcInfo;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.OrdinateurServeurLink;
-import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.model.OrdinateurServeurLinks;
-import gestionParcInfo.model.Serveurs;
-import gestionParcInfo.repository.OrdinateurRepository;
-import gestionParcInfo.view.fiche.Fiche;
-import gestionParcInfo.view.fiche.FicheImprimante;
-import gestionParcInfo.view.fiche.FicheOrdinateur;
-import gestionParcInfo.view.fiche.FicheServeur;
-import gestionParcInfo.view.tab.ServeurTab;
 
 public class ServeurController implements ActionListener, WindowListener, MouseListener {
 
@@ -32,6 +26,12 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 	private FicheServeur ficheServeur;
 	private OrdinateurServeurLinks ordinateurServeurLinks;
 	
+	/**
+	 * Constructeur du controleur des serveurs.
+	 * @param servTab Onglet des serveurs
+	 * @param serveurs Modèle des serveurs
+	 * @param ordinateurServeurLinks Modèle des liens entre les ordinateurs et les serveurs
+	 */
 	public ServeurController(ServeurTab servTab, Serveurs serveurs, OrdinateurServeurLinks ordinateurServeurLinks) {
 		this.servTab = servTab;
 		this.serveurs = serveurs;
@@ -40,11 +40,11 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == this.servTab.getBtnAJouter()) {
+		if (e.getSource() == this.servTab.getBtnAJouter()) {
 			System.out.println("Ajouter Serveur");
 			
 			//Création du formulaire
-			if(this.ficheServeur == null) {
+			if (this.ficheServeur == null) {
 				this.ficheServeur = new FicheServeur(Fiche.State.CREATION);
 				ficheServeur.setVisible(true);
 				
@@ -52,16 +52,16 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 				this.ficheServeur.addWindowListener(this);
 				this.ficheServeur.getBtnSauver().addActionListener(this);
 			
-			}else {
+			} else {
 				this.ficheServeur.toFront();
 			}
-		}else if(e.getSource() == this.servTab.getBtnSupprimer()){
+		} else if (e.getSource() == this.servTab.getBtnSupprimer()){
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				
 				
-				for(String sns : this.servTab.getSNsServeursSelected()) {
+				for (String sns : this.servTab.getSNsServeursSelected()) {
 					System.out.println("Suppression : " + sns);
 					//Récupération de l'ordinateur dans la base
 					Serveur currentServeur = serveurs.findBySN(sns);
@@ -78,24 +78,23 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			}
-		}
-		else if(e.getSource() == this.ficheServeur.getBtnSauver()) {
+		} else if (e.getSource() == this.ficheServeur.getBtnSauver()) {
 			Connection conn;
 			try {
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				Serveur serveur = null;
 				
-				if(this.ficheServeur.getCurrentState() == Fiche.State.CREATION) {
+				if (this.ficheServeur.getCurrentState() == Fiche.State.CREATION) {
 					serveur = new Serveur(this.ficheServeur.getSN(), this.ficheServeur.getDesignation(), this.ficheServeur.getMemoire());
 					
 					//Persistance du serveur et ajout au modèle
 					serveur.create(conn);
 					serveurs.addItem(serveur);
-				}else if(this.ficheServeur.getCurrentState() == Fiche.State.MODIFICATION) {
+				} else if (this.ficheServeur.getCurrentState() == Fiche.State.MODIFICATION) {
 					serveur = this.serveurs.findBySN(this.ficheServeur.getSN());
 					
 					//Suppression des liens à supprimer
-					for(OrdinateurServeurLink ordinateurServeurLink : this.ficheServeur.getLinksToDelete()) {
+					for (OrdinateurServeurLink ordinateurServeurLink : this.ficheServeur.getLinksToDelete()) {
 						ordinateurServeurLink.remove(conn);
 						this.ordinateurServeurLinks.removeItem(ordinateurServeurLink);
 					}
@@ -127,7 +126,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if(e.getSource() == this.ficheServeur)
+		if (e.getSource() == this.ficheServeur)
 			this.ficheServeur = null;
 		
 	}
@@ -164,11 +163,11 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() == this.servTab.getTblServeur()) {
+		if (e.getSource() == this.servTab.getTblServeur()) {
 			if (e.getClickCount() == 2) {
 				System.out.println("DoubleClick on table serveur");
 				//Création du formulaire
-				if(this.ficheServeur == null) {
+				if (this.ficheServeur == null) {
 					Serveur serveur = this.serveurs.findBySN(this.servTab.getSNServeurClicked());
 					
 					this.ficheServeur = new FicheServeur(Fiche.State.VISUALISATION, serveur, this.serveurs, this.ordinateurServeurLinks);

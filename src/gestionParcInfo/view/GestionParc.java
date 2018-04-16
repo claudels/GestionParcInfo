@@ -1,26 +1,15 @@
 package gestionParcInfo.view;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.view.tab.AlerteTab;
 import gestionParcInfo.view.tab.EmployeTab;
 import gestionParcInfo.view.tab.ImprimanteTab;
 import gestionParcInfo.view.tab.OrdinateurTab;
 import gestionParcInfo.view.tab.ServeurTab;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
 
 public class GestionParc extends JFrame {
 
