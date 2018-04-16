@@ -135,7 +135,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				Ordinateur ordinateur = null;
 				
 				if (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION) {
-					ordinateur = new Ordinateur(this.ficheOrdinateur.getSN(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRAM(), this.ficheOrdinateur.getCPU());
+					ordinateur = new Ordinateur(this.ficheOrdinateur.getSn(), this.ficheOrdinateur.getDesignation(), this.ficheOrdinateur.getRam(), this.ficheOrdinateur.getCpu());
 					
 					if (this.ficheOrdinateur.getProprietaire() != null) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
@@ -146,7 +146,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					ordinateur.create(conn);
 					ordinateurs.addItem(ordinateur);
 				} else if (this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
-					ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSN());
+					ordinateur = this.ordinateurs.findBySN(this.ficheOrdinateur.getSn());
 					
 					if (!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
@@ -160,9 +160,9 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					}
 				}
 				
-				ordinateur.setCpu(this.ficheOrdinateur.getCPU());
+				ordinateur.setCpu(this.ficheOrdinateur.getCpu());
 				ordinateur.setDesignation(this.ficheOrdinateur.getDesignation());
-				ordinateur.setRam(this.ficheOrdinateur.getRAM());
+				ordinateur.setRam(this.ficheOrdinateur.getRam());
 				ordinateur.setImprimante(this.ficheOrdinateur.getImprimante());
 				
 				//Persistance de l'ordinateur et ajout au modèle

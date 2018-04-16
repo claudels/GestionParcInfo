@@ -1,4 +1,18 @@
 package gestionParcInfo.view.fiche;
+
+import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.entity.OrdinateurServeurLink;
+import gestionParcInfo.entity.Serveur;
+import gestionParcInfo.model.Employes;
+import gestionParcInfo.model.Imprimantes;
+import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Ordinateurs;
+import gestionParcInfo.model.Serveurs;
+import gestionParcInfo.view.ConnexionImprimante;
+import gestionParcInfo.view.ConnexionServeur;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,51 +33,61 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Employe;
-import gestionParcInfo.entity.Imprimante;
-import gestionParcInfo.entity.Ordinateur;
-import gestionParcInfo.entity.OrdinateurServeurLink;
-import gestionParcInfo.entity.Serveur;
-import gestionParcInfo.model.Employes;
-import gestionParcInfo.model.Imprimantes;
-import gestionParcInfo.model.OrdinateurServeurLinks;
-import gestionParcInfo.model.Ordinateurs;
-import gestionParcInfo.model.Serveurs;
-import gestionParcInfo.view.ConnexionImprimante;
-import gestionParcInfo.view.ConnexionServeur;
-
 public class FicheOrdinateur extends Fiche implements ActionListener, WindowListener {
-	private static final String[] columnsTableServeurs = {"SN_S", "D\u00E9signation", "Mémoire restante (Go)"};
-	private static final String[] columnsTableImprimante = {"SN_I", "D\u00E9signation", "R\u00E9solution"};
+	private static final String[] columnsTableServeurs = {"SN_S", "Désignation", "Mémoire restante (Go)"};
+	private static final String[] columnsTableImprimante = {"SN_I", "Désignation", "Résolution"};
 	
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	//Tableaux
-	private JScrollPane scrllpaneImprimante, scrllpaneServeurs;
-	private JTable tableImprimante, tableServeurs;
-	private DefaultTableModel tableModelServeurs, tableModelImprimante;
+	private JScrollPane scrllpaneImprimante;
+	private JScrollPane scrllpaneServeurs;
+	private JTable tableImprimante;
+	private JTable tableServeurs;
+	private DefaultTableModel tableModelServeurs;
+	private DefaultTableModel tableModelImprimante;
 	
 	//ComboBox
 	private JComboBox<String> cmbboxAssignedTo;
 	private DefaultComboBoxModel<String> cmbboxModel;
 
 	//Spinners
-	private JSpinner spinnerRAM, spinnerCPU;
+	private JSpinner spinnerRam;
+	private JSpinner spinnerCpu;
 	
 	//TextFields
-	private JTextField tfSNO, tfDesignation, tfDateAttribution, tfDateRestitution;
+	private JTextField tfSno; 
+	private JTextField tfDesignation;
+	private JTextField tfDateAttribution;
+	private JTextField tfDateRestitution;
 	
 	//Labels statiques
-	private JLabel staticLblUniteTemps, staticLblTitle, staticLblSNO, staticLblDateAttribution, staticLblDateRestitution, staticLblImprimanteTitle, staticLblServeursTitle, staticLblAChanger, staticLblARetourner, staticLblTempsUtilisation, staticLblAssignedTo, staticLblDesignation, staticLblCPU, staticLblRAM;
+	private JLabel staticLblUniteTemps;
+	private JLabel staticLblTitle;
+	private JLabel staticLblSno;
+	private JLabel staticLblDateAttribution;
+	private JLabel staticLblDateRestitution;
+	private JLabel staticLblImprimanteTitle;
+	private JLabel staticLblServeursTitle;
+	private JLabel staticLblAChanger;
+	private JLabel staticLblARetourner;
+	private JLabel staticLblTempsUtilisation;
+	private JLabel staticLblAssignedTo;
+	private JLabel staticLblDesignation;
+	private JLabel staticLblCpu;
+	private JLabel staticLblRam;
 
 	//Labels dynamiques
-	private JLabel lblAChanger, lblJoursUtilisation, lblARetourner;
+	private JLabel lblAChanger;
+	private JLabel lblJoursUtilisation;
+	private JLabel lblARetourner;
 	
 	//Boutons
-	private JButton btnConnecterImprimante, btnDeconnecterImprimante, btnConnecterServeurs, btnDeconnecterServeurs;
+	private JButton btnConnecterImprimante;
+	private JButton btnDeconnecterImprimante;
+	private JButton btnConnecterServeurs;
+	private JButton btnDeconnecterServeurs;
 	
 	//Modèles
 	private Employes employes;
@@ -83,10 +107,13 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 
 	
 	/**
-	 * Constructeur par default
+	 * Constructeur par default.
 	 * @param employes
+	 * 
 	 * @param ordinateurServeurLinks
+	 * 
 	 * @param serveurs
+	 * 
 	 */
 	public FicheOrdinateur(Fiche.State initialState, Employes employes, Serveurs serveurs, Imprimantes imprimantes) {
 		super(initialState);
@@ -104,7 +131,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		this.cmbboxModel = new DefaultComboBoxModel<String>();
 		this.cmbboxModel.addElement(null);
 		
-		for(Employe employe : employes.getItems()) {
+		for (Employe employe : employes.getItems()) {
 			this.cmbboxModel.addElement(employe.getMatricule());
 		}
 		
@@ -119,12 +146,17 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	}
 	
 	/**
-	 * Constructeur pour un ordinateur existant
+	 * Constructeur pour un ordinateur existant.
 	 * @param initialState
+	 * 
 	 * @param ordinateur
+	 * 
 	 * @param employes
+	 * 
 	 * @param ordinateurServeurLinks
+	 * 
 	 * @param serveurs
+	 * 
 	 */
 	public FicheOrdinateur(Fiche.State initialState, Ordinateur ordinateur, Employes employes, OrdinateurServeurLinks ordinateurServeurLinks, Serveurs serveurs, Ordinateurs ordinateurs, Imprimantes imprimantes) {
 		this(initialState, employes, serveurs, imprimantes);
@@ -133,8 +165,8 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
 		
 		//Selection du matricule de l'employé associé"
-		for(Employe employe : employes.getItems()) {
-			if(ordinateur.getProprietaire() != null && ordinateur.getProprietaire().getMatricule().equals(employe.getMatricule())) {
+		for (Employe employe : employes.getItems()) {
+			if (ordinateur.getProprietaire() != null && ordinateur.getProprietaire().getMatricule().equals(employe.getMatricule())) {
 				this.cmbboxModel.setSelectedItem(employe.getMatricule());
 			}
 		}
@@ -142,15 +174,15 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		//Ajout des liens existants
 		Object[] rowDataLink = new Object[FicheOrdinateur.columnsTableServeurs.length];
 		
-		for(OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNO(ordinateur.getSn())) {
+		for (OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNO(ordinateur.getSn())) {
 			rowDataLink[0] = ordinateurServeurLink.getServeur().getSn();
 			rowDataLink[1] = ordinateurServeurLink.getServeur().getDesignation();
-			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur())/1024;
+			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur()) / 1024;
 			this.tableModelServeurs.addRow(rowDataLink);
 		}
 		
 		//Ajout de l'imprimante
-		if(ordinateur.getImprimante() != null) {
+		if (ordinateur.getImprimante() != null) {
 			Object[] rowDataImprimante = new Object[FicheOrdinateur.columnsTableImprimante.length];
 			rowDataImprimante[0] = ordinateur.getImprimante().getSn();
 			rowDataImprimante[1] = ordinateur.getImprimante().getDesignation();
@@ -159,25 +191,25 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		}
 		
 		//On initialise les champs du formulaire avec les attributs de l'ordinateur 
-		this.tfSNO.setText(ordinateur.getSn());
+		this.tfSno.setText(ordinateur.getSn());
 		this.tfDesignation.setText(ordinateur.getDesignation());
 		
-		if(ordinateur.getDateRestitution() != null) {
+		if (ordinateur.getDateRestitution() != null) {
 			this.tfDateRestitution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateRestitution()));
 		}
-		if(ordinateur.getDateAttribution() != null) {
+		if (ordinateur.getDateAttribution() != null) {
 			this.tfDateAttribution.setText(Ordinateur.dateFormatterJavaToOracle.format(ordinateur.getDateAttribution()));
 		}
 		
 		String tempsUtilisation = "0";
-		if(ordinateur.countJoursUtilisation() != null)
+		if (ordinateur.countJoursUtilisation() != null) {
 			tempsUtilisation = Long.toString(ordinateur.countJoursUtilisation());
-			
+		}
 		this.lblJoursUtilisation.setText(tempsUtilisation);
 		this.lblAChanger.setText(ordinateurs.ordinateurMustBeChanged(ordinateur) ? "OUI" : "NON");
 		this.lblARetourner.setText(ordinateurs.ordinateurMustBeReturned(ordinateur) ? "OUI" : "NON");
-		this.spinnerCPU.setValue(ordinateur.getCpu());
-		this.spinnerRAM.setValue(ordinateur.getRam());
+		this.spinnerCpu.setValue(ordinateur.getCpu());
+		this.spinnerRam.setValue(ordinateur.getRam());
 	}
 	
 	@Override
@@ -188,15 +220,15 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
 		this.lblAChanger.setVisible(newState != Fiche.State.CREATION);
 		this.lblARetourner.setVisible(newState != Fiche.State.CREATION);
-		this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION)?"0":this.lblJoursUtilisation.getText());
+		this.lblJoursUtilisation.setText((newState == Fiche.State.CREATION) ? "0" : this.lblJoursUtilisation.getText());
 		this.staticLblAChanger.setVisible(newState != Fiche.State.CREATION);
 		this.staticLblARetourner.setVisible(newState != Fiche.State.CREATION);
 		
 		//Interdit à la visualisation
 		this.tfDesignation.setEditable(newState != Fiche.State.VISUALISATION);
 		this.cmbboxAssignedTo.setEnabled(newState != Fiche.State.VISUALISATION);
-		this.spinnerCPU.setEnabled(newState != Fiche.State.VISUALISATION);
-		this.spinnerRAM.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.spinnerCpu.setEnabled(newState != Fiche.State.VISUALISATION);
+		this.spinnerRam.setEnabled(newState != Fiche.State.VISUALISATION);
 		
 		this.btnConnecterImprimante.setEnabled(newState != Fiche.State.VISUALISATION);
 		this.btnConnecterServeurs.setEnabled(newState != Fiche.State.VISUALISATION);
@@ -205,7 +237,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		
 		
 		//Autorisé pour création
-		this.tfSNO.setEditable(newState == Fiche.State.CREATION);
+		this.tfSno.setEditable(newState == Fiche.State.CREATION);
 		
 	}
 	
@@ -225,20 +257,20 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		return btnDeconnecterServeurs;
 	}
 
-	public String getSN() {
-		return this.tfSNO.getText();
+	public String getSn() {
+		return this.tfSno.getText();
 	}
 	
 	public String getDesignation() {
 		return this.tfDesignation.getText();
 	}
 	
-	public int getRAM() {
-		return (int)this.spinnerRAM.getValue();
+	public int getRam() {
+		return (int)this.spinnerRam.getValue();
 	}
 	
-	public double getCPU() {
-		return (double)this.spinnerCPU.getValue();
+	public double getCpu() {
+		return (double)this.spinnerCpu.getValue();
 	}
 	
 	public Employe getProprietaire() {
@@ -253,10 +285,14 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		return deletedLinks;
 	}
 	
+	/**
+	 * Recupération de l'imprimante.
+	 * @return
+	 */
 	public Imprimante getImprimante() {
 		Imprimante imprimante = null;
 		
-		if(this.tableModelImprimante.getRowCount() > 0) {
+		if (this.tableModelImprimante.getRowCount() > 0) {
 			int columnSNIIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelImprimante.findColumn(FicheOrdinateur.columnsTableImprimante[0]));
 			imprimante = this.imprimantes.findBySN((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
 		}
@@ -267,8 +303,8 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		if(e.getSource() == this.btnConnecterImprimante) {
-			if(this.connexionImprimanteForm == null) {
+		if (e.getSource() == this.btnConnecterImprimante) {
+			if (this.connexionImprimanteForm == null) {
 				//On ouvre le formulaire
 				this.connexionImprimanteForm = new ConnexionImprimante(this.imprimantes, this);
 				this.connexionImprimanteForm.getBtnSauvegarder().addActionListener(this);
@@ -278,7 +314,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			
 			this.connexionImprimanteForm.toFront();
 		}
-		if(this.connexionImprimanteForm != null && e.getSource() == this.connexionImprimanteForm.getBtnSauvegarder()){
+		if (this.connexionImprimanteForm != null && e.getSource() == this.connexionImprimanteForm.getBtnSauvegarder()) {
 			Imprimante imprimante = this.connexionImprimanteForm.getSelectedImprimante();
 			
 			//On met à jour la table
@@ -295,19 +331,20 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			this.connexionImprimanteForm = null;
 		}
 		
-		if(e.getSource() == this.btnDeconnecterImprimante) {
+		if (e.getSource() == this.btnDeconnecterImprimante) {
 			this.tableModelImprimante.setRowCount(0);
 		}
-		if(e.getSource() == this.btnConnecterServeurs) {
-			if(this.connexionServeurForm == null) {
+		if (e.getSource() == this.btnConnecterServeurs) {
+			if (this.connexionServeurForm == null) {
 				//On détermine les serveurs pour lesquels on peut se connecter
 				ArrayList<Serveur> serveursDisponibles = new ArrayList<>(this.serveurs.getItems());
 				
 				int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
-				for(int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
+				for (int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
 					Serveur serveur = this.serveurs.findBySN((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
-					if(serveursDisponibles.contains(serveur))
+					if (serveursDisponibles.contains(serveur)) {
 						serveursDisponibles.remove(serveur);
+					}
 				}
 				
 				//On ouvre le formulaire
@@ -319,9 +356,9 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			
 			this.connexionServeurForm.toFront();
 		}
-		if(this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
+		if (this.connexionServeurForm != null && e.getSource() == this.connexionServeurForm.getBtnSauvegarder()) {
 			//On récupère les numéros de série séléctionnés
-			for(Serveur serveur : this.connexionServeurForm.getSelectedServeurs()) {
+			for (Serveur serveur : this.connexionServeurForm.getSelectedServeurs()) {
 				//On ajoute le liens aux liens ajoutés
 				this.addedLinks.put(serveur, this.connexionServeurForm.getQuotaSelected());
 				
@@ -329,7 +366,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 				Object[] rowData = new Object[FicheOrdinateur.columnsTableServeurs.length];
 				rowData[0] = serveur.getSn();
 				rowData[1] = serveur.getDesignation();
-				rowData[2] = serveur.getMemoire() - (this.serveurs.calculerSommeQuotas(serveur) + this.connexionServeurForm.getQuotaSelected())/1024;
+				rowData[2] = serveur.getMemoire() - (this.serveurs.calculerSommeQuotas(serveur) + this.connexionServeurForm.getQuotaSelected()) / 1024;
 				this.tableModelServeurs.addRow(rowData);
 				this.tableModelServeurs.fireTableDataChanged();
 			}
@@ -338,15 +375,15 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			this.connexionServeurForm.dispose();
 			this.connexionServeurForm = null;
 		}
-		if(e.getSource() == this.btnDeconnecterServeurs) {
+		if (e.getSource() == this.btnDeconnecterServeurs) {
 			int deletedRowsCounter = 0;
 			int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 			
-			for(int rowIndex : this.tableServeurs.getSelectedRows()) {
+			for (int rowIndex : this.tableServeurs.getSelectedRows()) {
 				Serveur serveur = this.serveurs.findBySN((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
-				if(this.addedLinks.containsKey(serveur)) {
+				if (this.addedLinks.containsKey(serveur)) {
 					this.addedLinks.remove(serveur);
-				}else {
+				} else {
 					this.deletedLinks.add(serveur);
 				}
 				this.tableModelServeurs.removeRow(rowIndex - deletedRowsCounter);
@@ -355,7 +392,9 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		}
 	}
 	
-	
+	/**
+	 * initialisation des composants.
+	 */
 	public void initComponents() {
 		
 		//Configuration de la fenêtre
@@ -363,10 +402,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		setBounds(100, 100, 608, 715);
 		
 		//Configuration des labels statiques
-		staticLblSNO = new JLabel("SN_O :");
-		staticLblSNO.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLblSNO.setBounds(64, 62, 63, 14);
-		contentPane.add(staticLblSNO);
+		staticLblSno = new JLabel("SN_O :");
+		staticLblSno.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblSno.setBounds(64, 62, 63, 14);
+		contentPane.add(staticLblSno);
 		
 		staticLblDateAttribution = new JLabel("Date d'attribution :");
 		staticLblDateAttribution.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -391,20 +430,20 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		staticLblDesignation.setBounds(43, 151, 86, 20);
 		contentPane.add(staticLblDesignation);
 		
-		staticLblCPU = new JLabel("CPU : ");
-		staticLblCPU.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLblCPU.setBounds(346, 114, 63, 14);
-		contentPane.add(staticLblCPU);
+		staticLblCpu = new JLabel("CPU : ");
+		staticLblCpu.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblCpu.setBounds(346, 114, 63, 14);
+		contentPane.add(staticLblCpu);
 		
 		staticLblAssignedTo = new JLabel("Assign\u00E9 \u00E0 : ");
 		staticLblAssignedTo.setHorizontalAlignment(SwingConstants.RIGHT);
 		staticLblAssignedTo.setBounds(328, 54, 81, 22);
 		contentPane.add(staticLblAssignedTo);
 		
-		staticLblRAM = new JLabel(" RAM : ");
-		staticLblRAM.setHorizontalAlignment(SwingConstants.RIGHT);
-		staticLblRAM.setBounds(346, 86, 63, 14);
-		contentPane.add(staticLblRAM);
+		staticLblRam = new JLabel(" RAM : ");
+		staticLblRam.setHorizontalAlignment(SwingConstants.RIGHT);
+		staticLblRam.setBounds(346, 86, 63, 14);
+		contentPane.add(staticLblRam);
 		
 		staticLblTempsUtilisation = new JLabel("Temps d'utilisation :");
 		staticLblTempsUtilisation.setBounds(406, 151, 147, 20);
@@ -430,10 +469,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		contentPane.add(staticLblTitle);
 		
 		//Configuration TextFields
-		tfSNO = new JTextField();
-		tfSNO.setBounds(139, 59, 117, 20);
-		contentPane.add(tfSNO);
-		tfSNO.setColumns(10);
+		tfSno = new JTextField();
+		tfSno.setBounds(139, 59, 117, 20);
+		contentPane.add(tfSno);
+		tfSno.setColumns(10);
 		
 		tfDesignation = new JTextField();
 		tfDesignation.setColumns(0);
@@ -453,15 +492,15 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		contentPane.add(tfDateRestitution);
 		
 		//Configuration Spinners
-		spinnerRAM = new JSpinner();
-		spinnerRAM.setModel(new SpinnerNumberModel(4, 2, 64, 1));
-		spinnerRAM.setBounds(421, 84, 117, 20);
-		contentPane.add(spinnerRAM);
+		spinnerRam = new JSpinner();
+		spinnerRam.setModel(new SpinnerNumberModel(4, 2, 64, 1));
+		spinnerRam.setBounds(421, 84, 117, 20);
+		contentPane.add(spinnerRam);
 		
-		spinnerCPU = new JSpinner();
-		spinnerCPU.setModel(new SpinnerNumberModel(3.1, 2.0, 5.0, 0.1));
-		spinnerCPU.setBounds(421, 112, 117, 20);
-		contentPane.add(spinnerCPU);
+		spinnerCpu = new JSpinner();
+		spinnerCpu.setModel(new SpinnerNumberModel(3.1, 2.0, 5.0, 0.1));
+		spinnerCpu.setBounds(421, 112, 117, 20);
+		contentPane.add(spinnerCpu);
 		
 		//Configuration ComboBox
 		cmbboxAssignedTo = new JComboBox<>();

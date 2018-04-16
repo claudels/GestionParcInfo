@@ -104,7 +104,7 @@ public class ConnexionServeur extends JFrame {
 		this.initComponents();
 		
 		//Modification du texte des label
-		this.lblSno.setText(this.ficheOrdinateur.getSN());
+		this.lblSno.setText(this.ficheOrdinateur.getSn());
 		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
 		if (this.ficheOrdinateur.getProprietaire() != null) {
 			this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());

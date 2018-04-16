@@ -77,7 +77,7 @@ public class ConnexionImprimante extends JFrame{
 		
 		this.initComponents();
 		
-		this.lblSNO.setText(this.ficheOrdinateur.getSN());
+		this.lblSNO.setText(this.ficheOrdinateur.getSn());
 		this.lblDesignation.setText(this.ficheOrdinateur.getDesignation());
 		if(this.ficheOrdinateur.getProprietaire() != null)
 			this.lblProprietaire.setText(this.ficheOrdinateur.getProprietaire().getMatricule());
