@@ -61,6 +61,25 @@ public class EmployeTab extends JPanel implements Observer {
 		return btnSupprimer;
 	}
 	
+<<<<<<< HEAD
+=======
+	/**
+	 * Retourne la liste des employes selectionnés.
+	 * @return
+	 */
+	public ArrayList<Employe> getSelectedEmploye() {
+		ArrayList<Employe> result = new ArrayList<>();
+		
+		int columnSNSIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+
+		for (int rowIndex : this.tblEmploye.getSelectedRows()) {
+			result.add(this.employes.findByMatricule((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex)));
+		}
+		
+		return result;
+	}
+	
+>>>>>>> refs/remotes/origin/master
 	private void initComponents() {
 		this.setLayout(null);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));

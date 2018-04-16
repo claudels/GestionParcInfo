@@ -174,7 +174,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		//Ajout des liens existants
 		Object[] rowDataLink = new Object[FicheOrdinateur.columnsTableServeurs.length];
 		
-		for (OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySno(ordinateur.getSn())) {
+		for (OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNO(ordinateur.getSn())) {
 			rowDataLink[0] = ordinateurServeurLink.getServeur().getSn();
 			rowDataLink[1] = ordinateurServeurLink.getServeur().getDesignation();
 			rowDataLink[2] = ordinateurServeurLink.getServeur().getMemoire() - this.serveurs.calculerSommeQuotas(ordinateurServeurLink.getServeur()) / 1024;
@@ -294,7 +294,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		
 		if (this.tableModelImprimante.getRowCount() > 0) {
 			int columnSNIIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelImprimante.findColumn(FicheOrdinateur.columnsTableImprimante[0]));
-			imprimante = this.imprimantes.findBySn((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
+			imprimante = this.imprimantes.findBySN((String)this.tableModelImprimante.getValueAt(0, columnSNIIndex));
 		}
 		
 		return imprimante;
@@ -341,7 +341,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 				
 				int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 				for (int rowIndex = 0; rowIndex < this.tableModelServeurs.getRowCount(); rowIndex++) {
-					Serveur serveur = this.serveurs.findBySn((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
+					Serveur serveur = this.serveurs.findBySN((String) this.tableModelServeurs.getValueAt(rowIndex, columnSNSIndex));
 					if (serveursDisponibles.contains(serveur)) {
 						serveursDisponibles.remove(serveur);
 					}
@@ -380,7 +380,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 			int columnSNSIndex = this.tableServeurs.convertColumnIndexToView(this.tableModelServeurs.findColumn(FicheOrdinateur.columnsTableServeurs[0]));
 			
 			for (int rowIndex : this.tableServeurs.getSelectedRows()) {
-				Serveur serveur = this.serveurs.findBySn((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
+				Serveur serveur = this.serveurs.findBySN((String) this.tableServeurs.getValueAt(rowIndex - deletedRowsCounter, columnSNSIndex));
 				if (this.addedLinks.containsKey(serveur)) {
 					this.addedLinks.remove(serveur);
 				} else {
@@ -453,7 +453,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		staticLblImprimanteTitle.setBounds(10, 248, 169, 22);
 		contentPane.add(staticLblImprimanteTitle);
 		
-		staticLblServeursTitle = new JLabel("Serveurs connect\u00E9s :");
+		staticLblServeursTitle = new JLabel("Serveurs connectés :");
 		staticLblServeursTitle.setBounds(10, 346, 169, 22);
 		contentPane.add(staticLblServeursTitle);
 		
@@ -559,7 +559,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		btnConnecterImprimante.setBounds(466, 276, 111, 25);
 		contentPane.add(btnConnecterImprimante);
 		
-		btnDeconnecterImprimante = new JButton("D\u00E9connecter");
+		btnDeconnecterImprimante = new JButton("Déconnecter");
 		btnDeconnecterImprimante.setBounds(466, 302, 111, 25);
 		contentPane.add(btnDeconnecterImprimante);
 		
@@ -567,7 +567,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		btnConnecterServeurs.setBounds(10, 564, 111, 25);
 		contentPane.add(btnConnecterServeurs);
 		
-		btnDeconnecterServeurs = new JButton("D\u00E9connecter");
+		btnDeconnecterServeurs = new JButton("Déconnecter");
 		btnDeconnecterServeurs.setBounds(127, 564, 111, 25);
 		contentPane.add(btnDeconnecterServeurs);
 	}
@@ -580,10 +580,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if(e.getSource() == this.connexionImprimanteForm) {
+		if (e.getSource() == this.connexionImprimanteForm) {
 			this.connexionImprimanteForm = null;
 		}
-		if(e.getSource() == this.connexionServeurForm) {
+		if (e.getSource() == this.connexionServeurForm) {
 			this.connexionServeurForm = null;
 		}
 	}

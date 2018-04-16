@@ -1,11 +1,11 @@
 package gestionParcInfo.repository;
 
+import gestionParcInfo.entity.Serveur;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import gestionParcInfo.entity.Serveur;
 
 public class ServeurRepository extends Repository<Serveur> {
 	private static final String SQL_FIND_SN = "SELECT * FROM Serveur WHERE sn_s=?";
@@ -17,12 +17,15 @@ public class ServeurRepository extends Repository<Serveur> {
 	}
 
 	/**
-	 * Récupérer un Serveur dans la base
+	 * Récupérer un Serveur dans la base.
 	 * @param sn Numéro de série du serveur
+	 * 
 	 * @return L'objet Serveur correspondant
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
-	public Serveur findBySN(String sn) throws SQLException{
+	public Serveur findBySn(String sn) throws SQLException {
 		ResultSet rs = null;
 		Serveur serveur = null;
 		
@@ -30,9 +33,9 @@ public class ServeurRepository extends Repository<Serveur> {
 		this.pstmt.setString(1, sn);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			serveur = new Serveur(rs.getString(1), rs.getString(2), rs.getLong(3));
-		}
+		} 
 		
 		pstmt.close();
 		rs.close();
@@ -48,7 +51,7 @@ public class ServeurRepository extends Repository<Serveur> {
 		this.pstmt = this.conn.prepareStatement(ServeurRepository.SQL_GET_ALL);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			serveurs.add(new Serveur(rs.getString(1), rs.getString(2), rs.getLong(3)));
 		}
 		

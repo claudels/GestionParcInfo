@@ -10,17 +10,20 @@ public abstract class Repository<T> {
 	protected Connection conn;
 	
 	/**
-	 * Créer un nouveau Repository
+	 * Créer un nouveau Repository.
 	 * @param conn Connection à utiliser pour le repo
+	 * 
 	 */
 	public Repository(Connection conn) {
 		this.conn = conn;
 	}
 	
 	/**
-	 * Récupère l'ensemble des entités dans la base
+	 * Récupère l'ensemble des entités dans la base.
 	 * @return ArrayList qui contient l'ensemble des entités de type T
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
 	public abstract ArrayList<T> getAll() throws SQLException;
 }

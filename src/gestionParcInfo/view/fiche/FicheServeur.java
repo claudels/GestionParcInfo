@@ -101,7 +101,7 @@ public class FicheServeur extends Fiche implements ActionListener {
 		
 		//Ajout des liens avec les ordinateurs
 		Object[] rowDataLink = new Object[FicheServeur.columnsNames.length];
-		for(OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySns(serveur.getSn())) {
+		for(OrdinateurServeurLink ordinateurServeurLink : ordinateurServeurLinks.findBySNS(serveur.getSn())) {
 			rowDataLink[0] = ordinateurServeurLink.getOrdinateur().getSn();
 			rowDataLink[1] = ordinateurServeurLink.getOrdinateur().getDesignation();
 			rowDataLink[2] = ordinateurServeurLink.getQuota();
@@ -169,7 +169,7 @@ public class FicheServeur extends Fiche implements ActionListener {
 			int columnSNOIndex = this.tableOrdinateur.convertColumnIndexToView(this.tableModel.findColumn(FicheServeur.columnsNames[0]));
 			
 			for(int rowIndex : this.tableOrdinateur.getSelectedRows()) {
-				OrdinateurServeurLink ordinateurServeurLink = this.ordinateurServeurLinks.findBySnoAndSns((String) this.tableOrdinateur.getValueAt(rowIndex - deletedRowsCounter, columnSNOIndex), this.serveur.getSn());
+				OrdinateurServeurLink ordinateurServeurLink = this.ordinateurServeurLinks.findBySNOAndSNS((String) this.tableOrdinateur.getValueAt(rowIndex - deletedRowsCounter, columnSNOIndex), this.serveur.getSn());
 				this.linksToDelete.add(ordinateurServeurLink);
 				this.tableModel.removeRow(rowIndex - deletedRowsCounter);
 				deletedRowsCounter++;

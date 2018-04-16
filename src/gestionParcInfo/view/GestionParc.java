@@ -1,9 +1,4 @@
 package gestionParcInfo.view;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 
 import gestionParcInfo.view.tab.AlerteTab;
 import gestionParcInfo.view.tab.EmployeTab;
@@ -11,11 +6,19 @@ import gestionParcInfo.view.tab.ImprimanteTab;
 import gestionParcInfo.view.tab.OrdinateurTab;
 import gestionParcInfo.view.tab.ServeurTab;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+
+
+
 public class GestionParc extends JFrame {
 
 	private JPanel contentPane;
-	private JTable TBL_ordinateur;
-	private JTable TBL_imprimante;
+	private JTable tblOrdinateur;
+	private JTable tblImprimante;
 	private JTable table3;
 	private JTable table4;
 	private JTable table5;

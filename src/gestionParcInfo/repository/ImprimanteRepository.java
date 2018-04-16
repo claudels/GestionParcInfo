@@ -18,12 +18,15 @@ public class ImprimanteRepository extends Repository<Imprimante> {
 	}
 
 	/**
-	 * Récupérer une Imprimante dans la base
+	 * Récupérer une Imprimante dans la base.
 	 * @param sn Numéro de série de l'Imprimante
+	 * 
 	 * @return L'objet Imprimante correspondante
+	 * 
 	 * @throws SQLException
+	 * 
 	 */
-	public Imprimante findBySN(String sn) throws SQLException{
+	public Imprimante findBySn(String sn) throws SQLException {
 		ResultSet rs = null;
 		Imprimante imprimante = null;
 		
@@ -31,7 +34,7 @@ public class ImprimanteRepository extends Repository<Imprimante> {
 		this.pstmt.setString(1, sn);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			imprimante = new Imprimante(rs.getString(1), rs.getString(2), rs.getInt(3));
 		}
 		
@@ -49,7 +52,7 @@ public class ImprimanteRepository extends Repository<Imprimante> {
 		this.pstmt = this.conn.prepareStatement(ImprimanteRepository.SQL_GET_ALL);
 		rs = this.pstmt.executeQuery();
 		 
-		while(rs.next()) {
+		while (rs.next()) {
 			imprimantes.add(new Imprimante(rs.getString(1), rs.getString(2), rs.getInt(3)));
 		}
 		

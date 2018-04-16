@@ -1,5 +1,8 @@
 package gestionParcInfo.view.tab;
 
+import gestionParcInfo.entity.Alerte;
+import gestionParcInfo.model.Alertes;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,8 +15,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import gestionParcInfo.entity.Alerte;
-import gestionParcInfo.model.Alertes;
 
 public class AlerteTab extends JPanel implements Observer {
 
@@ -31,7 +32,9 @@ public class AlerteTab extends JPanel implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
-	
+	/**
+	 * Constructeur de l'onglet alerte.
+	 */
 	public AlerteTab() {
 		super();
 		this.tableModel = new DefaultTableModel();
@@ -40,6 +43,10 @@ public class AlerteTab extends JPanel implements Observer {
 		initComponents();
 
 	}
+	
+	/**
+	 * initialisation des objects qui composent la fenètre.
+	 */
 	private void initComponents() {
 		this.setLayout(null);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,7 +88,10 @@ public class AlerteTab extends JPanel implements Observer {
 				if (alerte.getEmploye() != null) {
 					matricule = alerte.getEmploye().getMatricule();
 				}
+<<<<<<< HEAD
 				
+=======
+>>>>>>> refs/remotes/origin/master
 				Object[] rawData = new Object[AlerteTab.columnsNames.length];
 				rawData[0] = alerte.getId();
 				rawData[1] = alerte.getMessage();
@@ -100,8 +110,13 @@ public class AlerteTab extends JPanel implements Observer {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Retourne les Id des Alertes que l'utilisateur à séléctionnées.
 	 * @return ArrayList
+=======
+	 * liste contenant les codes des alertes.
+	 * @return
+>>>>>>> refs/remotes/origin/master
 	 */
 	public ArrayList<Integer>  getCodeAlerteSelected() {
 		ArrayList<Integer> code = new ArrayList<>();
