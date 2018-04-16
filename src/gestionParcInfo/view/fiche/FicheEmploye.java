@@ -56,7 +56,6 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	private JTable tblOrdinateurs;
 	private AssignerOrdinateur assignerOrdiForm;
 	private Ordinateurs ordinateurs;
-	private Employe employe;
 	
 	/**
 	 * Constructeur de la fiche Employe lors de sa création.
@@ -89,7 +88,6 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		this(initialState);
 		
 		this.ordinateurs = ordinateurs;
-		this.employe = employe;
 		this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		this.tfMatricule.setText(employe.getMatricule());
 		this.tfNom.setText(employe.getNom());

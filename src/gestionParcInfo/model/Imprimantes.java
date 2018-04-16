@@ -1,12 +1,9 @@
 package gestionParcInfo.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
-import java.util.stream.Collectors;
-
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
+
+import java.util.ArrayList;
+import java.util.Observer;
 
 public class Imprimantes extends ModelList<Imprimante> {
 	

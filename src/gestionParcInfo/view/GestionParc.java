@@ -16,20 +16,18 @@ import javax.swing.border.EmptyBorder;
 
 public class GestionParc extends JFrame {
 
-	private JPanel contentPane;
-	private JTable tblOrdinateur;
-	private JTable tblImprimante;
-	private JTable table3;
-	private JTable table4;
-	private JTable table5;
+  private static final long serialVersionUID = 1L;
+
+  private JPanel contentPane;
 	
-	private OrdinateurTab ordiTab;
-	private ImprimanteTab imprTab;
-	private ServeurTab servTab;
-	private EmployeTab emplTab;
-	private AlerteTab alerteTab;
-	
-	
+	/**
+	 * Création de la fenêtre principale du programme.
+	 * @param ordiTab Onglet des ordinateurs
+	 * @param imprTab Onglet des imprimantes
+	 * @param servTab Onglet des serveurs
+	 * @param emplTab Onglet des employés
+	 * @param alerteTab Onglet des alertes
+	 */
 	public GestionParc(OrdinateurTab ordiTab, ImprimanteTab imprTab, ServeurTab servTab, EmployeTab emplTab, AlerteTab alerteTab) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 736, 499);
@@ -41,12 +39,6 @@ public class GestionParc extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(5, 5, 713, 450);
 		contentPane.add(tabbedPane);
-		
-		this.ordiTab = ordiTab;
-		this.imprTab = imprTab;
-		this.servTab = servTab;
-		this.emplTab = emplTab;
-		this.alerteTab = alerteTab;
 		
 		tabbedPane.addTab("Ordinateurs", null,ordiTab, null);		
 		tabbedPane.addTab("Imprimantes", null, imprTab, null);		

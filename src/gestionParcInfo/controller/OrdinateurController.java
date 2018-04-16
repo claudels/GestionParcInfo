@@ -79,7 +79,6 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-				OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
 				
 				for (String sno : this.ordiTab.getSNsOrdinateursSelected()) {
 					System.out.println("Retour : " + sno);
@@ -104,7 +103,6 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
-				OrdinateurRepository ordiRepo = new OrdinateurRepository(conn);
 				System.out.println("Supprimer ordinateur");
 				
 				for (String sno : this.ordiTab.getSNsOrdinateursSelected()) {
