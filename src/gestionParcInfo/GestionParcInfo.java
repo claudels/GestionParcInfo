@@ -57,7 +57,7 @@ public class GestionParcInfo {
 		OrdinateurTab ordiTab = new OrdinateurTab();
 		ServeurTab serveurTab = new ServeurTab();
 		AlerteTab alerteTab = new AlerteTab();
-		EmployeTab employeTab = new EmployeTab(employes);
+		EmployeTab employeTab = new EmployeTab();
 		ImprimanteTab imprimanteTab = new ImprimanteTab();
 		
 		try {
