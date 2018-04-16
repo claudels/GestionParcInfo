@@ -76,8 +76,6 @@ public class ConnexionImprimante extends JFrame {
 		this.tableModel.setColumnIdentifiers(ConnexionImprimante.columnNames);
 		
 		//Remplissage table
-		DecimalFormat f = new DecimalFormat("##0.00");
-		
 		for (Imprimante imprimante : imprimantes.getItems()) {
 			Object[] rowData = new Object[ConnexionImprimante.columnNames.length];
 			rowData[0] = imprimante.getSn();

@@ -71,8 +71,7 @@ public class Ordinateurs extends ModelList<Ordinateur> {
 		boolean result = false;
 		
 		if (ordinateur.getProprietaire() != null && ordinateur.getDateAttribution() != null) {
-			if (ordinateur.getDateAttribution() != null 
-			    && ordinateur.getDateRestitution() != null 
+			if (ordinateur.getDateRestitution() != null 
 					&& this.findOrdinateursByEmploye(ordinateur.getProprietaire()).size() == 1 
 					&& (System.currentTimeMillis() - ordinateur.getDateAttribution().getTime()) >= timeInMsBeforeChange) {
 				result = true;
