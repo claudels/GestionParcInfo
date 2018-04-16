@@ -12,13 +12,16 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Alerte;
 import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Imprimante;
 import gestionParcInfo.entity.Ordinateur;
+import gestionParcInfo.model.Alertes;
 import gestionParcInfo.model.Employes;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.repository.EmployeRepository;
 import gestionParcInfo.repository.OrdinateurRepository;
+import gestionParcInfo.view.AlerterEmploye;
 import gestionParcInfo.view.AssignerOrdinateur;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheEmploye;
@@ -31,12 +34,14 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 	private Employes employes;
 	private FicheEmploye ficheEmploye;
 	private Ordinateurs ordinateurs;
+	private AlerterEmploye alerterEmployeForm;
+	private Alertes alertes;
 	
-	
-	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs) {
+	public EmployeController(EmployeTab employeTab, Employes employes,Ordinateurs ordinateurs,Alertes alertes) {
 		this.employeTab = employeTab;
 		this.employes = employes;
 		this.ordinateurs = ordinateurs;
+		this.alertes = alertes;
 	}
 
 	@Override
@@ -61,8 +66,15 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 			}
 		}
 		else if(e.getSource() == employeTab.getBtnAlerter()) {
-			System.out.println("Alerter employé");
-		}
+			if(this.alerterEmployeForm == null) {
+				this.alerterEmployeForm = new AlerterEmploye();
+				alerterEmployeForm.setVisible(true);
+				
+				//Ajout des listeners
+				this.alerterEmployeForm.addWindowListener(this);
+				this.employeTab.getBtnAlerter().addActionListener(this);
+			}
+			
 		else if(e.getSource() == employeTab.getBtnSupprimer()) {
 			try {
 				Class.forName("oracle.jdbc.driver.OracleDriver"); 
@@ -87,8 +99,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 		}
-		}
-		else if(e.getSource() == this.ficheEmploye.getBtnSauver() && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
+			
+		}else if(this.ficheEmploye != null && e.getSource() == this.ficheEmploye.getBtnSauver() && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
 			System.out.println("Sauver Employe");
 
 			Connection conn;
@@ -129,8 +141,35 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				e1.printStackTrace();
 			}
 		}
+		}else if(e.getSource() == this.alerterEmployeForm.getBtnAlerter()){
+			System.out.println("Alerter Employe");
+			this.alerterEmployeForm.addWindowListener(this);
+			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
+			Connection conn;
+			try {
+				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
+				Alerte alerte;
+
+					for(Employe employe : this.employeTab.getSelectedEmploye()) {
+						alerte = new Alerte(alerterEmployeForm.getMessage(),employe);
+						alerte.create(conn);
+						alertes.addItem(alerte);
+					}
+								
+					conn.close();
+					this.ficheEmploye.dispose();
+					this.ficheEmploye = null;
+				
+		
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		}
+		
 	
-	}
+	
 	
 
 	@Override
@@ -195,6 +234,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					this.ficheEmploye.addWindowListener(this);
 					this.ficheEmploye.getBtnSauver().addActionListener(this);
 					this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
+					this.alerterEmployeForm.addWindowListener(this);
+					this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 					
 				}else {
 					this.ficheEmploye.toFront();

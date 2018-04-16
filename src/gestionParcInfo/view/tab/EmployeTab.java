@@ -13,7 +13,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import gestionParcInfo.entity.Employe;
+import gestionParcInfo.entity.Imprimante;
+import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.Employes;
+import gestionParcInfo.view.ConnexionImprimante;
+import gestionParcInfo.view.ConnexionServeur;
 
 public class EmployeTab extends JPanel implements Observer{
 	private static final String[] columnsNames = {"Matricule", "Nom", "Pr\u00E9nom", "Nombre de PCs", "PCs \u00E0 retourner"};
@@ -25,10 +29,11 @@ public class EmployeTab extends JPanel implements Observer{
 	private JTable tblEmploye;
 	private DefaultTableModel tableModel;
 	private JScrollPane scrllpaneEmployes;
+	private Employes employes;
 	
-	public EmployeTab() {
+	public EmployeTab(Employes employes) {
 		super();
-		
+		this.employes = employes;
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(EmployeTab.columnsNames);
 		
@@ -46,6 +51,19 @@ public class EmployeTab extends JPanel implements Observer{
 	
 	public JButton getBtnSupprimer() {
 		return btnSupprimer;
+	}
+	
+
+	public ArrayList<Employe> getSelectedEmploye() {
+		ArrayList<Employe> result = new ArrayList<>();
+		
+		int columnSNSIndex = this.tblEmploye.convertColumnIndexToView(this.tableModel.findColumn(EmployeTab.columnsNames[0]));
+
+		for(int rowIndex : this.tblEmploye.getSelectedRows()) {
+			result.add(this.employes.findByMatricule((String)this.tableModel.getValueAt(rowIndex, columnSNSIndex)));
+		}
+		
+		return result;
 	}
 	
 	private void initComponents() {

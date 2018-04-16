@@ -151,18 +151,7 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		
-		if(e.getSource() == this.BTN_assignerOrdinateur) {
-			
-			if(this.assignerOrdiForm == null) {
-				//On ouvre le formulaire
-				this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this,this.employe);
-				this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
-				this.assignerOrdiForm.addWindowListener(this);
-				this.assignerOrdiForm.setVisible(true);
-			}
-			
-			this.assignerOrdiForm.toFront();
-		}
+		
 		if(this.assignerOrdiForm != null && e.getSource() == this.assignerOrdiForm.getBtnAssigner()){
 			System.out.println("test");
 			Ordinateur ordinateur = this.assignerOrdiForm.getSelectedOrdinateur();
@@ -267,7 +256,7 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		TABLE_ordinateurs.setModel(this.tableModel);
 		SCRLLPANE_ordinateurs.setViewportView(TABLE_ordinateurs);
 	}
-
+	
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
