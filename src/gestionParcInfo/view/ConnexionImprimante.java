@@ -75,11 +75,7 @@ public class ConnexionImprimante extends JFrame {
 		this.tableModel.setColumnIdentifiers(ConnexionImprimante.columnNames);
 		
 		//Remplissage table
-<<<<<<< HEAD
-		
-		
-=======
->>>>>>> branch 'master' of https://github.com/claudels/GestionParcInfo.git
+
 		for (Imprimante imprimante : imprimantes.getItems()) {
 			Object[] rowData = new Object[ConnexionImprimante.columnNames.length];
 			rowData[0] = imprimante.getSn();
