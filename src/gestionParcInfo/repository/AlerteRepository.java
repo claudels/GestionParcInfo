@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 /**
- * Gestion du repository des alertes
+ * Gestion du repository des alertes.
  * @author Florian Lemarquand
  *
  */

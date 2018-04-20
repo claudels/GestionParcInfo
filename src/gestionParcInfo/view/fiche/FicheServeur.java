@@ -20,8 +20,9 @@ import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.OrdinateurServeurLinks;
 import gestionParcInfo.model.Serveurs;
+
 /**
- * Gestion de la fiche Serveur
+ * Gestion de la fiche Serveur.
  * @author Florian Lemarquand
  */
 public class FicheServeur extends Fiche implements ActionListener {

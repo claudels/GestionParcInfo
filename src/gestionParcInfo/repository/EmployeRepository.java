@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Gestion du repository des employès
+ * Gestion du repository des employés.
  * @author Sebastion Claudel
  *
  */

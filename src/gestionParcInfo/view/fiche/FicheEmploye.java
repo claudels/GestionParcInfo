@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 /**
- * Création de la fiche Employe
+ * Création de la fiche Employe.
  * @author Florian Lemarquand
  *
  */

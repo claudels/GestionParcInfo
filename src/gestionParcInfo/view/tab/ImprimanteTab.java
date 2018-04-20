@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Onglet de gestion des imprimantes
+ * Onglet de gestion des imprimantes.
  * @author Florian Lemarquand
  *
  */

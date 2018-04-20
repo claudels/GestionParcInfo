@@ -32,8 +32,9 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
 /**
- * gestion de la fiche Ordinateur
+ * gestion de la fiche Ordinateur.
  * @author Sebastien Claudel
  *
  */

@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 /**
- * Vue permettant de se connecter à une imprimante
+ * Vue permettant de se connecter à une imprimante.
  * @author Florian Lemarquand
  *
  */

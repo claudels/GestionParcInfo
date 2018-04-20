@@ -6,8 +6,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 /**
- * Gestion du Respository des Serveurs
+ * Gestion du Respository des Serveurs.
  * @author Sebastien Claudel
  * 
  *

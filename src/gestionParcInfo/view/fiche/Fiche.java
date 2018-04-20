@@ -12,7 +12,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Classe abstraite de fiche
+ * Classe abstraite de fiche.
  * @author Sebastien Claudel
  *
  */

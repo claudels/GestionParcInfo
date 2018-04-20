@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Gestion du repository des Ordinateurs
+ * Gestion du repository des Ordinateurs.
  * @author Sebastion Claudel
  *
  */

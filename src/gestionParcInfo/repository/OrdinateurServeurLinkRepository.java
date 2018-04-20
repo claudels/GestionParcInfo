@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Gestion du repository des réseaux
+ * Gestion du repository des réseaux.
  * @author Florian Lemarquand
  *
  */

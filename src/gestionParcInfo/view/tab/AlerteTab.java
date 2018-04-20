@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
  
 /**
- * Gestion de l'onglet Alerte
+ * Gestion de l'onglet Alerte.
  * @author Florian Lemarquand
  *
  */

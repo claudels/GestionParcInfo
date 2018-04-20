@@ -19,8 +19,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
 /**
- * Création de la fiche Imprimante
+ * Création de la fiche Imprimante.
  * @author Florian Lemarquand
  *
  */

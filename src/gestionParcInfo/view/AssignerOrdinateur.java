@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Fiche d'assignation d'un ordinateur à un employé
+ * Fiche d'assignation d'un ordinateur à un employé.
  * @author Florian
  *
  */

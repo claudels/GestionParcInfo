@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Onglet de gestion du serveur
+ * Onglet de gestion du serveur.
  * @author Florian Lemarquand
  *
  */

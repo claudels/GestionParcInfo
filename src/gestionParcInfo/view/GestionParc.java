@@ -13,11 +13,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 /**
- * 
+ * Vue prinicpale de l'application.
  * @author Sebastien Claudel
  *
  */
-
 public class GestionParc extends JFrame {
 
   private static final long serialVersionUID = 1L;

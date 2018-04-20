@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Onglet de gestion des employés.
- * @author seb
+ * @author Sebastien Claudel
  *
  */
 public class EmployeTab extends JPanel implements Observer {

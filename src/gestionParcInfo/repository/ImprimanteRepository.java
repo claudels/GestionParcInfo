@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import gestionParcInfo.entity.Imprimante;
 
 /**
- * Gestion du repository des imprimantes
+ * Gestion du repository des imprimantes.
  * @author Florian Lemarquand
  *
  */
