@@ -9,7 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-
+/**
+ * Gestion du repository des alertes
+ * @author Florian Lemarquand
+ *
+ */
 public class AlerteRepository extends Repository<Alerte> {
 	
 	private static final String SQL_FIND_ID = "SELECT * FROM Alerte WHERE id=?";

@@ -32,7 +32,11 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-
+/**
+ * gestion de la fiche Ordinateur
+ * @author Sebastien Claudel
+ *
+ */
 public class FicheOrdinateur extends Fiche implements ActionListener, WindowListener {
 	private static final String[] columnsTableServeurs = {"SN_S", "Désignation", "Mémoire restante (Go)"};
 	private static final String[] columnsTableImprimante = {"SN_I", "Désignation", "Résolution"};

@@ -16,6 +16,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Onglet de gestion du serveur
+ * @author Florian Lemarquand
+ *
+ */
 public class ServeurTab extends JPanel implements Observer {
 
   private static final long serialVersionUID = 1L;

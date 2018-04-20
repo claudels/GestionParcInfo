@@ -9,7 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * Gestion du repository des réseaux
+ * @author Florian Lemarquand
+ *
+ */
 public class OrdinateurServeurLinkRepository extends Repository<OrdinateurServeurLink> {
 	private static final String SQL_FIND_ORDI_SERVEUR = "SELECT * FROM Reseau WHERE SN_O=? AND SN_S=?";
 	private static final String SQL_GET_ALL = "SELECT * FROM Reseau";

@@ -11,7 +11,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+/**
+ * Gestion du repository des Ordinateurs
+ * @author Sebastion Claudel
+ *
+ */
 
 public class OrdinateurRepository extends Repository<Ordinateur> {
 	private static final String SQL_FIND_SN = "SELECT * FROM Ordinateur WHERE sn_o=?";

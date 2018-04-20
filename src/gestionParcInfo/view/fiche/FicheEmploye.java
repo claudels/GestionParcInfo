@@ -24,7 +24,11 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 
-
+/**
+ * Création de la fiche Employe
+ * @author Florian Lemarquand
+ *
+ */
 public class FicheEmploye extends Fiche implements ActionListener, WindowListener {
 
 	private static final long serialVersionUID = 1L;

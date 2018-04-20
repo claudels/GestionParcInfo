@@ -6,7 +6,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * Gestion du Respository des Serveurs
+ * @author Sebastien Claudel
+ * 
+ *
+ */
 public class ServeurRepository extends Repository<Serveur> {
 	private static final String SQL_FIND_SN = "SELECT * FROM Serveur WHERE sn_s=?";
 	private static final String SQL_GET_ALL = "SELECT * FROM Serveur";

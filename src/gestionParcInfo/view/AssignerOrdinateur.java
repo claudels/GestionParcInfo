@@ -18,7 +18,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * Fiche d'assignation d'un ordinateur à un employé
+ * @author Florian
+ *
+ */
 
 public class AssignerOrdinateur extends JFrame {
 	private static final long serialVersionUID = 1L;

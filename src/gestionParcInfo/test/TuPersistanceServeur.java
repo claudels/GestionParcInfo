@@ -5,7 +5,11 @@ import gestionParcInfo.entity.Serveur;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
+/**
+ * vue qui affiche l'assignation d'un ordinateur
+ * @author Florian Lemarquand
+ *
+ */
 
 public class TuPersistanceServeur {
 

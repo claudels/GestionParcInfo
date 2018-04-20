@@ -7,11 +7,15 @@ import java.util.ArrayList;
 
 import gestionParcInfo.entity.Imprimante;
 
+/**
+ * Gestion du repository des imprimantes
+ * @author Florian Lemarquand
+ *
+ */
 public class ImprimanteRepository extends Repository<Imprimante> {
 	
 	private static final String SQL_FIND_SN = "SELECT * FROM Imprimante WHERE sn_i=?";
 	private static final String SQL_GET_ALL = "SELECT * FROM Imprimante";
-
 
 	public ImprimanteRepository(Connection conn) {
 		super(conn);

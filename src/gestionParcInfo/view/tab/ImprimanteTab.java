@@ -15,7 +15,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * Onglet de gestion des imprimantes
+ * @author Florian Lemarquand
+ *
+ */
 
 public class ImprimanteTab extends JPanel implements Observer {
 	/**

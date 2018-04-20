@@ -4,7 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * Gestion de la class abstraite des Respository
+ * @author Sebastien Claudel
+ *
+ * @param <T>
+ */
 public abstract class Repository<T> {
 	protected PreparedStatement pstmt;
 	protected Connection conn;

@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Formulaire de connexion des serveurs aux ordinateurs.
- * @author seb
+ * @author sebastien Claudel
  *
  */
 public class ConnexionServeur extends JFrame {

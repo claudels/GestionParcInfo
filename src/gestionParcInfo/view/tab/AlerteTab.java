@@ -14,7 +14,12 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
+ 
+/**
+ * Gestion de l'onglet Alerte
+ * @author Florian Lemarquand
+ *
+ */
 
 public class AlerteTab extends JPanel implements Observer {
 

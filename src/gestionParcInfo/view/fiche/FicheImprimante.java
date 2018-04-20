@@ -19,7 +19,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-
+/**
+ * Création de la fiche Imprimante
+ * @author Florian Lemarquand
+ *
+ */
 public class FicheImprimante extends Fiche {
 	
 	private DefaultTableModel tableModel;

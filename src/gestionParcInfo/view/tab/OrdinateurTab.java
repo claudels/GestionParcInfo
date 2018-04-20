@@ -14,7 +14,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * Onglet de gestion de l'ordinateur
+ * @author sebastien Claudel
+ *
+ */
 
 public class OrdinateurTab extends JPanel implements Observer {
 

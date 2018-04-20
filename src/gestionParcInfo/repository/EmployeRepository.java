@@ -7,7 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * Gestion du repository des employès
+ * @author Sebastion Claudel
+ *
+ */
 
 public class EmployeRepository extends Repository<Employe> {
 	

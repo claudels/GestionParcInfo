@@ -11,6 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Classe abstraite de fiche
+ * @author Sebastien Claudel
+ *
+ */
 public class Fiche extends JFrame implements ActionListener, Observer {
 	/**
 	 * 

@@ -7,7 +7,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-
+/**
+ * Vue qui permet de rentrer un message assicié à l'alerte
+ * @author Sebastien Claudel
+ *
+ */
 public class AlerterEmploye extends JFrame {
 
   private static final long serialVersionUID = 1L;
