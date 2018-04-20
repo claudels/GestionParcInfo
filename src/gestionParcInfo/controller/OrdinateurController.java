@@ -25,6 +25,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map.Entry;
 
+/**
+ * Controleur des ordinateurs.
+ * @author Sebastien Claudel
+ */
 public class OrdinateurController implements ActionListener, WindowListener, MouseListener {
 	
 	private OrdinateurTab ordiTab;

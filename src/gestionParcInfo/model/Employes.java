@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+/**
+ * Modèle des employés.
+ * @author Sebastien Claudel
+ */
 public class Employes extends ModelList<Employe> {
 	
 	private Ordinateurs ordinateurs;

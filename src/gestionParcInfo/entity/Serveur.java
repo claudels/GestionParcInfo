@@ -3,6 +3,10 @@ package gestionParcInfo.entity;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Modèle d'un serveur.
+ * @author Sebastien Claudel
+ */
 public class Serveur extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Serveur VALUES (?, ?, ?)";

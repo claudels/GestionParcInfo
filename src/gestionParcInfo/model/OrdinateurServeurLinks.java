@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
-
+/**
+ * Modèle des liens entre les serveurs et les ordinateurs.
+ * @author Florian Lemarquand
+ */
 public class OrdinateurServeurLinks extends ModelList<OrdinateurServeurLink> {
 	
 	public OrdinateurServeurLinks(ArrayList<OrdinateurServeurLink> ordinateurServeurLinks) {

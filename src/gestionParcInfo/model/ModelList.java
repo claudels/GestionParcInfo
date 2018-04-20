@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Représentation abstraite d'un modele.
+ * @author Sebastien Claudel
+ */
 public class ModelList<T> extends Observable{
 	private ArrayList<T> items;
 	

@@ -5,6 +5,10 @@ import gestionParcInfo.entity.Imprimante;
 import java.util.ArrayList;
 import java.util.Observer;
 
+/**
+ * Modèle des imprimantes.
+ * @author Florian Lemarquand
+ */
 public class Imprimantes extends ModelList<Imprimante> {
 	
 	private Ordinateurs ordinateurs;

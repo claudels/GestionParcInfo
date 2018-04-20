@@ -25,6 +25,10 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Controleur des employés
+ * @author Florian Lemarquand
+ */
 public class EmployeController implements ActionListener, WindowListener, MouseListener {
 	
 	private EmployeTab employeTab;

@@ -6,6 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Modèle d'un employé.
+ * @author Sebastien Claudel
+ */
 public class Employe extends Entity {
 	private static final String SQL_INSERT = "INSERT INTO Employe VALUES (?, ?, ?, ?)";
 	private static final String SQL_UPDATE = "UPDATE Employe SET nom=?, prenom=?, email=? WHERE matricule=?";

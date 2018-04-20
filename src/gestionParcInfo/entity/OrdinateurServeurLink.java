@@ -3,6 +3,10 @@ package gestionParcInfo.entity;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Modèle d'un lien entre un serveur et un lien.
+ * @author Florian Lemarquand
+ */
 public class OrdinateurServeurLink extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Reseau VALUES (?, ?, ?)";

@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
+/**
+ * Modèle des ordinateurs.
+ * @author Sebastien Claudel
+ */
 public class Ordinateurs extends ModelList<Ordinateur> {
 	
 	/**

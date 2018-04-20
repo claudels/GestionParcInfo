@@ -3,6 +3,10 @@ package gestionParcInfo.entity;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Modèle d'une imprimante.
+ * @author Florian Lemarquand
+ */
 public class Imprimante extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Imprimante VALUES (?, ?, ?)";

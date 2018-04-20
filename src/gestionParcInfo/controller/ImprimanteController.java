@@ -19,6 +19,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Controleur des imprimantes.
+ * @author Florian Lemarquand
+ */
 public class ImprimanteController implements ActionListener, WindowListener, MouseListener {
 
 	private ImprimanteTab imprimanteTab;

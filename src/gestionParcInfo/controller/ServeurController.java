@@ -19,6 +19,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Controleur des serveurs.
+ * @author Sebastien Claudel
+ */
 public class ServeurController implements ActionListener, WindowListener, MouseListener {
 
 	private ServeurTab servTab;

@@ -6,9 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Objet qui représente une Alerte.
- * @author seb
- *
+ * Modèle d'une alerte.
+ * @author Florian Lemarquand
  */
 public class Alerte extends Entity {
 	private static final String SQL_INSERT = "INSERT INTO Alerte VALUES (?, ?, ?)";

@@ -6,6 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Modèle d'un ordinateur.
+ * @author Sebastien Claudel
+ */
 public class Ordinateur extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?,?,?,?,?,?,?,?)";

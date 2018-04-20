@@ -11,6 +11,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Controleur des alertes.
+ * @author Florian Lemarquand
+ */
 public class AlerteController implements ActionListener {
 	
 	private AlerteTab alerteTab;

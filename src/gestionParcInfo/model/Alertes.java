@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
+/**
+ * Modèle des alertes.
+ * @author Florian Lemarquand
+ */
 public class Alertes extends ModelList<Alerte> {
 
   /**

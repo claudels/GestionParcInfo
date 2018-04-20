@@ -5,6 +5,10 @@ import gestionParcInfo.entity.Serveur;
 import java.util.ArrayList;
 import java.util.Observer;
 
+/**
+ * Modèle des serveurs.
+ * @author Sebastien Claudel
+ */
 public class Serveurs extends ModelList<Serveur> {
 	
 	/**

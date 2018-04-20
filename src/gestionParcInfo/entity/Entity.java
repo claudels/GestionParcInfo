@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Classe abstraite d'une entité.
+ * @author Sebastien Claudel
+ */
 public abstract class Entity {
 
 	protected PreparedStatement pstmt;
