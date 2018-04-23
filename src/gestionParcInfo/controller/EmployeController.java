@@ -115,7 +115,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				Employe employe = null;
 				
-				if (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
+				if (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION ) {
 					employe = new Employe(this.ficheEmploye.getMatricule(), this.ficheEmploye.getNom(),this.ficheEmploye.getPrenom(),this.ficheEmploye.getEmail());
 
 					//Persistance de employé et ajout au modèle
@@ -153,7 +153,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 			
 			this.ficheEmploye.dispose();
       this.ficheEmploye = null;
-		} else if (this.alerterEmployeForm != null && e.getSource() == this.alerterEmployeForm.getBtnAlerter()) {
+		} else if (this.alerterEmployeForm != null && e.getSource() == this.alerterEmployeForm.getBtnAlerter() && this.alerterEmployeForm.validateData()) {
 			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 			Connection conn;
 			try {

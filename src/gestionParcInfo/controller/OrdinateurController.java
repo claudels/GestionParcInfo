@@ -127,7 +127,8 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 			}
 		} else if (e.getSource() == this.ficheOrdinateur.getBtnSauver() 
 		    && (this.ficheOrdinateur.getCurrentState() == Fiche.State.CREATION 
-		    || this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION)) {
+		    || this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION)
+		    && this.ficheOrdinateur.validateData()) {
 			System.out.println("Sauver ordinateur");
 
 			Connection conn;
