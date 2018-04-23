@@ -59,7 +59,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
   		
   		//Création du formulaire
   		if (this.ficheEmploye == null) {
-  			this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION);
+  			this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION, employes);
   			ficheEmploye.setVisible(true);
   			
   			//Ajout des listeners

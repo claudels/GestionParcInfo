@@ -17,6 +17,7 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -59,6 +60,8 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	private JScrollPane scrllOrdinateurs;
 	private JTable tblOrdinateurs;
 	private AssignerOrdinateur assignerOrdiForm;
+	
+	private Employes employes;
 	private Ordinateurs ordinateurs;
 	
 	/**
@@ -66,8 +69,10 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 * @param initialState
 	 * 
 	 */
-	public FicheEmploye(Fiche.State initialState) {
+	public FicheEmploye(Fiche.State initialState, Employes employes) {
 		super(initialState);
+		
+		this.employes = employes;
 		
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(FicheEmploye.columnsNames);
@@ -88,9 +93,10 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 * 
 	 */
 	public FicheEmploye(Fiche.State initialState,Employe employe,Employes employes,Ordinateurs ordinateurs) {
-		this(initialState);
+		this(initialState, employes);
 		
 		this.ordinateurs = ordinateurs;
+		
 		this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		this.tfMatricule.setText(employe.getMatricule());
 		this.tfNom.setText(employe.getNom());
@@ -191,9 +197,33 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 			this.assignerOrdiForm = null;
 		}
 		else if (e.getSource() == this.btnAssignerOrdinateur) {
-		  this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this);
-		  this.assignerOrdiForm.setVisible(true);
-		  this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
+		  boolean hasValidComputer = false;
+		  
+		  if(this.assignedOrdinateurs.size() >= 1 ) {
+		    hasValidComputer = true;
+		  }
+		  
+		  if(this.getCurrentState()== Fiche.State.MODIFICATION) {
+		    for(Ordinateur ordinateur : this.ordinateurs.findOrdinateursByEmploye(this.employes.findByMatricule(this.tfMatricule.getText()))) {
+		      if(this.ordinateurs.ordinateurMustBeChanged(ordinateur) == false) {
+		        hasValidComputer = true;
+		        break;
+		      }
+		    }
+		  }
+		  
+		  if(hasValidComputer) {
+        int retour = JOptionPane.showConfirmDialog(null, "L'employé possède déjà un ordinateur valide, souhaitez vous quand même en assigner un nouveau ?", "Attention", JOptionPane.YES_NO_OPTION);
+        if(retour == 0) {
+          hasValidComputer = false;
+        }
+		  }
+		  
+		  if(!hasValidComputer) {
+  		  this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this);
+  		  this.assignerOrdiForm.setVisible(true);
+  		  this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
+		  }
 		}
 	}
 	

@@ -30,6 +30,11 @@ public class Employes extends ModelList<Employe> {
 		this.notifyObservers();
 	}
 	
+	/**
+	 * Compte le nombre d'ordinateurs d'un employé.
+	 * @param employe
+	 * @return int Nombre d'ordinateur
+	 */
 	public int getNbOrdisOfEmploye(Employe employe) {
 		return ordinateurs.findOrdinateursByEmploye(employe).size();
 	}
@@ -40,18 +45,37 @@ public class Employes extends ModelList<Employe> {
 	 * @return Nombre d'ordinateur à changer
 	 */
 	public int getNbOrdisARetournerOfEmploye(Employe employe) {
-		int nbOrdisAChanger = 0;
+		int nbOrdisARetourner = 0;
 		
 		List<Ordinateur> ordinateursOfEmploye = ordinateurs.findOrdinateursByEmploye(employe);
 		
 		for (Ordinateur ordinateur : ordinateursOfEmploye) {
 			if (ordinateurs.ordinateurMustBeReturned(ordinateur)) {
-				nbOrdisAChanger++;
+				nbOrdisARetourner++;
 			}	
 		}
 		
-		return nbOrdisAChanger;
+		return nbOrdisARetourner;
 	}
+	
+	/**
+   * Compte le nombre d'ordinateur à retourner d'un employé.
+   * @param employe Employe pour lequel compter.
+   * @return Nombre d'ordinateur à changer
+   */
+  public int getNbOrdisAChangerOfEmploye(Employe employe) {
+    int nbOrdisAChanger = 0;
+    
+    List<Ordinateur> ordinateursOfEmploye = ordinateurs.findOrdinateursByEmploye(employe);
+    
+    for (Ordinateur ordinateur : ordinateursOfEmploye) {
+      if (ordinateurs.ordinateurMustBeChanged(ordinateur)) {
+        nbOrdisAChanger++;
+      } 
+    }
+    
+    return nbOrdisAChanger;
+  }
 	
 	/**
 	 * Chercher un employé par matricule.
