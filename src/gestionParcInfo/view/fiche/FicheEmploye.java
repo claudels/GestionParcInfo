@@ -56,7 +56,7 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 
 	
 	//Table ordinateurs
-	private JScrollPane scrlOrdinateurs;
+	private JScrollPane scrllOrdinateurs;
 	private JTable tblOrdinateurs;
 	private AssignerOrdinateur assignerOrdiForm;
 	private Ordinateurs ordinateurs;
@@ -74,7 +74,6 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		
 		initComponents();
 		this.changeState(initialState);
-		
 	}
 
 	/**
@@ -114,8 +113,6 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 			this.tableModel.addRow(rowData);
 		}
 	}
-		
-
 	
 	public String getMatricule() {
 		return tfMatricule.getText();
@@ -179,9 +176,12 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 			rowData[1] = ordinateur.getDesignation();
 			rowData[2] = ordinateurs.ordinateurMustBeChanged(ordinateur);
 			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
-			rowData[3] = ordinateurs.ordinateurMustBeReturned(ordinateur);
-			rowData[3] = ordinateurs.ordinateurMustBeChanged(ordinateur);
-			rowData[4] = ordinateurs.ordinateurMustBeReturned(ordinateur);
+			
+			String tempsUtilisation = "0";
+	    if (ordinateur.countJoursUtilisation() != null) {
+	      tempsUtilisation = Long.toString(ordinateur.countJoursUtilisation());
+	    }
+	    rowData[4] = tempsUtilisation;
 			
 			
 			this.assignedOrdinateurs.add(ordinateur);
@@ -189,6 +189,11 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 			//Fermeture du formulaire
 			this.assignerOrdiForm.dispose();
 			this.assignerOrdiForm = null;
+		}
+		else if (e.getSource() == this.btnAssignerOrdinateur) {
+		  this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this);
+		  this.assignerOrdiForm.setVisible(true);
+		  this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
 		}
 	}
 	
@@ -268,14 +273,14 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		contentPane.add(btnAssignerOrdinateur);
 		
 		//Configuration tableau ordinateurs
-		scrlOrdinateurs = new JScrollPane();
-		scrlOrdinateurs.setBounds(12, 156, 519, 63);
-		contentPane.add(scrlOrdinateurs);
+		scrllOrdinateurs = new JScrollPane();
+		scrllOrdinateurs.setBounds(12, 156, 519, 63);
+		contentPane.add(scrllOrdinateurs);
 		
 		tblOrdinateurs = new JTable();
 		tblOrdinateurs.setFillsViewportHeight(true);
 		tblOrdinateurs.setModel(this.tableModel);
-		scrlOrdinateurs.setViewportView(tblOrdinateurs);
+		scrllOrdinateurs.setViewportView(tblOrdinateurs);
 	}
 	
 	@Override

@@ -65,7 +65,7 @@ public class AssignerOrdinateur extends JFrame {
 	 * @param employe
 	 * 
 	 */
-	public AssignerOrdinateur(Ordinateurs ordinateurs, FicheEmploye ficheEmploye,Employe employe) {
+	public AssignerOrdinateur(Ordinateurs ordinateurs, FicheEmploye ficheEmploye) {
 		this.ordinateurs = ordinateurs;
 		this.ficheEmploye = ficheEmploye;
 	

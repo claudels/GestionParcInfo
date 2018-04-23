@@ -64,8 +64,6 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
   			
   			//Ajout des listeners
   			this.ficheEmploye.addWindowListener(this);
-  			this.alerterEmployeForm.addWindowListener(this);
-        this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
   		
   		} else {
   			this.ficheEmploye.toFront();
@@ -129,8 +127,11 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					
 					for (Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
 						ordinateur.setProprietaire(employe);
-						ordinateur.setDateAttribution(new Date());
-						System.out.println("Demande d'assignation");
+						
+						if(ordinateur.getDateAttribution() == null) {
+						  ordinateur.setDateAttribution(new Date());
+						}
+						
 						ordinateur.update(conn);
 						ordinateurs.updateItem(ordinateur);
 					}
@@ -235,8 +236,6 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					this.ficheEmploye.addWindowListener(this);
 					this.ficheEmploye.getBtnSauver().addActionListener(this);
 					this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
-					this.alerterEmployeForm.addWindowListener(this);
-					this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 					
 				} else {
 					this.ficheEmploye.toFront();
