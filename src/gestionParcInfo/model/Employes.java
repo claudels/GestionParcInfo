@@ -35,17 +35,17 @@ public class Employes extends ModelList<Employe> {
 	}
 	
 	/**
-	 * Compte le nombre d'ordinateur à changer d'un employé.
+	 * Compte le nombre d'ordinateur à retourner d'un employé.
 	 * @param employe Employe pour lequel compter.
 	 * @return Nombre d'ordinateur à changer
 	 */
-	public int getNbOrdisAChangerOfEmploye(Employe employe) {
+	public int getNbOrdisARetournerOfEmploye(Employe employe) {
 		int nbOrdisAChanger = 0;
 		
 		List<Ordinateur> ordinateursOfEmploye = ordinateurs.findOrdinateursByEmploye(employe);
 		
 		for (Ordinateur ordinateur : ordinateursOfEmploye) {
-			if (ordinateurs.ordinateurMustBeChanged(ordinateur)) {
+			if (ordinateurs.ordinateurMustBeReturned(ordinateur)) {
 				nbOrdisAChanger++;
 			}	
 		}

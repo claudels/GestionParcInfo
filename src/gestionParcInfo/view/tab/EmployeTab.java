@@ -108,7 +108,7 @@ public class EmployeTab extends JPanel implements Observer {
 				rawData[1] = employe.getNom();
 				rawData[2] = employe.getPrenom();
 				rawData[3] = employes.getNbOrdisOfEmploye(employe);
-				rawData[4] = employes.getNbOrdisAChangerOfEmploye(employe);
+				rawData[4] = employes.getNbOrdisARetournerOfEmploye(employe);
 				
 				this.tableModel.addRow(rawData);
 			}
