@@ -1,6 +1,7 @@
 package gestionParcInfo.controller;
 
 import gestionParcInfo.GestionParcInfo;
+import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
@@ -24,6 +25,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map.Entry;
+
+import javax.swing.JOptionPane;
 
 /**
  * Controleur des ordinateurs.
@@ -84,15 +87,17 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				Connection conn = DriverManager.getConnection(GestionParcInfo.dbUrl, GestionParcInfo.dbUsername, GestionParcInfo.dbPassword);
 				
 				for (String sno : this.ordiTab.getSNsOrdinateursSelected()) {
-					System.out.println("Retour : " + sno);
 					//Récupération de l'ordinateur dans la base
 					Ordinateur currentOrdinateur = ordinateurs.findBySn(sno);
-					
+				
 					//Mise à jour de l'ordinateur et persistance dans la base
+					Employe employe = currentOrdinateur.getProprietaire();
 					currentOrdinateur.setDateRestitution(new Date());
+					currentOrdinateur.setProprietaire(null);
 					currentOrdinateur.update(conn);
 					
-					//Mise à jour du modèle des ordinateurs
+					//Mise à jour des modèles
+					this.employes.updateItem(employe);
 					this.ordinateurs.updateItem(currentOrdinateur);
 				}
 				
@@ -157,7 +162,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				} else if (this.ficheOrdinateur.getCurrentState() == Fiche.State.MODIFICATION) {
 					ordinateur = this.ordinateurs.findBySn(this.ficheOrdinateur.getSn());
 					
-					if (!ordinateur.getProprietaire().equals(this.ficheOrdinateur.getProprietaire())) {
+					if (ordinateur.getProprietaire() != this.ficheOrdinateur.getProprietaire()) {
 						ordinateur.setProprietaire(this.ficheOrdinateur.getProprietaire());
 					}
 					
