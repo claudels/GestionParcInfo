@@ -13,7 +13,7 @@ public class TUPersistanceAlerte {
 	
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		Employe employe = employerepo.findByMatricule("DUPOMA");
-		Alerte alerte = new Alerte(100,"TestPersist",employe);
+		Alerte alerte = new Alerte("TestPersist",employe);
 		alerte.create(conn);
 			
 	}
@@ -22,7 +22,7 @@ public class TUPersistanceAlerte {
 		
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		Employe employe = employerepo.findByMatricule("DUPOMA");
-		Alerte alerte = new Alerte(84,"TestPersist5",employe);
+		Alerte alerte = new Alerte(94,"TestPersist5",employe);
 		alerte.update(conn);
 		
 	}
@@ -30,7 +30,7 @@ public class TUPersistanceAlerte {
 	public void TU_Remove_Alerte(Connection conn) throws SQLException {
 		EmployeRepository employerepo = new EmployeRepository(conn);
 		Employe employe = employerepo.findByMatricule("DUPOMA");
-		Alerte alerte = new Alerte(84,"TestPersist",employe);
+		Alerte alerte = new Alerte(94,"TestPersist",employe);
 		alerte.remove(conn);
 			
 	}

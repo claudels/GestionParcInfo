@@ -6,6 +6,7 @@ import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.view.fiche.FicheEmploye;
 
 import java.awt.Font;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -69,7 +70,7 @@ public class AssignerOrdinateur extends JFrame {
 		this.ordinateurs = ordinateurs;
 		this.ficheEmploye = ficheEmploye;
 	
-		
+		DecimalFormat f = new DecimalFormat("##0.00");
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(AssignerOrdinateur.columnNames);
 		for (Ordinateur ordinateur : ordinateurs.findOrdinateursAvailable()) {
@@ -77,7 +78,7 @@ public class AssignerOrdinateur extends JFrame {
 			rowData[0] = ordinateur.getSn();
 			rowData[1] = ordinateur.getDesignation();
 			rowData[2] = ordinateur.getRam();
-			rowData[3] = ordinateur.getCpu();
+			rowData[3] = f.format(ordinateur.getCpu());
 			this.tableModel.addRow(rowData);
 			this.tableModel.fireTableDataChanged();
 		}
