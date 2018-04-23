@@ -94,7 +94,7 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 			}
 		} else if (e.getSource() == this.ficheImprimante.getBtnSauver() 
 		    && (this.ficheImprimante.getCurrentState() == Fiche.State.CREATION 
-		    || this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION)) {
+		    || this.ficheImprimante.getCurrentState() == Fiche.State.MODIFICATION) && this.ficheImprimante.validateData()) {
 			System.out.println("Sauver imprimante");
 
 			Connection conn;

@@ -3,6 +3,7 @@ package gestionParcInfo.view;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
@@ -55,4 +56,12 @@ public class AlerterEmploye extends JFrame {
 		textAreaAlerte.setBounds(12, 40, 385, 156);
 		contentPane.add(textAreaAlerte);
 		}
+	
+	public boolean validateData() {
+	    if(this.textAreaAlerte.getText().length() >= 1) {
+	      return true;
+	    }
+	    JOptionPane.showMessageDialog(null, "Certains champs n'ont pas été complétés correctement", "Attention", JOptionPane.WARNING_MESSAGE);
+	    return false;
+	  }
 }

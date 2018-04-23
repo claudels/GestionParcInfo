@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -283,9 +284,13 @@ public class FicheServeur extends Fiche implements ActionListener {
 		scrlpaneOrdinateursConnectés.setViewportView(tableOrdinateur);
 	}
 
-  @Override
-  public boolean validateData() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	 public boolean validateData() {
+		    if(this.tfNumeroDeSerie.getText().length() >= 1 
+		        && this.tfDesignation.getText().length() >= 1) {
+		      return true;
+		    }
+		    JOptionPane.showMessageDialog(null, "Certains champs n'ont pas été complétés correctement", "Attention", JOptionPane.WARNING_MESSAGE);
+		    return false;
+		  }
 }
+

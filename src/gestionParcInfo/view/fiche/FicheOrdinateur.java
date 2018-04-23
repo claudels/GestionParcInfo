@@ -25,6 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -626,7 +627,11 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 
   @Override
   public boolean validateData() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	    if(this.tfSno.getText().length() >= 1 
+	        && this.tfDesignation.getText().length() >= 1) {
+	      return true;
+	    }
+	    JOptionPane.showMessageDialog(null, "Certains champs n'ont pas été complétés correctement", "Attention", JOptionPane.WARNING_MESSAGE);
+	    return false;
+	  }
 }

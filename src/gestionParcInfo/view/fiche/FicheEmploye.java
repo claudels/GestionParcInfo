@@ -194,31 +194,31 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 			//Fermeture du formulaire
 			this.assignerOrdiForm.dispose();
 			this.assignerOrdiForm = null;
-		}
-		else if (e.getSource() == this.btnAssignerOrdinateur) {
+			
+		} else if (e.getSource() == this.btnAssignerOrdinateur) {
 		  boolean hasValidComputer = false;
 		  
-		  if(this.assignedOrdinateurs.size() >= 1 ) {
+		  if (this.assignedOrdinateurs.size() >= 1) {
 		    hasValidComputer = true;
 		  }
 		  
-		  if(this.getCurrentState()== Fiche.State.MODIFICATION) {
-		    for(Ordinateur ordinateur : this.ordinateurs.findOrdinateursByEmploye(this.employes.findByMatricule(this.tfMatricule.getText()))) {
-		      if(this.ordinateurs.ordinateurMustBeChanged(ordinateur) == false) {
+		  if (this.getCurrentState() == Fiche.State.MODIFICATION) {
+		    for (Ordinateur ordinateur : this.ordinateurs.findOrdinateursByEmploye(this.employes.findByMatricule(this.tfMatricule.getText()))) {
+		      if (this.ordinateurs.ordinateurMustBeChanged(ordinateur) == false) {
 		        hasValidComputer = true;
 		        break;
 		      }
 		    }
 		  }
 		  
-		  if(hasValidComputer) {
+		  if (hasValidComputer) {
         int retour = JOptionPane.showConfirmDialog(null, "L'employé possède déjà un ordinateur valide, souhaitez vous quand même en assigner un nouveau ?", "Attention", JOptionPane.YES_NO_OPTION);
-        if(retour == 0) {
+        if (retour == 0) {
           hasValidComputer = false;
         }
 		  }
 		  
-		  if(!hasValidComputer) {
+		  if (!hasValidComputer) {
   		  this.assignerOrdiForm = new AssignerOrdinateur(this.ordinateurs, this);
   		  this.assignerOrdiForm.setVisible(true);
   		  this.assignerOrdiForm.getBtnAssigner().addActionListener(this);
@@ -361,7 +361,7 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
         && this.tfNom.getText().length() >= 1 ) {
       return true;
     }
-    JOptionPane.showMessageDialog(null, "Applique toi enculé", "Attention", JOptionPane.WARNING_MESSAGE);
+    JOptionPane.showMessageDialog(null, "Certains champs n'ont pas été complétés correctement", "Attention", JOptionPane.WARNING_MESSAGE);
     return false;
   }
 

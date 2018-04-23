@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -269,9 +270,14 @@ public class FicheImprimante extends Fiche {
 		
 		
 	}
-  @Override
-  public boolean validateData() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	 public boolean validateData() {
+		    if(this.tfSni.getText().length() >= 1 
+		        && this.tfDesignation.getText().length() >= 1) {
+		      return true;
+		    }
+		    JOptionPane.showMessageDialog(null, "Certains champs n'ont pas été complétés correctement", "Attention", JOptionPane.WARNING_MESSAGE);
+		    return false;
+		  }
+
 }
+
