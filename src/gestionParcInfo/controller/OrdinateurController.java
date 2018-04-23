@@ -166,6 +166,11 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				ordinateur.setRam(this.ficheOrdinateur.getRam());
 				ordinateur.setImprimante(this.ficheOrdinateur.getImprimante());
 				
+				//MAJ du modèle des imprimantes
+				if(ordinateur.getImprimante() != null) {
+				  this.imprimantes.updateItem(ordinateur.getImprimante());
+				}
+				
 				//Persistance de l'ordinateur et ajout au modèle
 				ordinateur.update(conn);
 				ordinateurs.updateItem(ordinateur);
