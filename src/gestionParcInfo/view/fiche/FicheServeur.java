@@ -282,4 +282,10 @@ public class FicheServeur extends Fiche implements ActionListener {
 		tableOrdinateur.getColumnModel().getColumn(1).setPreferredWidth(200);
 		scrlpaneOrdinateursConnectés.setViewportView(tableOrdinateur);
 	}
+
+  @Override
+  public boolean validateData() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

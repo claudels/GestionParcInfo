@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
  * @author Sebastien Claudel
  *
  */
-public class Fiche extends JFrame implements ActionListener, Observer {
+public abstract class Fiche extends JFrame implements ActionListener, Observer {
 	/**
 	 * 
 	 */
@@ -50,6 +50,12 @@ public class Fiche extends JFrame implements ActionListener, Observer {
 		
 		this.initialState = initialState;
 	}
+	
+	/**
+	 * Valider les données de la fiche.
+	 * @return True si valide, false sinon
+	 */
+	public abstract boolean validateData();
 	
 	protected void changeState(State newState) {
 		this.currentState = newState;

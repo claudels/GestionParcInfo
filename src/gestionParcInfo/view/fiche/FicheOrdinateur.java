@@ -623,4 +623,10 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 		// TODO Auto-generated method stub
 		
 	}
+
+  @Override
+  public boolean validateData() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

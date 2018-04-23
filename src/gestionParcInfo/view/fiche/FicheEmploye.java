@@ -69,10 +69,12 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 * @param initialState
 	 * 
 	 */
-	public FicheEmploye(Fiche.State initialState, Employes employes) {
+	public FicheEmploye(Fiche.State initialState, Employes employes, Ordinateurs ordinateurs) {
 		super(initialState);
 		
 		this.employes = employes;
+		this.ordinateurs = ordinateurs;
+		this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		
 		this.tableModel = new DefaultTableModel();
 		this.tableModel.setColumnIdentifiers(FicheEmploye.columnsNames);
@@ -93,11 +95,8 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 	 * 
 	 */
 	public FicheEmploye(Fiche.State initialState,Employe employe,Employes employes,Ordinateurs ordinateurs) {
-		this(initialState, employes);
+		this(initialState, employes, ordinateurs);
 		
-		this.ordinateurs = ordinateurs;
-		
-		this.assignedOrdinateurs = new ArrayList<Ordinateur>();
 		this.tfMatricule.setText(employe.getMatricule());
 		this.tfNom.setText(employe.getNom());
 		this.tfPrenom.setText(employe.getPrenom());
@@ -150,15 +149,15 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		
 		//Interdit à la création
 		this.tglbtnMode.setEnabled(newState != Fiche.State.CREATION);
+		this.tfMatricule.setVisible(newState != Fiche.State.CREATION);
+		this.staticLblMatricule.setVisible(newState != Fiche.State.CREATION);
 		
-
 		//Interdit à la visualisation
 		this.tfMatricule.setEditable(newState != Fiche.State.VISUALISATION);
 		this.tfNom.setEditable(newState != Fiche.State.VISUALISATION);
 		this.tfPrenom.setEditable(newState != Fiche.State.VISUALISATION);
 		this.tfEmail.setEditable(newState != Fiche.State.VISUALISATION);
 		this.btnAssignerOrdinateur.setEnabled(newState != Fiche.State.VISUALISATION);
-		
 
 		//Autorisé pour création
 		this.tfMatricule.setEditable(newState == Fiche.State.CREATION);
@@ -354,5 +353,16 @@ public class FicheEmploye extends Fiche implements ActionListener, WindowListene
 		// TODO Auto-generated method stub
 		
 	}
+
+  @Override
+  public boolean validateData() {
+    if(this.tfEmail.getText().length() >= 1 
+        && this.tfNom.getText().length() >= 1 
+        && this.tfNom.getText().length() >= 1 ) {
+      return true;
+    }
+    JOptionPane.showMessageDialog(null, "Applique toi enculé", "Attention", JOptionPane.WARNING_MESSAGE);
+    return false;
+  }
 
 }

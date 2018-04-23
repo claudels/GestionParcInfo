@@ -59,11 +59,13 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
   		
   		//Création du formulaire
   		if (this.ficheEmploye == null) {
-  			this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION, employes);
+  			this.ficheEmploye = new FicheEmploye(Fiche.State.CREATION, employes, ordinateurs);
   			ficheEmploye.setVisible(true);
   			
   			//Ajout des listeners
   			this.ficheEmploye.addWindowListener(this);
+  			this.ficheEmploye.getAssignerOrdinateur().addActionListener(this.ficheEmploye);
+  			this.ficheEmploye.getBtnSauver().addActionListener(this);
   		
   		} else {
   			this.ficheEmploye.toFront();
@@ -104,7 +106,8 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 		} else if (this.ficheEmploye != null 
 		    && e.getSource() == this.ficheEmploye.getBtnSauver()
 		    && (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION 
-		    || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)) {
+		    || this.ficheEmploye.getCurrentState() == Fiche.State.MODIFICATION)
+		    && this.ficheEmploye.validateData()) {
 			System.out.println("Sauver Employe");
 
 			Connection conn;
@@ -115,7 +118,7 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 				if (this.ficheEmploye.getCurrentState() == Fiche.State.CREATION) {
 					employe = new Employe(this.ficheEmploye.getMatricule(), this.ficheEmploye.getNom(),this.ficheEmploye.getPrenom(),this.ficheEmploye.getEmail());
 
-					//Persistance de l'ordinateur et ajout au modèle
+					//Persistance de employé et ajout au modèle
 					employe.create(conn);
 					employes.addItem(employe);
 					
@@ -125,28 +128,31 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					employe.setPrenom(this.ficheEmploye.getPrenom());
 					employe.setEmail(this.ficheEmploye.getEmail());
 					
-					for (Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
-						ordinateur.setProprietaire(employe);
-						
-						if(ordinateur.getDateAttribution() == null) {
-						  ordinateur.setDateAttribution(new Date());
-						}
-						
-						ordinateur.update(conn);
-						ordinateurs.updateItem(ordinateur);
-					}
-					
 					employe.update(conn);
 					employes.updateItem(employe);
 					
-					conn.close();
-					this.ficheEmploye.dispose();
-					this.ficheEmploye = null;
+					
 				}
+				
+				for (Ordinateur ordinateur : this.ficheEmploye.getAssignedOrdinateurs()) {
+          ordinateur.setProprietaire(employe);
+          
+          if(ordinateur.getDateAttribution() == null) {
+            ordinateur.setDateAttribution(new Date());
+          }
+          
+          ordinateur.update(conn);
+          ordinateurs.updateItem(ordinateur);
+        }
+				
+				conn.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+			this.ficheEmploye.dispose();
+      this.ficheEmploye = null;
 		} else if (this.alerterEmployeForm != null && e.getSource() == this.alerterEmployeForm.getBtnAlerter()) {
 			this.alerterEmployeForm.getBtnAlerter().addActionListener(this);
 			Connection conn;

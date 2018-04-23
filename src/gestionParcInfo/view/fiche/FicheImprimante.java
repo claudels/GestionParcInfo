@@ -269,4 +269,9 @@ public class FicheImprimante extends Fiche {
 		
 		
 	}
+  @Override
+  public boolean validateData() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

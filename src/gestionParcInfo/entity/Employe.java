@@ -86,7 +86,17 @@ public class Employe extends Entity {
 	@Override
 	public void create(Connection conn) throws SQLException {
 		//On définit le matricule comme la concaténation du nom et du prénom
-		String concatenedMatricule = this.nom.substring(0, 4).toUpperCase() + this.prenom.substring(0, 2).toUpperCase();
+	  String nom = this.nom.toUpperCase();
+	  String prenom = this.prenom.toUpperCase();
+	  
+	  
+	  if(this.nom.length() >= 4) {
+	    nom = nom.substring(0, 4);
+	  }
+	  if(this.prenom.length() >= 2) {
+	    prenom = prenom.substring(0, 2);
+    }
+		String concatenedMatricule = nom + prenom;
 		
 		EmployeRepository employeRepo = new EmployeRepository(conn);
 		int matriculeCounter = employeRepo.countEmployeByMatriculePattern(concatenedMatricule);
