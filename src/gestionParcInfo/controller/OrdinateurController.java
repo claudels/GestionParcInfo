@@ -114,6 +114,13 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					System.out.println("Suppression : " + sno);
 					Ordinateur currentOrdinateur = ordinateurs.findBySn(sno);
 					
+					//Suppression des liens
+					for(OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySno(sno)) {
+					  this.ordinateurServeurLinks.removeItem(link);
+					  this.serveurs.updateItem(link.getServeur());
+					  link.remove(conn);
+					}
+					
 					//Suppression de l'ordinateur et persistance dans la base
 					currentOrdinateur.remove(conn);
 					

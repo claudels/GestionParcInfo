@@ -4,6 +4,7 @@ import gestionParcInfo.GestionParcInfo;
 import gestionParcInfo.entity.OrdinateurServeurLink;
 import gestionParcInfo.entity.Serveur;
 import gestionParcInfo.model.OrdinateurServeurLinks;
+import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.model.Serveurs;
 import gestionParcInfo.view.fiche.Fiche;
 import gestionParcInfo.view.fiche.FicheServeur;
@@ -29,6 +30,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 	private Serveurs serveurs;
 	private FicheServeur ficheServeur;
 	private OrdinateurServeurLinks ordinateurServeurLinks;
+	private Ordinateurs ordinateurs;
 	
 	/**
 	 * Constructeur du controleur des serveurs.
@@ -36,10 +38,11 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 	 * @param serveurs Modèle des serveurs
 	 * @param ordinateurServeurLinks Modèle des liens entre les ordinateurs et les serveurs
 	 */
-	public ServeurController(ServeurTab servTab, Serveurs serveurs, OrdinateurServeurLinks ordinateurServeurLinks) {
+	public ServeurController(ServeurTab servTab, Serveurs serveurs, OrdinateurServeurLinks ordinateurServeurLinks, Ordinateurs ordinateurs) {
 		this.servTab = servTab;
 		this.serveurs = serveurs;
 		this.ordinateurServeurLinks = ordinateurServeurLinks;
+		this.ordinateurs = ordinateurs;
 	}
 	
 	@Override
@@ -69,6 +72,13 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 					System.out.println("Suppression : " + sns);
 					//Récupération de l'ordinateur dans la base
 					Serveur currentServeur = serveurs.findBySn(sns);
+					
+				//Suppression des liens
+          for(OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySns(sns)) {
+            this.ordinateurServeurLinks.removeItem(link);
+            this.ordinateurs.updateItem(link.getOrdinateur());
+            link.remove(conn);
+          }
 					
 					//Mise à jour de l'ordinateur et persistance dans la base	
 					currentServeur.remove(conn);

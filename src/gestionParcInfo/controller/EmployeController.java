@@ -92,6 +92,13 @@ public class EmployeController implements ActionListener, WindowListener, MouseL
 					System.out.println("Suppression : " + matricule);
 					Employe currentEmploye = employes.findByMatricule(matricule);
 					
+					//Desattribution des ordinateurs en relation avec l'employé
+					for(Ordinateur currentOrdi : ordinateurs.findOrdinateursByEmploye(currentEmploye)) {
+					  currentOrdi.setProprietaire(null);
+					  ordinateurs.updateItem(currentOrdi);
+					  currentOrdi.update(conn);
+					}
+					
 					//Suppression de l'employe et persistance dans la base
 					currentEmploye.remove(conn);
 					

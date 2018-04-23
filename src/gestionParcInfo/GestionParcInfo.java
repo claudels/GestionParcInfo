@@ -102,7 +102,7 @@ public class GestionParcInfo {
 		//Controleurs
 		OrdinateurController ordiController = new OrdinateurController(ordiTab, ordinateurs, serveurs, employes, ordinateurServeurLinks, imprimantes);
 
-		ServeurController servController = new ServeurController(serveurTab,serveurs, ordinateurServeurLinks);
+		ServeurController servController = new ServeurController(serveurTab,serveurs, ordinateurServeurLinks, ordinateurs);
 		EmployeController employeController = new EmployeController(employeTab,employes,ordinateurs,alertes);
 		ImprimanteController imprimanteController = new ImprimanteController(imprimanteTab,imprimantes,ordinateurs);
 		AlerteController alerteController = new AlerteController(alerteTab,alertes);

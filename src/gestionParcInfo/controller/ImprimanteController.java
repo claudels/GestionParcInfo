@@ -73,6 +73,14 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					//Récupération de l'ordinateur dans la base
 					System.out.println("Suppression : " + sni);
 					Imprimante currentImprimante = imprimantes.findBySn(sni);
+					
+				//Déconnexion des imprimantes
+          for(Ordinateur currentOrdi : ordinateurs.findOrdinateursByImprimante(currentImprimante)) {
+            currentOrdi.setImprimante(null);
+            ordinateurs.updateItem(currentOrdi);
+            currentOrdi.update(conn);
+          }
+					
 					//Suppression de l'ordinateur et persistance dans la base
 					currentImprimante.remove(conn);
 					
