@@ -119,8 +119,9 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					
 					//Suppression des liens
 					for (OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySno(sno)) {
+					  Serveur serveur = link.getServeur();
 					  this.ordinateurServeurLinks.removeItem(link);
-					  this.serveurs.updateItem(link.getServeur());
+					  this.serveurs.updateItem(serveur);
 					  link.remove(conn);
 					}
 					
