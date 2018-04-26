@@ -32,7 +32,7 @@ public class Employes extends ModelList<Employe> {
 	
 	/**
 	 * Compte le nombre d'ordinateurs d'un employé.
-	 * @param employe
+	 * @param employe Employé pour lequel compter les ordinateurs
 	 * @return int Nombre d'ordinateur
 	 */
 	public int getNbOrdisOfEmploye(Employe employe) {
@@ -58,7 +58,7 @@ public class Employes extends ModelList<Employe> {
 		return nbOrdisARetourner;
 	}
 	
-	/**
+  /**
    * Compte le nombre d'ordinateur à retourner d'un employé.
    * @param employe Employe pour lequel compter.
    * @return Nombre d'ordinateur à changer

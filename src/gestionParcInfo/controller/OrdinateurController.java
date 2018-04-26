@@ -26,8 +26,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map.Entry;
 
-import javax.swing.JOptionPane;
-
 /**
  * Controleur des ordinateurs.
  * @author Sebastien Claudel
@@ -120,7 +118,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 					Ordinateur currentOrdinateur = ordinateurs.findBySn(sno);
 					
 					//Suppression des liens
-					for(OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySno(sno)) {
+					for (OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySno(sno)) {
 					  this.ordinateurServeurLinks.removeItem(link);
 					  this.serveurs.updateItem(link.getServeur());
 					  link.remove(conn);
@@ -180,7 +178,7 @@ public class OrdinateurController implements ActionListener, WindowListener, Mou
 				ordinateur.setImprimante(this.ficheOrdinateur.getImprimante());
 				
 				//MAJ du modèle des imprimantes
-				if(ordinateur.getImprimante() != null) {
+				if (ordinateur.getImprimante() != null) {
 				  this.imprimantes.updateItem(ordinateur.getImprimante());
 				}
 				

@@ -74,8 +74,8 @@ public class ImprimanteController implements ActionListener, WindowListener, Mou
 					System.out.println("Suppression : " + sni);
 					Imprimante currentImprimante = imprimantes.findBySn(sni);
 					
-				//Déconnexion des imprimantes
-          for(Ordinateur currentOrdi : ordinateurs.findOrdinateursByImprimante(currentImprimante)) {
+					//Déconnexion des imprimantes
+					for (Ordinateur currentOrdi : ordinateurs.findOrdinateursByImprimante(currentImprimante)) {
             currentOrdi.setImprimante(null);
             ordinateurs.updateItem(currentOrdi);
             currentOrdi.update(conn);

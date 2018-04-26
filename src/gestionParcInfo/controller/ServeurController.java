@@ -74,7 +74,7 @@ public class ServeurController implements ActionListener, WindowListener, MouseL
 					Serveur currentServeur = serveurs.findBySn(sns);
 					
 				//Suppression des liens
-          for(OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySns(sns)) {
+          for (OrdinateurServeurLink link : this.ordinateurServeurLinks.findBySns(sns)) {
             this.ordinateurServeurLinks.removeItem(link);
             this.ordinateurs.updateItem(link.getOrdinateur());
             link.remove(conn);

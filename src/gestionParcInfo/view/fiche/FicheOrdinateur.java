@@ -627,7 +627,7 @@ public class FicheOrdinateur extends Fiche implements ActionListener, WindowList
 
   @Override
   public boolean validateData() {
-	    if(this.tfSno.getText().length() >= 1 
+	    if (this.tfSno.getText().length() >= 1 
 	        && this.tfDesignation.getText().length() >= 1) {
 	      return true;
 	    }

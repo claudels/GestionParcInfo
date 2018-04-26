@@ -1,6 +1,5 @@
 package gestionParcInfo.view;
 
-import gestionParcInfo.entity.Employe;
 import gestionParcInfo.entity.Ordinateur;
 import gestionParcInfo.model.Ordinateurs;
 import gestionParcInfo.view.fiche.FicheEmploye;

@@ -270,8 +270,10 @@ public class FicheImprimante extends Fiche {
 		
 		
 	}
+	
+	@Override
 	 public boolean validateData() {
-		    if(this.tfSni.getText().length() >= 1 
+		    if (this.tfSni.getText().length() >= 1 
 		        && this.tfDesignation.getText().length() >= 1) {
 		      return true;
 		    }
