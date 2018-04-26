@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Ordinateur extends Entity {
 	
 	private static final String SQL_INSERT = "INSERT INTO Ordinateur VALUES (?,?,?,?,?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestituion=?, matricule=?  WHERE sn_o=?";
+	private static final String SQL_UPDATE = "UPDATE Ordinateur SET designation=?, ram=?, cpu=?, sn_i=?, dateAttribution=?, dateRestitution=?, matricule=?  WHERE sn_o=?";
 	private static final String SQL_DELETE = "DELETE FROM Ordinateur WHERE sn_o=?";	
 	
 	public static final SimpleDateFormat dateFormatterOracleToJava = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
